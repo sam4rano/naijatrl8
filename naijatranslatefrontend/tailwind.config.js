@@ -13,7 +13,7 @@ export default {
       secondary: "#F9F9F9",
       tertiary: "#ff7849",
       light: "#E3F2FC",
-      gray: "#6b7280",
+      gray: "#E0E0E0",
       dark: "#333333",
       white: "#F9F9F9",
       transparent: "transparent",

@@ -1,5 +1,8 @@
 import Navbar from './components/Navbar'
 import './App.css'
+import Ads from './components/Ads'
+import InputOutputBox from './components/inputOutputBox'
+
 // import Sidebar from './components/Sidebar'
 
 function App() {
@@ -9,6 +12,8 @@ function App() {
     <>
       <div>
         <Navbar />
+        <Ads />
+        <InputOutputBox />
         {/* <Sidebar /> */}
       </div>
     </>

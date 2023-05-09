@@ -3,7 +3,7 @@ import { useState } from "react";
 const Navbar = () => {
     const [navbar, setNavbar] = useState(false);
   return (
-    <div className="h-[100px] p-lg flex flex-row justify-between">
+    <div className="h-[70px] p-lg flex flex-row justify-between">
       <div className="flex flex-row gap-sm">
         <div
           className=" text-dark focus:border-gray-400 cursor-pointer"
@@ -53,6 +53,7 @@ const Navbar = () => {
         <div className="h-[30px] w-[30px] bg-primary rounded-full"></div>
       </div>
     </div>
+
   );
 };
 
