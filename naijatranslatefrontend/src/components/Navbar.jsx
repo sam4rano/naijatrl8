@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { Link} from "react-router-dom";
+import Title from "./Title";
+
 
 const Navbar = () => {
     const [navbar, setNavbar] = useState(false);
@@ -39,17 +42,21 @@ const Navbar = () => {
             </svg>
           )}
         </div>
-        <div className="text-primary text-lg">
-          <span className="font-bold">Naija</span>Translate
-        </div>
+        <Title />
       </div>
       <div className="flex flex-row justify-around gap-sm">
-        <button className="bg-primary text-white rounded-full px-lg h-[30px]">
-          Sign up
-        </button>
-        <button className=" text-primary outline outline-offset-0  rounded-full px-lg h-[30px] outline-1">
-          Login
-        </button>
+        <Link to="/container">
+          <button className="bg-primary text-white rounded-full px-lg h-[30px]">
+            Sign up
+          </button>
+        </Link>
+        
+        <Link to="/organisation">
+          <button className=" text-primary outline outline-offset-0  rounded-full px-lg h-[30px] outline-1">
+            Login
+          </button>
+        </Link>
+        
         <div className="h-[30px] w-[30px] bg-primary rounded-full"></div>
       </div>
     </div>

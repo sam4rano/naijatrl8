@@ -7,6 +7,16 @@ import OutputProperties from "./outputfiles/outputProperties";
 import {Linspeaker, Loutspeaker} from "../icons/index"
 
 const InputOutputBox = () => {
+
+// const SpeechInput = () => {
+//   const [speech, setSpeech] = useState('');
+  
+//   const handleSpeechInput = (event) => {
+//     setSpeech(event.target.value);
+//   };
+
+
+
   return (
     <div className="w-full h-full bg-gray p-lg">
       <div className=" flex flex-row gap-md p-[20px]">

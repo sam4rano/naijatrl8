@@ -1,6 +1,8 @@
 
 
-const InputFormat = () => {
+const InputFormat = async () => {
+  
+
   return (
     <form>
       <select className="text-primary outline outline-offset-0  rounded-full px-lg h-[30px] outline-1">
