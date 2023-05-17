@@ -1,50 +1,37 @@
-
 import Checkbox from "../components/Checkbox";
-
-
+import Title from "../components/Title";
+import LogInfo from "./LogInfo";
 
 const OrgSignup = () => {
   return (
-    <form className="bg-white shadow-md rounded-xl px-8 pt-6 pb-8 mb-4 flex flex-col content-center w-[480px]">
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">
-          Name
-        </label>
+    <form className="rounded-md flex flex-col content-center max-w-[500px] mx-auto mt-[100px] p-md">
+      <div className="pb-md">
         <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow placeholder:p-md appearance-none border-gray-500 flex h-[40px] border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
           id="username"
           type="text"
-          placeholder="name"
+          placeholder="Organisation name"
         />
       </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">
-          Email
-        </label>
+      <div className="pb-md">
         <input
-          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow placeholder:p-md appearance-none flex  h-[40px] border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           id="username"
           type="text"
-          placeholder="Email"
+          placeholder="Organisation Email"
         />
       </div>
-      <div className="mb-6">
-        <label className="block text-gray-700 text-sm font-bold mb-2">
-          Password
-        </label>
+      <div className="pb-md">
         <input
-          className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow placeholder:p-md appearance-none  h-[40px] border flex  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           id="password"
           type="password"
           placeholder="password"
         />
       </div>
-      <div className="mb-6">
-        <label className="block text-gray-700 text-sm font-bold mb-2">
-          Confirm Password
-        </label>
+      <div className="pb-md">
         <input
-          className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow placeholder:p-md appearance-none flex  h-[40px] border border-gray-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           id="password"
           type="password"
           placeholder="confirm password"
@@ -61,14 +48,23 @@ const OrgSignup = () => {
       <div>
         <Checkbox />
       </div>
-      <a
-        className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-        href="#"
-      >
-        Forgot Password?
-      </a>
+      <div className="">
+        <button className="bg-primary text-white rounded-full px-lg h-[40px] w-full">
+          Submit
+        </button>
+      </div>
+      <p className=" text-sm">
+        By signing in, you agree that you have read and understood, and agree to
+        <span className="pl-sm pr-sm">
+          <Title />
+        </span>
+        Terms of Service and Privacy Policy of Service
+      </p>
+      <div>
+        <LogInfo />
+      </div>
     </form>
   );
-}
+};
 
 export default OrgSignup;

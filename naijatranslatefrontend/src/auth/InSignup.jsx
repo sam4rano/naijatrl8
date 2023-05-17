@@ -1,4 +1,5 @@
 
+import { Link } from "react-router-dom";
 import Checkbox from "../components/Checkbox";
 import Title from "../components/Title";
 import LogInfo from "./LogInfo";
@@ -56,12 +57,12 @@ const InSignup = () => {
       <div>
         <Checkbox />
       </div>
-      <div className="">
+      <Link to="containerlogin" className="">
 
-        <button className="bg-primary text-white rounded-full px-lg h-[40px]">
+        <button className="bg-primary text-white rounded-full w-full px-lg h-[40px]">
           Submit
         </button>
-      </div>
+      </Link>
       <p className=" text-sm">
         By signing in, you agree that you have read and understood, and agree to
         <span className="pl-sm pr-sm"><Title /></span>

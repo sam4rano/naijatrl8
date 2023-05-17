@@ -1,6 +1,6 @@
 
 
-const InputFormat = async () => {
+const InputFormat = () => {
   
 
   return (

@@ -1,0 +1,59 @@
+import React, { useState } from 'react';
+
+const SpeechInput = () => {
+  const [speech, setSpeech] = useState('');
+  
+  const handleSpeechInput = (event) => {
+    setSpeech(event.target.value);
+  };
+
+  const convertSpeechToText = async () => {
+    try {
+      const response = await fetch('http://3.83.243.144/api/v1/admin/all-tts-conversions', {
+        method: 'POST',
+        body: JSON.stringify({ speech }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      const data = await response.json();
+      // Handle the response data, extract the converted text, and update the Text Conversion component.
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  return (
+    <div>
+      <textarea
+        value={speech}
+        onChange={handleSpeechInput}
+        placeholder="Speak or paste your speech here..."
+      />
+      <button onClick={convertSpeechToText}>Convert to Text</button>
+    </div>
+  );
+};
+
+const TextConversion = ({ convertedText }) => {
+  return (
+    <div>
+      <h3>Converted Text:</h3>
+      <textarea value={convertedText} readOnly />
+    </div>
+  );
+};
+
+const App = () => {
+  const [convertedText, setConvertedText] = useState('');
+
+  return (
+    <div>
+      <SpeechInput setConvertedText={setConvertedText} />
+      <TextConversion convertedText={convertedText} />
+    </div>
+  );
+};
+
+export default App;

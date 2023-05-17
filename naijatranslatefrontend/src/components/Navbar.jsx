@@ -45,7 +45,7 @@ const Navbar = () => {
         <Title />
       </div>
       <div className="flex flex-row justify-around gap-sm">
-        <Link to="/container">
+        <Link to="/containersignup">
           <button className="bg-primary text-white rounded-full px-lg h-[30px]">
             Sign up
           </button>

@@ -1,16 +1,39 @@
-import { Link } from "react-router-dom"
+
+
+import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const Login = () => {
-  return (
-    <main className="flex flex-row"> 
-      <Link to="/individual">
-          <button className="bg-primary text-white rounded-full px-lg h-[30px]">Individual</button>
-      </Link>
-      <Link to="/organisation">
-        <button className="bg-primary text-white rounded-full px-lg h-[30px]">Organisation</button>
-      </Link>
-    </main>
-  )
-}
+  const [activeButton, setActiveButton] = useState("individual");
 
-export default Login
+  const handleButtonClick = (buttonType) => {
+    setActiveButton(buttonType);
+  };
+
+  return (
+    <div className="text-center mb-[-80px] flex flex-row gap-[200px] max-w-[500px] mx-auto">
+      <Link to="/containerindlogin">
+        <button
+          className={`${
+            activeButton === "individual" ? "bg-primary" : "bg-gray"
+          } text-white rounded-full px-lg h-[40px] max-w-300px`}
+          onClick={() => handleButtonClick("individual")}
+        >
+          Individual
+        </button>
+      </Link>
+      <Link to="/containerorglogin">
+        <button
+          className={`${
+            activeButton === "organisation" ? "bg-primary" : "bg-gray"
+          } text-white rounded-full px-lg h-[40px] max-w-300px`}
+          onClick={() => handleButtonClick("organisation")}
+        >
+          Organisation
+        </button>
+      </Link>
+    </div>
+  );
+};
+
+export default Login;

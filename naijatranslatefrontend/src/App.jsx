@@ -4,21 +4,15 @@ import Layout from "./components/Layout";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Title from "./components/Title";
 
-// import { NoMatch } from "../inbox/no-match";
-import "./index.css";
-import OrgLogin from "./auth/OrgLogin";
-// import IndLogin from "./auth/IndLogin";
-// import InSignup from "./auth/InSignup";
-// import InSignup from "./auth/InSignup";
-
-// import Login from "./auth/Login";
-// import IndividualSignup from "./button/signup/Signup";
-// import OrganisationSignup from "./button/signup/OrganisationSignup";
-
 // import InSignup from "./auth/InSignup";
 import Login from "./button/login/Login";
 import SignUp from "./button/signup/Signup";
-import Container from "./auth/Container";
+
+import OrgSignup from "./auth/OrgSignUp";
+import ContainerSignup from "./auth/ContainerSignup";
+import ContainerOrgSignup from "./auth/ContainerOrgSignUp";
+import ContainerOrgLogin from "./auth/ContainerOrgLogin";
+import ContainerLogin from "./auth/ContainerIndlogin";
 
 
 export default function App() {
@@ -29,13 +23,14 @@ export default function App() {
           <Route path="/" element={<Layout />}>
             <Route path="/" element={<Title />} />
           </Route>
-          <Route path="individual" element={<Login />} >
-             
-          </Route>
+          <Route path="individual" element={<Login />}></Route>
           <Route path="organisation" element={<SignUp />} />
-          
-          <Route path="orglogin" element={<OrgLogin />} />
-          <Route path="container" element={<Container />} />
+
+          <Route path="orgsignup" element={<OrgSignup />} />
+          <Route path="containersignup" element={<ContainerSignup />} />
+          <Route path="containerorgsignup" element={<ContainerOrgSignup />} />
+          <Route path="containerorglogin" element={<ContainerOrgLogin />} />
+          <Route path="containerindlogin" element={<ContainerLogin />} />
         </Routes>
       </Router>
     </>
