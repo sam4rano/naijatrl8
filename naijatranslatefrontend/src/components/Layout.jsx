@@ -1,4 +1,4 @@
-import InputOutputBox from "./inputOutputBox";
+import TranslateForm from "./TranslateForm";
 import Navbar from "./Navbar";
 import Ads from "./Ads";
 import { Outlet } from "react-router-dom";
@@ -9,7 +9,7 @@ const Layout = () => {
     <>
       <Navbar />
       <Ads />
-      <InputOutputBox />
+      <TranslateForm />
       <Outlet />
     </>
   );
