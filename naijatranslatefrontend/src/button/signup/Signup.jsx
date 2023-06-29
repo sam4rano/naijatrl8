@@ -31,12 +31,12 @@ const Signup = () => {
   };
 
   return (
-    <div className="text-center mb-[-80px] flex flex-row gap-[200px] max-w-[500px] mx-auto">
+    <div className="text-center flex flex-row mb-[-4rem] gap-[100px] max-w-[500px] mx-auto">
       <Link to="/containersignup">
         <button
           className={`${
             activeButton === "individual" ? "bg-primary" : "bg-gray"
-          } text-white rounded-full px-lg h-[40px] max-w-300px`}
+          } text-white rounded-full px-xl h-[40px] max-w-400px`}
           onClick={() => handleButtonClick("individual")}
         >
           Individual

@@ -14,8 +14,9 @@ export default {
       tertiary: "#ff7849",
       light: "#E3F2FC",
       gray: "#E0E0E0",
+      graylight:"#F9F9F9",
       dark: "#333333",
-      white: "#F9F9F9",
+      white: "#FFFFFF",
       transparent: "transparent",
     },
     fontFamily: {

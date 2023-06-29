@@ -1,7 +1,7 @@
 
 
 import Signup from "../button/signup/Signup";
-import Title from "../components/Title";
+import Title from "../utils/Title";
 import InSignup from "./InSignup";
 
 const ContainerSignup = () => {
@@ -11,7 +11,7 @@ const ContainerSignup = () => {
         <Title />
       </div>
       <div className="flex flex-col mt-lg">
-        <h1 className="text-dark text-center mt-lg pb-md font-bold">Sign up for your free account</h1>
+        <h1 className="text-dark text-center mt-lg pb-md font-[400] text-[20px]">Sign up for your free account</h1>
         <Signup />
         <InSignup />
         

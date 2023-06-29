@@ -11,7 +11,7 @@ const Login = () => {
   };
 
   return (
-    <div className="text-center mb-[-80px] flex flex-row gap-[200px] max-w-[500px] mx-auto">
+    <div className="text-center mb-[-80px] flex flex-row gap-[100px] max-w-[500px] mx-auto">
       <Link to="/containerindlogin">
         <button
           className={`${

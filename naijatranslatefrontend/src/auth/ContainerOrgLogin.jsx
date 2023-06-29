@@ -1,5 +1,6 @@
-import Title from "../components/Title";
+import Title from "../utils/Title";
 import OrgLogin from "./OrgLogin";
+import Login from "../button/login/Login"
 
 const ContainerOrgLogin = () => {
   return (
@@ -11,7 +12,7 @@ const ContainerOrgLogin = () => {
         <h1 className="text-dark text-center mt-lg pb-md font-bold">
           Login to your account
         </h1>
-
+        <Login />
         <OrgLogin />
       </div>
     </main>

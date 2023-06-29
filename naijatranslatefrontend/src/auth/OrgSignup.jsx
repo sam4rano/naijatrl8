@@ -1,5 +1,5 @@
-import Checkbox from "../components/Checkbox";
-import Title from "../components/Title";
+import Checkbox from "../utils/Checkbox";
+import Title from "../utils/Title";
 import LogInfo from "./LogInfo";
 
 const OrgSignup = () => {
@@ -7,7 +7,7 @@ const OrgSignup = () => {
     <form className="rounded-md flex flex-col content-center max-w-[500px] mx-auto mt-[100px] p-md">
       <div className="pb-md">
         <input
-          className="shadow placeholder:p-md appearance-none border-gray-500 flex h-[40px] border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow placeholder:p-md appearance-none border-gray-500 flex h-[40px] border rounded w-full p-[1rem] leading-tight focus:outline-none focus:shadow-outline"
           id="username"
           type="text"
           placeholder="Organisation name"
@@ -15,7 +15,7 @@ const OrgSignup = () => {
       </div>
       <div className="pb-md">
         <input
-          className="shadow placeholder:p-md appearance-none flex  h-[40px] border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow placeholder:p-md appearance-none flex  h-[40px] border rounded w-full p-[1rem] text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           id="username"
           type="text"
           placeholder="Organisation Email"
@@ -23,7 +23,7 @@ const OrgSignup = () => {
       </div>
       <div className="pb-md">
         <input
-          className="shadow placeholder:p-md appearance-none  h-[40px] border flex  rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow placeholder:p-md appearance-none  h-[40px] border flex  rounded w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           id="password"
           type="password"
           placeholder="password"
@@ -31,7 +31,7 @@ const OrgSignup = () => {
       </div>
       <div className="pb-md">
         <input
-          className="shadow placeholder:p-md appearance-none flex  h-[40px] border border-gray-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow placeholder:p-md appearance-none flex  h-[40px] border border-gray-500 rounded w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
           id="password"
           type="password"
           placeholder="confirm password"

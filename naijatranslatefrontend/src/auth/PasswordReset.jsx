@@ -1,53 +1,35 @@
-import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import Title from "../utils/Title";
 
 const PasswordReset = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-
-  // handle form submission
-  const onSubmit = (data) => console.log(data);
-
   return (
-    <div className="flex items-center justify-center h-screen">
-      <form className="w-full max-w-sm" onSubmit={handleSubmit(onSubmit)}>
-        <h2 className="text-2xl font-bold mb-4">Reset Your Password</h2>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="email">
-            Email
-          </label>
+    <div className="flex flex-col">
+      <Title />
+      <form className="rounded-md flex flex-col content-center max-w-[500px] mx-auto mt-[100px] p-md">
+        <div className="pb-md">
           <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="email"
-            type="email"
-            placeholder="Enter your email"
-            {...register("email", {
-              required: true,
-              pattern: /^\S+@\S+$/i,
-            })}
+            className="shadow placeholder:p-md appearance-none flex  h-[40px] border rounded w-full p-[1rem] text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            id="username"
+            type="text"
+            placeholder="Email"
           />
-          {errors.email && (
-            <p className="text-red-500">
-              This field is required and must be a valid email address.
-            </p>
-          )}
         </div>
+
         <div className="flex items-center justify-between">
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            type="submit"
-          >
-            Send Instructions
-          </button>
-          <button
-            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             type="button"
-            onClick={() => console.log("Back to login")}
           >
-            Back to Login
+            Login In
           </button>
+        </div>
+        <Link to="" className="">
+          <button className="bg-primary text-white rounded-full w-full px-lg h-[40px]">
+            Submit
+          </button>
+        </Link>
+        <div className="flex flex-col p-[10px] justify-center mx-auto">
+          <h1></h1>
         </div>
       </form>
     </div>

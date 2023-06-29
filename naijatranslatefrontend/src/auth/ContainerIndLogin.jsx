@@ -1,6 +1,7 @@
 
-import Title from "../components/Title";
+import Title from "../utils/Title";
 import IndLogin from "./IndLogin";
+import Login from "../button/login/Login";
 
 const ContainerLogin = () => {
   return (
@@ -12,7 +13,7 @@ const ContainerLogin = () => {
         <h1 className="text-dark text-center mt-lg pb-md font-bold">
           Login to your account
         </h1>
-        
+        <Login />
         <IndLogin />
       </div>
     </main>

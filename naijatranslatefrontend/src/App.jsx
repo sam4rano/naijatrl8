@@ -1,8 +1,8 @@
 
 
-import Layout from "./components/Layout";
+import Layout from "./layout/Layout";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Title from "./components/Title";
+import Title from "./utils/Title";
 
 // import InSignup from "./auth/InSignup";
 import Login from "./button/login/Login";
@@ -13,6 +13,9 @@ import ContainerSignup from "./auth/ContainerSignup";
 import ContainerOrgSignup from "./auth/ContainerOrgSignUp";
 import ContainerOrgLogin from "./auth/ContainerOrgLogin";
 import ContainerLogin from "./auth/ContainerIndlogin";
+import PasswordReset from "./auth/PasswordReset";
+
+import SignUpUser from "./components/SignupUser/SignUpUser";
 
 
 export default function App() {
@@ -31,6 +34,8 @@ export default function App() {
           <Route path="containerorgsignup" element={<ContainerOrgSignup />} />
           <Route path="containerorglogin" element={<ContainerOrgLogin />} />
           <Route path="containerindlogin" element={<ContainerLogin />} />
+          <Route path="signinuser" element={<SignUpUser />} />
+          <Route path="passwordreset" element={<PasswordReset />} />
         </Routes>
       </Router>
     </>

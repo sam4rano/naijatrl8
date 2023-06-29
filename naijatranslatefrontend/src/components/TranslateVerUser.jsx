@@ -1,48 +1,45 @@
 import { useState } from "react";
+import changeIcon from "../assets/Changeicon.png"
 
 const TranslateVerUser = () => {
-  const [source_language, setSource_language] = useState('');
-  const [target_language, setTarget_language] = useState('');
-  const [source_text, setSource_text] = useState('');
-  const [target_text, setTarget_text] = useState('');
+  const [source_language, setSource_language] = useState("en");
+  const [target_language, setTarget_language] = useState("");
+  const [source_text, setSource_text] = useState("");
+  const [target_text, setTarget_text] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch('http://3.83.243.144/api/v1/translate/unregistered-trial', {
-      method: 'POST',
+    const response = await fetch("http://3.83.243.144/api/v1/translate", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         source_language,
         target_language,
         source_text,
-        target_text
+        target_text,
       }),
     });
     if (response.ok) {
-
-
-    const responseData = await response.json();
-    const { target_text } = responseData.data;
-    setTarget_text(target_text); 
+      const responseData = await response.json();
+      const { target_text } = responseData.data;
+      setTarget_text(target_text);
     } else {
-      console.log('Error');
+      console.log("Error");
       const data = await response.json();
       console.log(data);
-
     }
-    
   };
+
   return (
     <form
       onSubmit={handleSubmit}
       className="flex flex-col max-w-[1000px] mx-auto"
     >
       <div className="flex flex-row bg-orange-200 w-full border-2 border-dark">
-      <div className="flex flex-row w-1/2">
-          
+        <div className="flex flex-row w-1/2">
           <select
             id="input_language"
             name="input_language"
@@ -52,11 +49,11 @@ const TranslateVerUser = () => {
             <option value="en">English</option>
             <option value="yor">Yoruba</option>
             <option value="pcm">Pidgin</option>
-            
           </select>
         </div>
+        <img src={changeIcon} alt="change icon" className=""/>
+        
         <div className="flex flex-row w-1/2">
-          
           <select
             id="output_language"
             name="output_language"
@@ -66,7 +63,6 @@ const TranslateVerUser = () => {
             <option value="en">English</option>
             <option value="yor">Yoruba</option>
             <option value="pcm">Pidgin</option>
-           
           </select>
         </div>
       </div>
@@ -88,7 +84,7 @@ const TranslateVerUser = () => {
         <div className="flex flex-col w-1/2 h-[400px] border-2 border-dark">
           <label htmlFor="output_text">Output Text:</label>
           <div
-            className="h-[400px] border-2 border-dark"
+            className="h-[400px] border-2 border-transparent"
             contentEditable
             id="target_text"
             name="target_text"
