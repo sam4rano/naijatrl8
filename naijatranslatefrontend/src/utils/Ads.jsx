@@ -1,4 +1,4 @@
-
+//import { Bix} from "react-icons/bi";
 
 const Ads = () => {
   return (
@@ -6,6 +6,8 @@ const Ads = () => {
       <h1 className="mx-auto text-center p-sm">
         Translate like a pro with our higher percentage translation solution
       </h1>
+ 
+
     </div>
   );
 }

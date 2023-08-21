@@ -1,0 +1,18 @@
+.tab-ul li {
+	list-style: none;
+	text-align: center;
+	cursor: pointer;
+
+	
+	width: 50%;
+	padding:12px;
+}
+
+/* ul li.active {
+	background-color:#A13E97 ;
+	
+} */
+
+ul {
+	border-radius: 0;
+}

@@ -93,14 +93,15 @@ const TranslateForm = () => {
       "http://3.83.243.144/api/v1/translate/unregistered-trial",
       {
         method: "POST",
+        // mode: 'no-cors',
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          source_language:source_language,
-          target_language:target_language,
-          source_text:source_text,
-          target_text:target_text
+          source_language,
+          target_language,
+          source_text,
+          target_text,
         }),
       }
     );

@@ -45,13 +45,13 @@ const Navbar = () => {
         <Title />
       </div>
       <div className="flex flex-row justify-around gap-sm">
-        <Link to="/containersignup">
+        <Link to="/signupcontainer">
           <button className="bg-primary text-white rounded-full px-lg h-[30px]">
             Sign up
           </button>
         </Link>
         
-        <Link to="/containerorglogin">
+        <Link to="/logincontainer">
           <button className=" text-primary outline outline-offset-0  rounded-full px-lg h-[30px] outline-1">
             Login
           </button>
@@ -65,9 +65,6 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-
-// import { useState } from "react";
 // import { Link } from "react-router-dom";
 // import Title from "../components/Title";
 

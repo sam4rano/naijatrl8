@@ -1,97 +1,193 @@
-
-import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import Title from "../utils/Title";
+import { useState } from "react";
+import "./Tabcontainer.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PasswordChange = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
-  
-  // handle form submission
-  const onSubmit = data => console.log(data);
+  const [individualEmail, setIndividualEmail] = useState("");
+  const [organisationEmail, setOrganisationEmail] = useState("");
+  const [activeTab, setActiveTab] = useState("tabone");
+
+  const navigate = useNavigate();
+
+  const handleTabOne = () => {
+    setActiveTab("tabone");
+  };
+  const handleTabTwo = () => {
+    setActiveTab("tabtwo");
+  };
+
+  const handleSubmitUser = async (e) => {
+    e.preventDefault();
+
+    const formData = {
+      email: individualEmail,
+    };
+
+    try {
+      const response = await fetch(
+        "http://3.83.243.144//api/v1/forgot-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      if (response.ok) {
+        console.log("Registration successful");
+        navigate("/logincontainer");
+
+        toast.success("Registration successful");
+      } else {
+        console.log("Registration failed");
+        const data = await response.json();
+
+        toast.error(data.detail);
+      }
+    } catch (error) {
+      console.log("An error occurred:", error);
+      toast.error("An error occurred");
+    }
+  };
+  const handleSubmitAdmin = async (e) => {
+    e.preventDefault();
+
+    const formData = {
+      email: individualEmail,
+    };
+
+    try {
+      const response = await fetch(
+        "http://3.83.243.144//api/v1/forgot-password",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+
+      if (response.ok) {
+        console.log("Registration successful");
+        navigate("/logincontainer");
+
+        toast.success("Registration successful");
+      } else {
+        console.log("Registration failed");
+        const data = await response.json();
+
+        toast.error(data.detail);
+      }
+    } catch (error) {
+      console.log("An error occurred:", error);
+      toast.error("An error occurred");
+    }
+  };
 
   return (
-    <div className="flex items-center justify-center h-screen">
-      <form className="w-full max-w-sm" onSubmit={handleSubmit(onSubmit)}>
-        <h2 className="text-2xl font-bold mb-4">Change Your Password</h2>
-        <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="email">
-            Email
-          </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="email"
-            type="email"
-            placeholder="Enter your email"
-            {...register("email", {
-              required: true,
-              pattern: /^\S+@\S+$/i,
-            })}
-          />
-          {errors.email && (
-            <p className="text-red-500">
-              This field is required and must be a valid email address.
-            </p>
-          )}
-        </div>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 font-bold mb-2"
-            htmlFor="newPassword"
+    <div className="p-[20px]">
+      <Title />
+      <form className="rounded-md flex flex-col content-center w-[320px] mx-auto pt-[50px]">
+        <h1 className="font-[600] text-center py-[15px] text-[18px]">
+          Change your Password
+        </h1>
+        <ul className="tab-ul flex flex-row list-none text-center cursor-pointer justify-around font-[400] text-[13px] pb-[20px] leading-4 w-[327px] mx-auto">
+          <li
+            onClick={handleTabOne}
+            className={`cursor-pointer rounded-full font-[600] ${
+              activeTab === "tabone"
+                ? "active text-white bg-primary rounded-full"
+                : "text-dark bg-gray"
+            } `}
           >
-            New Password
-          </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="newPassword"
-            type="password"
-            placeholder="Enter your new password"
-            {...register("newPassword", {
-              required: true,
-              minLength: 8,
-              maxLength: 20,
-            })}
-          />
-          {errors.newPassword && (
-            <p className="text-red-500">
-              This field is required and must be between 8 and 20 characters
-              long.
-            </p>
-          )}
-        </div>
-        <div className="mb-4">
-          <label
-            className="block text-gray-700 font-bold mb-2"
-            htmlFor="confirmPassword"
+            Individual
+          </li>
+          <li
+            onClick={handleTabTwo}
+            className={`cursor-pointer rounded-full font-[600] ${
+              activeTab === "tabtwo"
+                ? "active text-white bg-primary rounded-full"
+                : "text-dark bg-gray "
+            } `}
           >
-            Confirm Password
-          </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="confirmPassword"
-            type="password"
-            placeholder="Confirm your new password"
-            {...register("confirmPassword", {
-              required: true,
-              // eslint-disable-next-line no-undef
-              validate: (value) => value === watch("newPassword"),
-            })}
-          />
-          {errors.confirmPassword && (
-            <p className="text-red-500">
-              This field is required and must match the new password.
-            </p>
-          )}
-        </div>
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          type="submit"
-        >
-          Next
-        </button>
+            Organisation
+          </li>
+        </ul>
+        {activeTab === "tabone" ? (
+          <form onClick={handleSubmitUser} className="">
+            <div className="pb-md">
+              <input
+                className="placeholder:p-md appearance-none outline-none flex  h-[40px] border rounded-[15px] w-full p-[1rem] text-gray-700 leading-tight focus:outline-none "
+                id="email"
+                type="email"
+                placeholder="Email"
+              />
+            </div>
+            <div className="pb-[20px]">
+              <input
+                className="placeholder:p-md outline-none appearance-none  h-[40px] border flex  rounded-[15px] w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none"
+                id="password"
+                type="password"
+                placeholder="Password"
+              />
+            </div>
+            <div className="pb-[20px]">
+              <input
+                className="placeholder:p-md outline-none appearance-none  h-[40px] border flex  rounded-[15px] w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none"
+                id="confirm_password"
+                type="password"
+                placeholder="Confirm Password"
+              />
+            </div>
+            <Link to="/logincontainer" className="pb-[20px]">
+              <button className="bg-primary text-white rounded-full w-full px-lg h-[40px]">
+                Next
+              </button>
+            </Link>
+          </form>
+        ) : (
+          <form onClick={handleSubmitAdmin} className="">
+            <div className="pb-md">
+              <input
+                className="placeholder:p-md appearance-none outline-none flex  h-[40px] border rounded-[15px] w-full p-[1rem] text-gray-700 leading-tight focus:outline-none "
+                id="email"
+                type="email"
+                placeholder="Organisation Email"
+              />
+            </div>
+            <div className="pb-[20px]">
+              <input
+                className="placeholder:p-md outline-none appearance-none  h-[40px] border flex  rounded-[15px] w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none"
+                id="password"
+                type="password"
+                placeholder="Password"
+              />
+            </div>
+            <div className="pb-[20px]">
+              <input
+                className="placeholder:p-md outline-none appearance-none  h-[40px] border flex  rounded-[15px] w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none"
+                id="confirm_password"
+                type="password"
+                placeholder="Confirm Password"
+              />
+            </div>
+            <Link to="/logincontainer" className="pb-[20px]">
+              <button className="bg-primary text-white rounded-full w-full px-lg h-[40px]">
+                Next
+              </button>
+            </Link>
+          </form>
+        )}
       </form>
+      <ToastContainer />
     </div>
   );
-
-  
- 
-}
+};
 
 export default PasswordChange;
