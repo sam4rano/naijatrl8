@@ -1,85 +1,22 @@
-// import { useParams } from "react-router-dom";
-// import Title from "../utils/Title";
-// import { useEffect, useState } from "react";
-
-// // import { useState } from "react";
-// // import { useNavigate } from "react-router-dom";
-
-// const Verify = () => {
-//   const [isSuccess, setIsSuccess] = useState(false);
-//   const [error, setError] = useState("");
-//   let params = useParams();
-//   console.log(params);
-
-//   const [key, token] = params["*"].split("/");
-//   console.log(key, token);
-
-//   useEffect(() => {
-//     const confirmVerified = async () => {
-//       try {
-
-//         const res = await fetch(
-//           `http://3.83.243.144/verify-account/${key}/${token}?format=json`,
-//           {
-//             headers: {
-//               "Content-Type": "application/json",
-//             },
-//           }
-//         );
-
-//         if (res.ok) {
-//           console.log(res.json());
-//           setIsSuccess(true);
-//         } else {
-//           const errorData = await res.json();
-//           throw new Error(errorData.error);
-//         }
-//       } catch (error) {
-//         alert("An error occurred: " + error.message);
-//         setError(error.message);
-//       }
-//     };
-//     confirmVerified();
-//   }, [isSuccess, error, key, token]);
-
-//   return (
-//     <div className="p-[20px]">
-//       <div>
-//         <Title />
-//       </div>
-//       {isSuccess ?
-//         <h1>Congratulations you have been successfuly verified</h1>:<h1>Verification failed... </h1> 
-//       }
-//       <div>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Verify;
-
-
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import Title from "../utils/Title";
 import { useEffect, useState } from "react";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Verify = () => {
   const [isSuccess, setIsSuccess] = useState(false);
-  const [error, setError] = useState("");
-
-  const navigate = useNavigate()
+  const [verified, setVerified] = useState("");
+  const navigate = useNavigate();
   let params = useParams();
-  console.log(params);
 
   const [uidb64, token] = params["*"].split("/");
-  console.log(uidb64, token);
 
   useEffect(() => {
     const confirmVerified = async () => {
       try {
         const res = await fetch(
-          `http://3.83.243.144/verify-account/${uidb64}/${token}?format=json`,
+          `http://3.83.243.144/verify-account/${uidb64}/${token}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -88,35 +25,49 @@ const Verify = () => {
         );
 
         if (res.ok) {
-          const responseData = await res.json(); // Parse the JSON response
-          console.log(responseData); // Log the parsed data
+          const responseData = await res.json();
+
           setIsSuccess(true);
-          navigate("/logincontainer")
+          toast.success(responseData.message);
+          setTimeout(() => {
+            navigate("/logincontainer");
+          }, 2000);
         } else {
           const errorData = await res.json();
-          throw new Error(errorData.error);
+          if (
+            "message" in errorData &&
+            errorData.message === "User with email already verified"
+          ) {
+            setVerified("User with email already verified");
+            setTimeout(() => {
+              navigate("/logincontainer");
+            }, 2000);
+          } else {
+            setVerified(errorData.message);
+          }
         }
       } catch (error) {
-        alert("An error occurred: " + error.message);
-        setError(error.message);
+        console.log(error);
+        navigate("/resendverification");
       }
     };
     confirmVerified();
-  }, [uidb64, token, navigate]); 
+  }, [uidb64, token, navigate, isSuccess]);
 
   return (
-    <div className="p-[20px]">
-      <div>
-        <Title />
+    <div>
+      <div className="p-[20px]">
+        <div>
+          <Title />
+        </div>
+        {verified && (
+          <Link to="/resendverification">Resend Verification Link</Link>
+        )}
+        {isSuccess ? <h1>Verification successful</h1> : <h1>{verified}</h1>}
       </div>
-      {isSuccess ? (
-        <h1>Congratulations! You have been successfully verified.</h1>
-      ) : (
-        <h1>Verification failed...</h1>
-      )}
+      <ToastContainer />
     </div>
   );
 };
 
 export default Verify;
-

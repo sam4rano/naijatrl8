@@ -4,6 +4,7 @@ import "./Tabcontainer.css";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 const LoginContainer = () => {
   const [activeTab, setActiveTab] = useState("tabone");
@@ -15,6 +16,8 @@ const LoginContainer = () => {
   const [organisationPassword, setOrganisationPassword] = useState("");
 
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleTabOne = () => {
     setActiveTab("tabone");
@@ -28,7 +31,6 @@ const LoginContainer = () => {
 
     const formData = {
       email: individualEmail,
-
       password: individualPassword,
     };
 
@@ -40,11 +42,18 @@ const LoginContainer = () => {
         },
         body: JSON.stringify(formData),
       });
+      console.log("response data", response);
 
       if (response.ok) {
+        toast.success("Registration successful");
+        const data = await response.json();
+        const accessToken = data.access_token;
         console.log("Registration successful");
         setRegistrationSuccess(true);
-        toast.success("Registration successful");
+        // Save the access token in an HttpOnly cookie
+        document.cookie = `access_token=${accessToken}; HttpOnly; Secure; SameSite=Strict`;
+
+        navigate("/translateveruser");
       } else {
         console.log("Registration failed");
         const data = await response.json();
@@ -77,14 +86,17 @@ const LoginContainer = () => {
       );
 
       if (response.ok) {
+        const data = await response.json();
+        const accessToken = data.access_token;
         console.log("Registration successful");
         setRegistrationSuccess(true);
+        // Save the access token in an HttpOnly cookie
+        document.cookie = `access_token=${accessToken}; HttpOnly; Secure; SameSite=Strict`;
+        navigate("/translateveruser");
         toast.success("Registration successful");
       } else {
-        console.log("Registration failed");
         const data = await response.json();
-        console.log(data);
-        toast.error("Registration failed");
+        toast.error(data.detail);
       }
     } catch (error) {
       console.log("An error occurred:", error);
@@ -125,7 +137,7 @@ const LoginContainer = () => {
           <div>
             {activeTab === "tabone" ? (
               <form
-                onClick={handleSubmitUser}
+                onSubmit={handleSubmitUser}
                 className="rounded-md flex flex-col content-center max-w-[448px] mx-auto p-[10px]"
               >
                 <div className="pb-md">
@@ -141,20 +153,25 @@ const LoginContainer = () => {
                 </div>
                 <div className="pb-[20px]">
                   <input
-                    className="placeholder:p-md outline-none appearance-none  h-[40px] border flex  rounded-[15px] w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none"
-                    id="individualpassword"
-                    type="individualpassword"
+                    className="placeholder:p-md appearance-none  h-[40px] border flex  rounded-[15px] w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none"
+                    id="individual_password"
+                    type="password"
                     placeholder="Password"
                     required
+                    minLength={8}
                     value={individualPassword}
                     onChange={(e) => setIndividualPassword(e.target.value)}
+                    autoComplete="off"
                   />
                 </div>
-                <Link to="#" className="pb-[20px]">
-                  <button className="bg-primary text-white rounded-full w-full px-lg h-[40px]">
-                    Log in
-                  </button>
-                </Link>
+                <button
+                  className="bg-primary text-white rounded-full w-full px-lg h-[40px]"
+                  type="submit"
+                >
+                  Log in
+                </button>
+                {/* <Link to="#" className="pb-[20px]">
+                </Link> */}
                 <div className="flex flex-col justify-center mx-auto">
                   <p className=" text-sm">
                     Sign up for an account?
@@ -163,7 +180,7 @@ const LoginContainer = () => {
                     </Link>
                   </p>
                   <Link
-                    to="/passwordreset"
+                    to="/passwordresetinvoke"
                     className="underline underline-offset-8 mx-auto"
                   >
                     Forgot Password
@@ -172,7 +189,7 @@ const LoginContainer = () => {
               </form>
             ) : (
               <form
-                onClick={handleSubmitAdmin}
+                onSubmit={handleSubmitAdmin}
                 className="rounded-md flex flex-col content-center max-w-[448px] mx-auto p-[10px]"
               >
                 <div className="pb-md">
@@ -191,17 +208,21 @@ const LoginContainer = () => {
                     className="placeholder:p-md appearance-none  h-[40px] border flex  rounded-[15px] w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none"
                     id="organisation_password"
                     type="password"
+                    placeholder="admin Password"
                     required
-                    placeholder="Password"
+                    minLength={8}
                     value={organisationPassword}
                     onChange={(e) => setOrganisationPassword(e.target.value)}
+                    autoComplete="off"
                   />
                 </div>
-                <Link to="#" className="pb-[20px]">
-                  <button className="bg-primary text-white rounded-full w-full px-lg h-[40px]">
-                    Log in
-                  </button>
-                </Link>
+                <button
+                  className="bg-primary text-white rounded-full w-full px-lg h-[40px]"
+                  type="submit"
+                >
+                  Log in
+                </button>
+
                 <div className="flex flex-col justify-center mx-auto">
                   <p className=" text-sm">
                     Sign up for an account?
@@ -210,7 +231,7 @@ const LoginContainer = () => {
                     </Link>
                   </p>
                   <Link
-                    to="/passwordreset"
+                    to="/passwordresetinvoke"
                     className="underline underline-offset-8 mx-auto"
                   >
                     Forgot Password

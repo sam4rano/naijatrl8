@@ -1,37 +1,76 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import Title from "../utils/Title";
-import "./Tabcontainer.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 const PasswordReset = () => {
-  const [activeTab, setActiveTab] = useState("tabone");
-  const [individualEmail, setIndividualEmail] = useState("");
-  const [organisationEmail, setOrganisationEmail] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [verified, setVerified] = useState("");
+  const [userPassword, setUserPassword] = useState("");
+  const [confirmUserPassword, setConfirmUserPassword] = useState("");
 
   const navigate = useNavigate();
+  let params = useParams();
 
-  const handleTabOne = () => {
-    setActiveTab("tabone");
-  };
-  const handleTabTwo = () => {
-    setActiveTab("tabtwo");
-  };
+  const [uidb64, token] = params["*"].split("/");
+  console.log(uidb64, token);
+
+  useEffect(() => {
+    const confirmVerified = async () => {
+      try {
+        const res = await fetch(
+          `http://3.83.243.144/password-reset/${uidb64}/${token}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (res.ok) {
+          const responseData = await res.json();
+          console.log("resp", responseData); // Log the parsed data
+          setIsSuccess(true);
+          toast.success(responseData.message);
+          // navigate("/logincontainer");
+        } else {
+          const errorData = await res.json();
+          if (
+            "message" in errorData &&
+            errorData.message === "User with email already verified"
+          ) {
+            setVerified("User with email already verified");
+            // navigate("/logincontainer");
+          } else {
+            setVerified(errorData.message);
+            // navigate("/resendverifyaccount");
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    confirmVerified();
+  }, [uidb64, token, navigate, isSuccess]);
 
   const handleSubmitUser = async (e) => {
     e.preventDefault();
 
     const formData = {
-      email: individualEmail,
+      new_password: userPassword,
+      new_password_confirm: confirmUserPassword,
+      uid: uidb64,
+      token: token,
     };
+
+    // console.log("form", formData);
 
     try {
       const response = await fetch(
-        "http://3.83.243.144/api/v1/forgot-password",
+        "http://3.83.243.144/api/v1/password-reset/confirm",
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
@@ -42,132 +81,62 @@ const PasswordReset = () => {
       if (response.ok) {
         console.log("Registration successful");
         navigate("/logincontainer");
-
-        toast.success("Registration successful");
       } else {
         console.log("Registration failed");
-        const data = await response.json();
-
-        toast.error(data.detail);
       }
     } catch (error) {
-      console.log("An error occurred:", error);
-      toast.error("An error occurred");
-    }
-  };
-  const handleSubmitAdmin = async (e) => {
-    e.preventDefault();
-
-    const formData = {
-      email: organisationEmail,
-    };
-
-    try {
-      const response = await fetch(
-        "http://3.83.243.144/api/v1/organization/forgot-password",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
-
-      if (response.ok) {
-        console.log("Registration successful");
-        navigate("/logincontainer");
-
-        toast.success("Registration successful");
-      } else {
-        console.log("Registration failed");
-        const data = await response.json();
-
-        toast.error(data.detail);
-      }
-    } catch (error) {
-      console.log("An error occurred:", error);
-      toast.error("An error occurred");
+      toast.error(error);
     }
   };
 
   return (
-    <div className="flex flex-col p-[20px]">
-      <Title />
-      <div className="w-[320px] mx-auto pt-[40px]">
-        <div className="flex justify-center align-middle flex-col w-[320px]">
-          <h1 className="text-center py-[20px] text-[14px] font-[600]">
-            Reset your password{" "}
-          </h1>
-          <h3 className="text-center py-[5px] text-[12px]">
-            Enter your email, and we’ll send you instructions on how to reset
-            your password.
-          </h3>
+    <div>
+      <div className="p-[20px]">
+        <div>
+          <Title />
         </div>
-        <ul className="tab-ul flex flex-row list-none text-center cursor-pointer justify-around font-[400] text-[13px] pb-[20px] leading-4 w-[327px] mx-auto">
-          <li
-            onClick={handleTabOne}
-            className={`cursor-pointer rounded-full font-[600] ${
-              activeTab === "tabone"
-                ? "active text-white bg-primary rounded-full"
-                : "text-dark bg-gray"
-            } `}
+        {verified && (
+          <Link to="/resendverification">Resend Verification Link</Link>
+        )}
+        {/* {verified &&  <div>{verified}</div> : null} */}
+        {isSuccess ? (
+          <form
+            onClick={handleSubmitUser}
+            className="rounded-md flex flex-col content-center max-w-[340px] mx-auto p-md"
           >
-            Individual
-          </li>
-          <li
-            onClick={handleTabTwo}
-            className={`cursor-pointer rounded-full font-[600] ${
-              activeTab === "tabtwo"
-                ? "active text-white bg-primary rounded-full"
-                : "text-dark bg-gray "
-            } `}
-          >
-            Organisation
-          </li>
-        </ul>
-        {activeTab === "tabone" ? (
-          <form onClick={handleSubmitUser} className="rounded-md flex flex-col content-center max-w-[340px] mx-auto p-md">
             <div className="pb-md">
               <input
                 className="shadow placeholder:p-md appearance-none flex  h-[40px] border rounded-[15px] w-full p-[1rem] text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
-                id="email"
+                id="password"
                 type="text"
-                placeholder="Email"
+                placeholder="new password"
                 required
-                onChange={(e) => {setIndividualEmail(e.target.value)}}
+                onChange={(e) => {
+                  setUserPassword(e.target.value);
+                }}
               />
             </div>
-            <button type="submit" className="pb-[20px]">
-              <button className="bg-primary text-white rounded-full w-full px-lg h-[40px]">
-                Send Instructions
-              </button>
+            <div className="pb-md">
+              <input
+                className="shadow placeholder:p-md appearance-none flex  h-[40px] border rounded-[15px] w-full p-[1rem] text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
+                id="confirm_password"
+                type="text"
+                placeholder="confirm password"
+                required
+                onChange={(e) => {
+                  setConfirmUserPassword(e.target.value);
+                }}
+              />
+            </div>
+            <button
+              className="bg-primary text-white rounded-full w-full px-lg h-[40px]"
+              type="submit"
+            >
+              Send Instructions
             </button>
-            <Link to="/logincontainer" className="mx-auto font-[700]">
-              <h2>Back to Login Page</h2>
-            </Link>
           </form>
         ) : (
-          <form onClick={handleSubmitAdmin} className="rounded-md flex flex-col content-center max-w-[340px] mx-auto p-md">
-            <div className="pb-md">
-              <input
-                className="shadow placeholder:p-md appearance-none flex  h-[40px] border rounded-[15px] w-full p-[1rem] text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
-                id="email"
-                type="text"
-                placeholder="Organisation Email"
-                required
-                onChange={(e) => {setOrganisationEmail(e.target.value)}}
-              />
-            </div>
-            <button type="submit" className="pb-[20px]">
-              <button className="bg-primary text-white rounded-full w-full px-lg h-[40px]">
-                Send Instructions
-              </button>
-            </button>
-            <Link to="/logincontainer" className="mx-auto font-[700]">
-              <h2>Back to Login Page</h2>
-            </Link>
-          </form>
+          <h1>{verified}</h1>
         )}
       </div>
       <ToastContainer />

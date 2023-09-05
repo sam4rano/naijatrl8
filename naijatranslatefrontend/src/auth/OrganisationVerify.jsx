@@ -1,23 +1,22 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import Title from "../utils/Title";
 import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const OrganisationVerify = () => {
   const [isSuccess, setIsSuccess] = useState(false);
-  const [error, setError] = useState("");
+  const [verified, setVerified] = useState("");
+  const navigate = useNavigate();
   let params = useParams();
 
-  const navigate = useNavigate();
-  console.log(params);
-
   const [uidb64, token] = params["*"].split("/");
-  console.log(uidb64, token);
 
   useEffect(() => {
     const confirmVerified = async () => {
       try {
         const res = await fetch(
-          `http://3.83.243.144/organization/verify-account/${uidb64}/${token}?format=json`,
+          `http://3.83.243.144/organization/verify-account/${uidb64}/${token}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -26,31 +25,49 @@ const OrganisationVerify = () => {
         );
 
         if (res.ok) {
-          const responseData = await res.json(); // Parse the JSON response
-          console.log(responseData);
-          navigate("/logincontainer");
+          const responseData = await res.json();
+          console.log("resp", responseData); // Log the parsed data
           setIsSuccess(true);
+          toast.success(responseData.message);
+          setTimeout(() => {
+            navigate("/logincontainer"); // Navigate after a delay
+          }, 2000);
+          // navigate("/logincontainer");
         } else {
           const errorData = await res.json();
-          throw new Error(errorData.error);
+          if (
+            "message" in errorData &&
+            errorData.message === "Admin with email already verified"
+          ) {
+            setVerified("Admin with email already verified");
+            setTimeout(() => {
+              navigate("/logincontainer"); // Navigate after a delay
+            }, 2000);
+            // navigate("/logincontainer");
+          } else {
+            setVerified(errorData.message);
+          }
         }
       } catch (error) {
-        alert("An error occurred: " + error.message);
-        setError(error.message);
+        console.log(error);
+        navigate("/resendverification");
       }
     };
     confirmVerified();
-  }, [uidb64, token, navigate]);
+  }, [uidb64, token, navigate, isSuccess]);
+
   return (
-    <div className="p-[20px]">
-      <div>
-        <Title />
+    <div>
+      <div className="p-[20px]">
+        <div>
+          <Title />
+        </div>
+        {verified && (
+          <Link to="/resendverification">Resend Verification Link</Link>
+        )}
+        {isSuccess ? <h1>Verification successful</h1> : <h1>{verified}</h1>}
       </div>
-      {isSuccess ? (
-        <h1>Congratulations! You have been successfully verified.</h1>
-      ) : (
-        <h1>Verification failed...</h1>
-      )}
+      <ToastContainer />
     </div>
   );
 };

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import changeIcon from "../assets/Changeicon.png"
+import Navbar from "../navbar/Navbar";
 
 const TranslateVerUser = () => {
   const [source_language, setSource_language] = useState("en");
@@ -14,6 +15,7 @@ const TranslateVerUser = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": "Bearer " 
       },
       body: JSON.stringify({
         source_language,
@@ -34,6 +36,9 @@ const TranslateVerUser = () => {
   };
 
   return (
+    <>
+    <Navbar />
+    
     <form
       onSubmit={handleSubmit}
       className="flex flex-col max-w-[1000px] mx-auto"
@@ -104,6 +109,7 @@ const TranslateVerUser = () => {
         Translate
       </button>
     </form>
+    </>
   );
 };
 

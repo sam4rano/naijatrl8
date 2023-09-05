@@ -1,11 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Title from "../utils/Title";
 import "./Tabcontainer.css";
+import Checkbox from "../utils/Checkbox";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaCheck, FaTimes, FaInfoCircle } from "react-icons/fa";
+
+// const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 const SignupContainer = () => {
+  const errRef = useRef();
+
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("tabone");
 
@@ -28,6 +35,14 @@ const SignupContainer = () => {
 
   const [success, setSuccess] = useState(false);
 
+  
+  const [validPwd, setValidPwd] = useState(false);
+  const [pwdFocus, setPwdFocus] = useState(false);
+  const [matchPwd, setMatchPwd] = useState("");
+  const [validMatch, setValidMatch] = useState(false);
+  const [matchFocus, setMatchFocus] = useState(false);
+  const [errMsg, setErrMsg] = useState("");
+
   const handleTabOne = () => {
     setActiveTab("tabone");
   };
@@ -35,8 +50,23 @@ const SignupContainer = () => {
     setActiveTab("tabtwo");
   };
 
+  useEffect(() => {
+    setValidPwd(PWD_REGEX.test(individualPassword || organisationPassword));
+  setValidMatch(individualPassword === matchPwd || organisationPassword === matchPwd);
+  }, [matchPwd, individualPassword, organisationPassword]);
+
+  useEffect(() => {
+    setErrMsg("");
+  }, [organisationPassword, individualPassword, matchPwd]);
+
   const handleSubmitUser = async (e) => {
     e.preventDefault();
+
+    const v1 = PWD_REGEX.test(individualPassword);
+    if (!v1) {
+      setErrMsg("Invalid Entry");
+      return;
+    }
 
     const formData = {
       email: individualEmail,
@@ -52,7 +82,9 @@ const SignupContainer = () => {
         headers: {
           "Content-Type": "application/json",
         },
+
         body: JSON.stringify(formData),
+        withCredentials: true,
       });
       // console.log("signup response", responseUser);
 
@@ -60,6 +92,8 @@ const SignupContainer = () => {
         const data = await responseUser.json();
 
         setSuccess(true);
+        setIndividualPassword(" ");
+        setIndividualConfirmPassword(" ");
         toast.success(data.success);
         navigate("/checkinbox");
       } else {
@@ -67,27 +101,24 @@ const SignupContainer = () => {
 
         toast.error(data.email[0]);
       }
-    } catch (error) {
-      console.log(error);
-      toast.error(error.message);
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg("No Server Response");
+      } else {
+        setErrMsg("Registration Failed");
+      }
+      errRef.current.focus();
     }
-  };
-
-  const handleUserEmail = (e) => {
-    // console.log(e.target.value);
-
-    setIndividualEmail(e.target.value);
-  };
-
-  const handleUserPassword = (e) => {
-    setIndividualPassword(e.target.value);
-  };
-  const handleUserConfirmPassword = (e) => {
-    setIndividualConfirmPassword(e.target.value);
   };
 
   const handleSubmitAdmin = async (e) => {
     e.preventDefault();
+
+    const v2 = PWD_REGEX.test(organisationPassword);
+    if (!v2) {
+      setErrMsg("Invalid Entry");
+      return;
+    }
 
     const formData = {
       email: organisationEmail,
@@ -106,31 +137,32 @@ const SignupContainer = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
+          withCredentials: true,
         }
       );
 
       if (response.ok) {
         toast.success("Registration successful");
+        setSuccess(true);
+        setOrganisationPassword("");
+        setOrganisationConfirmPassword("");
         navigate("/checkinbox");
       } else {
         const data = await response.json();
         toast.error(data.email[0]);
       }
-    } catch (error) {
-      console.log("An error occurred:", error);
-      toast.error("An error occurred");
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg("No Server Response");
+      } else {
+        setErrMsg("Registration Failed");
+      }
+      errRef.current.focus();
     }
   };
 
-  const handleOrganPassword = (e) => {
-    setOrganisationPassword(e.target.value);
-  };
-  const handleConfirmAdmin = (e) => {
-    setOrganisationConfirmPassword(e.target.value);
-  };
-
   return (
-    <div className="p-[10px]">
+    <section className="p-[10px]">
       <Title />
       <div className="w-[340px] mx-auto pt-[30px]">
         <h1 className="font-[700] justify-center align-middle text-[18px] leading-4 flex w-full h-[33px] mx-auto text-center">
@@ -159,10 +191,17 @@ const SignupContainer = () => {
               Organisation
             </li>
           </ul>
+          {/* <p
+            ref={errRef}
+            className={errMsg ? "errmsg" : "offscreen"}
+            aria-live="assertive"
+          >
+            {errMsg}
+          </p> */}
           <div>
             {activeTab === "tabone" ? (
               <form
-                onSubmit={handleSubmitUser}
+                onClick={handleSubmitUser}
                 className="rounded-md flex flex-col content-center max-w-[448px] mx-auto p-[10px]"
               >
                 <div className="pb-md">
@@ -171,7 +210,6 @@ const SignupContainer = () => {
                     id="individualfirstname"
                     type="text"
                     required
-                    autoComplete="off"
                     placeholder="First Name"
                     value={individualFirstName}
                     onChange={(e) => setIndividualFirstName(e.target.value)}
@@ -182,7 +220,6 @@ const SignupContainer = () => {
                     className="placeholder:p-md outline-none appearance-none flex  h-[40px] border rounded-[15px] w-full p-[1rem] text-gray-700 leading-tight focus:outline-none "
                     id="individuallastname"
                     required
-                    autoComplete="off"
                     type="text"
                     placeholder="Last Name"
                     value={individualLastName}
@@ -197,48 +234,91 @@ const SignupContainer = () => {
                     required
                     placeholder="Email"
                     value={individualEmail}
-                    onChange={handleUserEmail}
+                    onChange={(e) => setIndividualEmail(e.target.value)}
                   />
                 </div>
                 <div className="pb-md">
+                  <FaCheck className={validPwd ? "text-primary ml-[10px]" : "hidden"} />
+                  <FaTimes
+                    className={
+                      validPwd || !individualPassword ? "hidden" : "text-secondary ml-[10px]"
+                    }
+                  />
                   <input
-                    className="placeholder:p-md appearance-none  h-[40px] border flex  rounded-[15px] w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none"
-                    id="password"
-                    type="password"
+                    className="placeholder:p-md outline-none appearance-none  h-[40px] border flex  rounded-[15px] w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none"
+                    id="individualpassword"
+                    type="individualpassword"
                     placeholder="Password"
                     required
-                    minLength={8}
-                    value={individualPassword}
-                    onChange={handleUserPassword}
+      
                     autoComplete="off"
+                    aria-invalid={validPwd ? "false" : "true"}
+                    aria-describedby="pwdnote"
+                    onFocus={() => setPwdFocus(true)}
+                    onBlur={() => setPwdFocus(false)}
+                    value={individualPassword}
+                    onChange={(e) => setIndividualPassword(e.target.value)}
                   />
+                  <p
+                    id="pwdnote"
+                    className={
+                      pwdFocus && !validPwd ? "mr-[10px]" : "text-primary"
+                    }
+                  >
+                    <FaInfoCircle />
+                    8 to 24 characters.
+                    <br />
+                    Must include uppercase and lowercase letters, a number and a
+                    special character.
+                    <br />
+                    Allowed special characters:{" "}
+                    <span aria-label="exclamation mark">!</span>{" "}
+                    <span aria-label="at symbol">@</span>{" "}
+                    <span aria-label="hashtag">#</span>{" "}
+                    <span aria-label="dollar sign">$</span>{" "}
+                    <span aria-label="percent">%</span>
+                  </p>
                 </div>
                 <div className="pb-md">
+                  <FaCheck
+                    className={validMatch && matchPwd ? "text-primary ml-[10px]" : "hidden"}
+                  />
+                  <FaCheck
+                    className={validMatch || !matchPwd ? "hidden" : "text-primary ml-[10px]"}
+                  />
                   <input
                     className="placeholder:p-md appearance-none  h-[40px] border flex  rounded-[15px] w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none"
-                    id="individual_confirm_ password"
-                    type="password"
-                    placeholder="confirm Password"
+                    id="individualconfirmpassword"
+                    type="individualconfirmpassword"
                     required
-                    minLength={8}
+                    placeholder="Confirm Password"
                     value={individualConfirmPassword}
-                    onChange={handleUserConfirmPassword}
-                    autoComplete="off"
+                    onChange={(e) =>
+                      setIndividualConfirmPassword(e.target.value)
+                    }
+                    aria-invalid={validMatch ? "false" : "true"}
+                    aria-describedby="confirmnote"
+                    onFocus={() => setMatchFocus(true)}
+                    onBlur={() => setMatchFocus(false)}
                   />
+                  <p
+                    id="confirmnote"
+                    className={
+                      matchFocus && !validMatch ? "instructions" : "offscreen"
+                    }
+                  >
+                    <FaInfoCircle />
+                    Must match the first password input field.
+                  </p>
                 </div>
-                <p className="text-primary text-[12px] leading-3 text-center p-[10px]">
-                  Passwords must be at least 8 characters in length, at least
-                  one uppercase character, at least one lowercase character, and
-                  must contain at least one digit character OR a symbol.
-                </p>
-                {/* <Link to="#" className="">
-                </Link> */}
-                <button
-                  className="bg-primary text-white rounded-full w-full px-lg h-[40px]"
-                  type="submit"
-                >
-                  Sign up
-                </button>
+                <div className="">
+                  <Checkbox />
+                </div>
+                <Link to="#" className="">
+                  <button className="bg-primary text-white rounded-full w-full px-lg h-[40px]" disabled={!validPwd || !validMatch ? true : false}>
+                    Sign up
+                  </button>
+                </Link>
                 <div className="flex flex-col justify-center mx-auto">
                   <p className=" text-sm">
                     Already have an account?
@@ -247,7 +327,7 @@ const SignupContainer = () => {
                     </Link>
                   </p>
                   <Link
-                    to="/passwordresetinvoke"
+                    to="/passwordreset"
                     className="underline underline-offset-8 mx-auto"
                   >
                     Forgot Password
@@ -256,7 +336,7 @@ const SignupContainer = () => {
               </form>
             ) : (
               <form
-                onSubmit={handleSubmitAdmin}
+                onClick={handleSubmitAdmin}
                 className="rounded-md flex flex-col content-center max-w-[448px] mx-auto p-[10px]"
               >
                 <div className="pb-md">
@@ -268,7 +348,6 @@ const SignupContainer = () => {
                     placeholder="First Name"
                     value={organisationFirstName}
                     onChange={(e) => setOrganisationFirstName(e.target.value)}
-                    autoComplete="off"
                   />
                 </div>
                 <div className="pb-md">
@@ -280,7 +359,6 @@ const SignupContainer = () => {
                     placeholder="Last Name"
                     value={organisationLastName}
                     onChange={(e) => setOrganisationLastName(e.target.value)}
-                    autoComplete="off"
                   />
                 </div>
                 <div className="pb-md">
@@ -292,7 +370,6 @@ const SignupContainer = () => {
                     required
                     value={organisationEmail}
                     onChange={(e) => setOrganisationEmail(e.target.value)}
-                    autoComplete="off"
                   />
                 </div>
                 <div className="pb-md">
@@ -304,8 +381,7 @@ const SignupContainer = () => {
                     required
                     minLength={8}
                     value={organisationPassword}
-                    onChange={handleOrganPassword}
-                    autoComplete="off"
+                    onChange={(e) => setOrganisationPassword(e.target.value)}
                   />
                 </div>
                 <div className="pb-md">
@@ -316,23 +392,20 @@ const SignupContainer = () => {
                     required
                     placeholder="Confirm Password"
                     value={organisationConfirmPassword}
-                    onChange={handleConfirmAdmin}
-                    autoComplete="off"
+                    onChange={(e) =>
+                      setOrganisationConfirmPassword(e.target.value)
+                    }
                   />
                 </div>
-                <p className="text-primary text-[12px] leading-3 text-center p-[10px]">
-                  Passwords must be at least 8 characters in length, at least
-                  one uppercase character, at least one lowercase character, and
-                  must contain at least one digit character OR a symbol.
-                </p>
-                <button
-                  className="bg-primary text-white rounded-full w-full px-lg h-[40px]"
-                  type="submit"
-                >
-                  Sign up
-                </button>
-                {/* <Link to="#" className="">
-                </Link> */}
+
+                <div className="">
+                  <Checkbox />
+                </div>
+                <Link to="#" className="">
+                  <button className="bg-primary text-white rounded-full w-full px-lg h-[40px]">
+                    Sign up
+                  </button>
+                </Link>
                 <div className="flex flex-col justify-center mx-auto">
                   <p className=" text-sm">
                     Already have an account?
@@ -341,7 +414,7 @@ const SignupContainer = () => {
                     </Link>
                   </p>
                   <Link
-                    to="/passwordresetinvoke"
+                    to="/passwordreset"
                     className="underline underline-offset-8 mx-auto"
                   >
                     Forgot Password
@@ -353,7 +426,7 @@ const SignupContainer = () => {
           <ToastContainer />
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
