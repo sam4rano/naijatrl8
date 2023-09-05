@@ -39,12 +39,11 @@ const PasswordChange = () => {
       );
 
       if (response.ok) {
-        console.log("Registration successful");
+        console.log("Password changed successful");
+        toast.success("password successfully changed");
         navigate("/logincontainer");
-
-        toast.success("Registration successful");
       } else {
-        console.log("Registration failed");
+        console.log("password change failed");
         const data = await response.json();
 
         toast.error(data.detail);
@@ -63,7 +62,7 @@ const PasswordChange = () => {
 
     try {
       const response = await fetch(
-        "http://3.83.243.144//api/v1/forgot-password",
+        "http://3.83.243.144/api/v1/organization/forgot-password",
         {
           method: "POST",
           headers: {
@@ -74,12 +73,12 @@ const PasswordChange = () => {
       );
 
       if (response.ok) {
-        console.log("Registration successful");
+        console.log("Password changed successful");
+        toast.success("password successfully changed");
         navigate("/logincontainer");
 
-        toast.success("Registration successful");
       } else {
-        console.log("Registration failed");
+        console.log("password change failed");
         const data = await response.json();
 
         toast.error(data.detail);
@@ -127,6 +126,7 @@ const PasswordChange = () => {
                 id="email"
                 type="email"
                 placeholder="Email"
+                onChange={(e) => setIndividualEmail(e.target.value)}
               />
             </div>
             <div className="pb-[20px]">
