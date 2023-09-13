@@ -41,10 +41,12 @@ const LoginContainer = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
+        
       });
       console.log("response data", response);
 
       if (response.ok) {
+        
         toast.success("Registration successful");
         const data = await response.json();
         const accessToken = data.access_token;
