@@ -38,6 +38,18 @@ const SignupContainer = () => {
   const handleSubmitUser = async (e) => {
     e.preventDefault();
 
+    if (!individualEmail || !individualPassword) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+
+    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+  if (!passwordPattern.test(individualPassword)) {
+    toast.error("Password must contain at least one letter, one number, and be at least 8 characters long.");
+    return;
+  }
+
     const formData = {
       email: individualEmail,
       first_name: individualFirstName,
@@ -61,7 +73,7 @@ const SignupContainer = () => {
 
         setSuccess(true);
         toast.success(data.success);
-        navigate("/checkinbox");
+        navigate("/logincontainer");
       } else {
         const data = await responseUser.json();
 
@@ -88,6 +100,18 @@ const SignupContainer = () => {
 
   const handleSubmitAdmin = async (e) => {
     e.preventDefault();
+
+    if (!organisationEmail || !organisationPassword) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+
+    const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+  if (!passwordPattern.test(organisationPassword)) {
+    toast.error("Password must contain at least one letter, one number, and be at least 8 characters long.");
+    return;
+  }
 
     const formData = {
       email: organisationEmail,
@@ -132,7 +156,7 @@ const SignupContainer = () => {
   return (
     <div className="p-[10px]">
       <Title />
-      <div className="w-[340px] mx-auto pt-[30px]">
+      <div className="w-[340px] mx-auto pt-[30px] rounded-md">
         <h1 className="font-[700] justify-center align-middle text-[18px] leading-4 flex w-full h-[33px] mx-auto text-center">
           Sign up for your account account
         </h1>
