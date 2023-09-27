@@ -6,17 +6,17 @@ import copy from "../../assets/Copy.svg";
 
 const OutputProperties = () => {
   return (
-    <div className="flex flex-row justify-around w-[300px]">
-      <div className="flex flex-row mt-[10px] justify-around outline outline-offset-0  rounded-full px-md ml-[5px] h-[30px] outline-1 ">
-        <img src={outspeaker} alt="outspeaker" />
+    <div className="flex flex-row justify-between px-[10px]">
+      <div className="flex flex-row justify-around rounded-full px-sm h-[30px] border-[1px]">
+        <img src={outspeaker} className="w-[30px] h-[30px]" alt="outspeaker" />
 
         <h1 className="pt-[3px]">Listen</h1>
       </div>
-      <div className="flex flex-row justify-around w-[80px] ">
-      <img src={copy} alt="copy" />
-      <img src={thumbup} alt="thumbup" />
-      <img src={thumbdown} alt="thumbdown" />
-      <img src={share} alt="share" />
+      <div className="flex flex-row justify-around">
+        <img src={copy} className="w-[30px] h-[30px]" alt="copy" />
+        <img src={thumbup} alt="thumbup" className="w-[30px] h-[30px]" />
+        <img src={thumbdown} alt="thumbdown" className="w-[30px] h-[30px]" />
+        <img src={share} alt="share" className="w-[30px] h-[30px]" />
       </div>
     </div>
   );
