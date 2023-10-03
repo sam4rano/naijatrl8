@@ -7,7 +7,7 @@ import copy from "../../assets/Copy.svg";
 const OutputProperties = () => {
   return (
     <div className="flex flex-row justify-between px-[10px]">
-      <div className="flex flex-row justify-around rounded-full px-sm h-[30px] border-[1px]">
+      <div className="flex flex-row justify-around rounded-full px-sm h-[30px] border-[1px] border-outline">
         <img src={outspeaker} className="w-[30px] h-[30px]" alt="outspeaker" />
 
         <h1 className="pt-[3px]">Listen</h1>
