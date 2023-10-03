@@ -17,6 +17,7 @@ export default {
       graylight: "#F9F9F9",
       dark: "#333333",
       white: "#FFFFFF",
+      outline:"#F0F0F0",
       transparent: "transparent",
     },
     fontFamily: {

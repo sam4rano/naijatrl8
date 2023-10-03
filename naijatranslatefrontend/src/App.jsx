@@ -12,6 +12,14 @@ import CheckInbox from "./auth/CheckInbox";
 import OrganisationVerify from "./auth/OrganisationVerify";
 import TranslateVerUser from "./components/TranslateVerUser";
 import ResendVerification from "./auth/ResendVerification";
+// import History from "../pages/History";
+// import Contact from "../pages/Conctact"
+// import HelpCenter from "../pages/HelpCenter"
+// import Feedback from "../pages/Feedback"
+import History from "./pages/History";
+import Feedback from "./pages/Feedback";
+import HelpCenter from "./pages/HelpCenter";
+import Contact from "./pages/Contact";
 
 export default function App() {
   return (
@@ -22,6 +30,10 @@ export default function App() {
             <Route path="/" element={<Title />} />
           </Route>
           <Route path="signupcontainer" element={<SignupContainer />} />
+          <Route path="history" element={<History />} />
+          <Route path="feedback" element={<Feedback />} />
+          <Route path="help_center" element={<HelpCenter />} />
+          <Route path="contact" element={<Contact />} />
 
           <Route path="logincontainer" element={<LoginContainer />} />
           {/* <Route path="passwordchange" element={<PasswordChange />} /> */}
