@@ -9,7 +9,7 @@ import feedback from "../assets/feedback.svg";
 import contact from "../assets/contact.svg";
 import upload from "../assets/upload.svg";
 
-const Navbar = () => {
+const Navbar = ({ isLoggedin, handleLogout }) => {
   const [navbar, setNavbar] = useState(false);
 
   const handleClose = () => {
@@ -31,46 +31,47 @@ const Navbar = () => {
               src={open}
               alt="open"
               onClick={handleOpen}
-              className="w-[30px] h-[30px]"
+              className="w-[25px] h-[25px]"
             />
           )}
           {navbar && (
-            <ul className="w-[200px] absolute p-[10px] rounded-[16px] h-[300px] z-30 bg-gray flex flex-col gap-lg"> 
-              <Link to="/history" className="flex hover:bg-light">
-                <img src={history} alt="history" className="pr-[10px]" />
-                <div>History</div>
-              </Link>
-              <Link to="/feedback" className="flex hover:bg-light">
-                <img src={feedback} alt="feedback" className="pr-[10px]" />
-                <div>feedback</div>
-              </Link>
-              <Link to="help_center" className="flex hover:bg-light">
-                <img src={upload} alt="help_center" className="pr-[10px]" />
-                <div>Help Center</div>
-              </Link>
-              <Link to="/contact" className="flex hover:bg-light">
-                <img src={contact} alt="contact" className="pr-[10px]" />
-                <div>Contact us</div>
+            <ul className="w-[200px] absolute p-[10px] rounded-[16px] h-screen z-30 bg-gray flex flex-col gap-lg">
+              <li className="">
+                <Link
+                  to="help_center"
+                  className="flex mb-[20px] hover:bg-light"
+                >
+                  <img src={feedback} alt="help_center" className="pr-[10px]" />
+                  <div>Help Center</div>
+                </Link>
+                <Link to="/contact" className="flex  hover:bg-light">
+                  <img src={contact} alt="contact" className="pr-[10px]" />
+                  <div>Contact us</div>
+                </Link>
+              </li>
+              <Link to="/" className="flex mt-auto hover:bg-light">
+                Sign Up
               </Link>
             </ul>
           )}
         </div>
         <Title />
       </div>
-      <div className="flex flex-row justify-around">
-        <Link to="/signupcontainer">
-          <button className="bg-primary text-white rounded-full px-lg h-[30px]">
-            Sign up
-          </button>
-        </Link>
-
-        <Link to="/logincontainer">
-          <button className=" text-primary outline outline-offset-0  rounded-full px-lg h-[30px] outline-1">
-            Login
-          </button>
-        </Link>
-
-        <div className="h-[30px] w-[30px] bg-primary rounded-full"></div>
+      <div className="flex flex-row justify-around ">
+        {!isLoggedin && (
+          <Link to="/signupcontainer">
+            <button className="bg-primary text-white rounded-full px-lg h-[30px] mr-[10px]">
+              Sign up
+            </button>
+          </Link>
+        )}
+        {!isLoggedin && (
+          <Link to="/logincontainer">
+            <button className=" text-primary outline outline-offset-0  rounded-full px-lg h-[30px] outline-1">
+              Login
+            </button>
+          </Link>
+        )}
       </div>
     </div>
   );
