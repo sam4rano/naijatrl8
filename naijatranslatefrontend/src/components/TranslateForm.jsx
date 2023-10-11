@@ -48,11 +48,6 @@ const TranslateForm = () => {
 
   return (
     <div className="">
-      {isLoading && (
-        <div className="w-[200px] text-[30px] text-primary">
-          Please wait ...
-        </div>
-      )}
       <form
         onSubmit={handleSubmit}
         className="flex flex-col max-w-[1000px] mx-auto p-[40px]"
@@ -90,9 +85,7 @@ const TranslateForm = () => {
         </div>
         <div className="flex flex-row justify-between w-full h-[400px] bg-white pb-[10px] rounded-bl-[16px] rounded-br-[16px]">
           <div className="flex flex-col w-1/2 h-[400px">
-            <label htmlFor="source_text " className="p-[4px] font-semibold  text-primary">
-              Source Text
-            </label>
+            
             <textarea
               className="h-[400px] active:border-0 p-[4px] focus-within:bg-none"
            
@@ -105,16 +98,15 @@ const TranslateForm = () => {
             <button
               type="submit"
               className="px-[8px] border-[1px] h-[30px] mx-auto rounded-full text-primary text-center"
+              disabled={isLoading}
             >
-              Translate
+              {isLoading ? "Please wait" : "Translate"}
             </button>
             <InputProperties />
           </div>
 
           <div className="flex flex-col w-1/2 h-[400px] border-l-2 border-gray pb-[10px] ">
-            <label htmlFor="output_text" className="p-[4px] font-semibold text-primary">
-              Output Text
-            </label>
+            
             <textarea
               className="h-[400px] active:border-none p-[8px]"
               
