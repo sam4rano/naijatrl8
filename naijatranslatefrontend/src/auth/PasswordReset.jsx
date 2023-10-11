@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const PasswordReset = () => {
   const [isSuccess, setIsSuccess] = useState(false);
-  const [verified, setVerified] = useState("");
+  const [verified, setVerified] = useState(false);
   const [userPassword, setUserPassword] = useState("");
   const [confirmUserPassword, setConfirmUserPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -39,9 +39,11 @@ const PasswordReset = () => {
             "message" in errorData &&
             errorData.message === "User with email already verified"
           ) {
-            setVerified("User with email already verified");
+            setVerified(true);
+            toast.success("User with email already verified");
+            navigate("/logincontainer");
           } else {
-            setVerified(errorData.message);
+            setVerified(false);
             navigate("/resendverifyaccount");
           }
         }
@@ -78,6 +80,7 @@ const PasswordReset = () => {
       if (response.ok) {
         console.log("Registration successful");
         toast.success("Password reset successful.");
+        setIsSuccess(true);
         setTimeout(() => {
           navigate("/logincontainer");
         }, 2000);
@@ -100,11 +103,11 @@ const PasswordReset = () => {
         <div>
           <Title />
         </div>
-        {verified && (
+        {/* {verified && (
           <Link to="/resendverification">Resend Verification Link</Link>
-        )}
+        )} */}
 
-        {isSuccess ? (
+        {isSuccess && (
           <form
             onSubmit={handleSubmitUser}
             className="rounded-md flex flex-col content-center max-w-[340px] mx-auto p-md mt-[70px] border-[1px]"
@@ -146,8 +149,6 @@ const PasswordReset = () => {
               {isLoading ? "Submitting..." : "Next"}
             </button>
           </form>
-        ) : (
-          <h1>{verified}</h1>
         )}
       </div>
       <ToastContainer />
