@@ -270,6 +270,7 @@ const LoginContainer = () => {
   const [organisationPassword, setOrganisationPassword] = useState("");
 
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -287,7 +288,7 @@ const LoginContainer = () => {
       toast.error("Please fill in all fields.");
       return;
     }
-
+    setIsLoading(true);
     const formData = {
       email: individualEmail,
       password: individualPassword,
@@ -328,6 +329,8 @@ const LoginContainer = () => {
     } catch (error) {
       console.log("An error occurred:", error);
       toast.error("An error occurred");
+    }  finally {
+      setIsLoading(false); 
     }
     // try {
     //   const response = await axios.post(
@@ -474,8 +477,9 @@ const LoginContainer = () => {
                 <button
                   className="bg-primary text-white rounded-full w-full px-lg h-[40px]"
                   type="submit"
+                  disabled={isLoading}
                 >
-                  Log in
+                  {isLoading ? "Please wait" : "Log in"}
                 </button>
                 {/* <Link to="#" className="pb-[20px]">
                 </Link> */}
@@ -556,5 +560,3 @@ const LoginContainer = () => {
 
 export default LoginContainer;
 
-
-//eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjk1OTM0MTg0LCJpYXQiOjE2OTUzMjkzODQsImp0aSI6IjFkYjM0NmY1NDExZDQ0MzE4YjNiOTAyODMwMzJmMGU2IiwidXNlcl9pZCI6M30.24pVWo-IkJMiftu5yUkKKpCyOiMYeL1vmLHkbPoYqpY
