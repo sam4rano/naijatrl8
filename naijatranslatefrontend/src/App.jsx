@@ -50,7 +50,7 @@ export default function App() {
             path="organisation/password-reset/*"
             element={<PasswordResetAdmin />}
           />
-          <Route path="resendverification" element={<ResendVerification />} />
+          <Route path="resendverifyaccount/*" element={<ResendVerification />} />
         </Routes>
       </Router>
     </>
