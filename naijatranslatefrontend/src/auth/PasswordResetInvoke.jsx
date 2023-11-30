@@ -100,7 +100,7 @@ const PasswordResetInvoke = () => {
           <h1 className="text-center py-[20px] text-[14px] font-[600]">
             Reset your password{" "}
           </h1>
-          <h3 className="text-center py-[5px] text-[12px]">
+          <h3 className="text-center py-[10px] text-[12px]">
             Enter your email, and we’ll send you instructions on how to reset
             your password.
           </h3>
@@ -114,7 +114,7 @@ const PasswordResetInvoke = () => {
                 : "text-dark bg-gray"
             } `}
           >
-            Individual
+            INDIVIDUAL
           </li>
           <li
             onClick={handleTabTwo}
@@ -124,17 +124,17 @@ const PasswordResetInvoke = () => {
                 : "text-dark bg-gray "
             } `}
           >
-            Organisation
+            ORGANISATION
           </li>
         </ul>
         {activeTab === "tabone" ? (
           <form
             onClick={handleSubmitUser}
-            className="rounded-md flex flex-col content-center max-w-[340px] mx-auto p-md"
+            className="rounded-md flex flex-col content-center max-w-[340px] mx-auto"
           >
-            <div className="pb-md">
+            <div className="pb-sm">
               <input
-                className="shadow placeholder:p-md appearance-none flex  h-[40px] border rounded-[15px] w-full p-[1rem] text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
+                className="shadow placeholder:p-md appearance-none flex  h-[40px] border rounded-[15px] w-[327px] p-[1rem] text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
                 id="email"
                 type="text"
                 placeholder="Email"
@@ -144,7 +144,7 @@ const PasswordResetInvoke = () => {
                 }}
               />
             </div>
-            <button className="bg-primary text-white rounded-full w-full px-lg h-[40px]">
+            <button className="bg-primary text-white rounded-full w-[327px] px-lg h-[40px]">
               Send Instructions
             </button>
 
@@ -155,11 +155,11 @@ const PasswordResetInvoke = () => {
         ) : (
           <form
             onClick={handleSubmitAdmin}
-            className="rounded-md flex flex-col content-center max-w-[340px] mx-auto p-md"
+            className="rounded-md flex flex-col content-center max-w-[340px] mx-auto"
           >
-            <div className="pb-md">
+            <div className="pb-sm">
               <input
-                className="shadow placeholder:p-md appearance-none flex  h-[40px] border rounded-[15px] w-full p-[1rem] text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
+                className="shadow placeholder:p-md appearance-none flex  h-[40px] border rounded-[15px] w-[327px] p-[1rem] text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
                 id="email"
                 type="text"
                 placeholder="Organisation Email"
@@ -169,11 +169,11 @@ const PasswordResetInvoke = () => {
                 }}
               />
             </div>
-            <button className="bg-primary text-white rounded-full w-full px-lg h-[40px]">
+            <button className="bg-primary text-white rounded-full w-[327px] px-lg h-[40px]">
               Send Instructions
             </button>
-            <Link to="/logincontainer" className="mx-auto font-[700]">
-              <h2>Back to Login Page</h2>
+            <Link to="/logincontainer" className="mx-auto font-[700] ">
+              <h2 className="hover:underline-offset-4">Back to Login Page</h2>
             </Link>
           </form>
         )}

@@ -66,7 +66,7 @@ const SignupContainer = () => {
         },
         body: JSON.stringify(formData),
       });
-      // console.log("signup response", responseUser);
+     
 
       if (responseUser.ok) {
         const data = await responseUser.json();
@@ -164,34 +164,34 @@ const SignupContainer = () => {
           <ul className="flex flex-row list-none text-center cursor-pointer justify-around font-[400] text-[13px] pb-[20px] leading-4 w-[327px] mx-auto">
             <li
               onClick={handleTabOne}
-              className={`cursor-pointer text-[14px] rounded-full font-[600] ${
+              className={`cursor-pointer text-[14px] w-full rounded-full font-[600] ${
                 activeTab === "tabone"
                   ? "active text-white bg-primary rounded-full"
                   : "text-dark bg-gray"
               } `}
             >
-              Individual
+              INDIVIDUAL
             </li>
             <li
               onClick={handleTabTwo}
-              className={`cursor-pointer text-[14px]  rounded-full font-[600] ${
+              className={`cursor-pointer text-[14px] w-full rounded-full font-[600] ${
                 activeTab === "tabtwo"
                   ? "active text-white bg-primary rounded-full"
                   : "text-dark bg-gray "
               } `}
             >
-              Organisation
+              ORGANISATION
             </li>
           </ul>
           <div>
             {activeTab === "tabone" ? (
               <form
                 onSubmit={handleSubmitUser}
-                className="rounded-md flex flex-col content-center max-w-[448px] mx-auto p-[10px]"
+                className="rounded-md flex flex-col content-center max-w-[448px] mx-auto"
               >
-                <div className="pb-md">
+                <div className="pb-sm">
                   <input
-                    className="placeholder:p-md appearance-none flex  h-[40px] border rounded-[15px] w-full outline-none p-[1rem] text-gray-700 leading-tight focus:outline-none "
+                    className="placeholder:p-md appearance-none flex  h-[40px] border rounded-[15px] w-full outline-none px-[10px] text-gray-700 leading-tight focus:outline-none "
                     id="individualfirstname"
                     type="text"
                     required
@@ -201,9 +201,9 @@ const SignupContainer = () => {
                     onChange={(e) => setIndividualFirstName(e.target.value)}
                   />
                 </div>
-                <div className="pb-md">
+                <div className="pb-sm">
                   <input
-                    className="placeholder:p-md outline-none appearance-none flex  h-[40px] border rounded-[15px] w-full p-[1rem] text-gray-700 leading-tight focus:outline-none "
+                    className="placeholder:p-md outline-none appearance-none flex  h-[40px] border rounded-[15px] w-full px-[10px] text-gray-700 leading-tight focus:outline-none "
                     id="individuallastname"
                     required
                     autoComplete="off"
@@ -213,9 +213,9 @@ const SignupContainer = () => {
                     onChange={(e) => setIndividualLastName(e.target.value)}
                   />
                 </div>
-                <div className="pb-md">
+                <div className="pb-sm">
                   <input
-                    className="placeholder:p-md appearance-none outline-none flex  h-[40px] border rounded-[15px] w-full p-[1rem] text-gray-700 leading-tight focus:outline-none "
+                    className="placeholder:p-md appearance-none outline-none flex  h-[40px] border rounded-[15px] px-[10px] w-full text-gray-700 leading-tight focus:outline-none "
                     id="individualemail"
                     type="text"
                     required
@@ -224,9 +224,9 @@ const SignupContainer = () => {
                     onChange={handleUserEmail}
                   />
                 </div>
-                <div className="pb-md">
+                <div className="pb-sm">
                   <input
-                    className="placeholder:p-md appearance-none  h-[40px] border flex  rounded-[15px] w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none"
+                    className="placeholder:p-md appearance-none  h-[40px] border flex  rounded-[15px] w-full text-gray-700 px-[10px] leading-tight focus:outline-none"
                     id="password"
                     type="password"
                     placeholder="Password"
@@ -237,9 +237,9 @@ const SignupContainer = () => {
                     autoComplete="off"
                   />
                 </div>
-                <div className="pb-md">
+                <div className="pb-sm">
                   <input
-                    className="placeholder:p-md appearance-none  h-[40px] border flex  rounded-[15px] w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none"
+                    className="placeholder:p-md appearance-none  h-[40px] border flex  rounded-[15px] w-full px-[10px] text-gray-700 leading-tight focus:outline-none"
                     id="individual_confirm_ password"
                     type="password"
                     placeholder="confirm Password"
@@ -250,7 +250,7 @@ const SignupContainer = () => {
                     autoComplete="off"
                   />
                 </div>
-                <p className="text-primary text-[12px] leading-3 text-center p-[10px]">
+                <p className="text-primary text-[12px] leading-3 text-center py-[10px]">
                   Passwords must be at least 8 characters in length, at least
                   one uppercase character, at least one lowercase character, and
                   must contain at least one digit character OR a symbol.
@@ -263,7 +263,7 @@ const SignupContainer = () => {
                 >
                   Sign up
                 </button>
-                <div className="flex flex-col justify-center mx-auto">
+                <div className="flex flex-col justify-center mx-auto py-[10px]">
                   <p className=" text-sm">
                     Already have an account?
                     <Link to="/logincontainer">
@@ -281,11 +281,11 @@ const SignupContainer = () => {
             ) : (
               <form
                 onSubmit={handleSubmitAdmin}
-                className="rounded-md flex flex-col content-center max-w-[448px] mx-auto p-[10px]"
+                className="rounded-md flex flex-col content-center max-w-[448px] mx-auto"
               >
-                <div className="pb-md">
+                <div className="pb-sm">
                   <input
-                    className="placeholder:p-md appearance-none flex  h-[40px] border rounded-[15px] w-full p-[1rem] text-gray-700 leading-tight focus:outline-none "
+                    className="placeholder:p-md appearance-none flex  h-[40px] border rounded-[15px] w-full text-gray-700 px-[10px] leading-tight focus:outline-none "
                     id="organisation-name"
                     type="text"
                     required
@@ -295,9 +295,9 @@ const SignupContainer = () => {
                     autoComplete="off"
                   />
                 </div>
-                <div className="pb-md">
+                <div className="pb-sm">
                   <input
-                    className="placeholder:p-md appearance-none  h-[40px] border flex  rounded-[15px] w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none"
+                    className="placeholder:p-md appearance-none  h-[40px] border flex  rounded-[15px] w-full text-gray-700 px-[10px] leading-tight focus:outline-none"
                     id="organisation_lastname"
                     type="text"
                     required
@@ -307,9 +307,9 @@ const SignupContainer = () => {
                     autoComplete="off"
                   />
                 </div>
-                <div className="pb-md">
+                <div className="pb-sm">
                   <input
-                    className="placeholder:p-md appearance-none  h-[40px] border flex  rounded-[15px] w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none"
+                    className="placeholder:p-md appearance-none  h-[40px] border flex  rounded-[15px] w-full text-gray-700 px-[10px] leading-tight focus:outline-none"
                     id="email"
                     type="email"
                     placeholder="Organisation Email"
@@ -319,9 +319,9 @@ const SignupContainer = () => {
                     autoComplete="off"
                   />
                 </div>
-                <div className="pb-md">
+                <div className="pb-sm">
                   <input
-                    className="placeholder:p-md appearance-none  h-[40px] border flex  rounded-[15px] w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none"
+                    className="placeholder:p-md appearance-none  h-[40px] border flex  rounded-[15px] w-full text-gray-700 px-[10px] leading-tight focus:outline-none"
                     id="organisation_password"
                     type="password"
                     placeholder="Password"
@@ -332,9 +332,9 @@ const SignupContainer = () => {
                     autoComplete="off"
                   />
                 </div>
-                <div className="pb-md">
+                <div className="">
                   <input
-                    className="placeholder:p-md appearance-none  h-[40px] border flex  rounded-[15px] w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none"
+                    className="placeholder:p-md appearance-none  h-[40px] border flex  rounded-[15px] w-full px-[10px] text-gray-700 mb-3 leading-tight focus:outline-none"
                     id="confirm_password"
                     type="password"
                     required
@@ -344,7 +344,7 @@ const SignupContainer = () => {
                     autoComplete="off"
                   />
                 </div>
-                <p className="text-primary text-[12px] leading-3 text-center p-[10px]">
+                <p className="text-primary text-[12px] leading-3 text-center pb-[10px]">
                   Passwords must be at least 8 characters in length, at least
                   one uppercase character, at least one lowercase character, and
                   must contain at least one digit character OR a symbol.
@@ -357,7 +357,7 @@ const SignupContainer = () => {
                 </button>
                 {/* <Link to="#" className="">
                 </Link> */}
-                <div className="flex flex-col justify-center mx-auto">
+                <div className="flex flex-col justify-center mx-auto py-[10px]">
                   <p className=" text-sm">
                     Already have an account?
                     <Link to="/logincontainer">

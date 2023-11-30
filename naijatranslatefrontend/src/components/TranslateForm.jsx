@@ -4,61 +4,134 @@ import changeIcon from "../assets/Changeicon.png";
 import OutputProperties from "./outputfiles/OutputProperties";
 import InputProperties from "./inputfiles/InputProperties";
 import Navbar from "../navbar/Navbar";
+import { Link } from "react-router-dom";
+import Inspeaker from "../assets/speakerout.svg";
+import inputSpeaker from "../assets/Inspeaker.svg";
+import Outspeaker from "../assets/loutspeaker.svg";
+import ClipBoard from "../assets/clipboard.svg";
+import Box from "@mui/material/Box";
+import Skeleton from "@mui/material/Skeleton";
+
+import { ToastContainer, toast } from "react-toastify";
 
 const TranslateForm = () => {
-  const [source_language, setSource_language] = useState("en");
-  const [target_language, setTarget_language] = useState("");
-  const [source_text, setSource_text] = useState("");
-  const [target_text, setTarget_text] = useState("");
+  //text to text
+  const [inputType, setInputType] = useState("text"); // Default to text input
+  const [outputType, setOutputType] = useState("text");
+  const [source_language, setSourceLanguage] = useState("en");
+  const [target_language, setTargetLanguage] = useState("");
+  const [source_text, setSourceText] = useState("");
+  const [target_text, setTargetText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [translatedAudioUrl, setTranslatedAudioUrl] = useState("");
+
+  //text to speech
+
+  const handleInputTypeChange = (e) => {
+    setInputType(e.target.value);
+  };
+
+  const handleOutputTypeChange = (e) => {
+    setOutputType(e.target.value);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true); 
+    setIsLoading(true);
     try {
-      const response = await fetch(
-        "http://3.83.243.144/api/v1/translate-serverless/text-text/unregistered-trial",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            source_language: source_language,
-            target_language: target_language,
-            source_text: source_text,
-            target_text: target_text,
-          }),
-        }
-      );
+      let apiUrl = "";
+
+      if (inputType === "text" && outputType === "text") {
+        apiUrl =
+          "http://3.83.243.144/api/v1/translate-serverless/text-text/unregistered-trial";
+      } else if (inputType === "text" && outputType === "speech") {
+        apiUrl =
+          "http://3.83.243.144/api/v1/translate-serverless/text-speech/unregistered-trial";
+      }
+
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          source_language: source_language,
+          target_language: target_language,
+          source_text: source_text,
+          target_text: target_text,
+        }),
+      });
+      console.log(response);
       if (response.ok) {
         const responseData = await response.json();
+
         const { target_text } = responseData.data;
-        setTarget_text(target_text);
+        setTargetText(target_text);
+
+        if (responseData.message === "Text to speech conversion successful.") {
+          const audioUrl = responseData.url;
+          setTranslatedAudioUrl(audioUrl);
+        }
       } else {
-        console.log("Error");
-        console.log(await response.json());
+        console.error("Error occurred while translating text.");
+        toast.error("Error occurred while translating text.");
       }
     } catch (error) {
       console.error("An error occurred:", error);
+      toast.error("An error occurred: " + error.message);
     } finally {
-      setIsLoading(false); 
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="">
+      <div className="flex flex-row justify-start pl-[220px] w-full pt-[30px]">
+        <div className="flex flex-row justify-around border-gray ">
+          <div className="flex flex-row ">
+            <select
+              className="text-primary bg-light border rounded-[10px] px-[10px] outline-none"
+              id="input_language"
+              name="input_language"
+              value={inputType}
+              onChange={handleInputTypeChange}
+            >
+              <option value="text">Text</option>
+              <option value="speech">Speech</option>
+            </select>
+          </div>
+
+          <img
+            src={changeIcon}
+            alt="change icon"
+            className="w-[40px] h-[40px] "
+          />
+          <div className="flex flex-row">
+            <select
+              className="text-primary bg-light border rounded-[10px] px-[10px] outline-none"
+              id="output_language"
+              name="output_language"
+              value={outputType}
+              onChange={handleOutputTypeChange}
+            >
+              <option value="txt">Text</option>
+              <option value="speech">Speech</option>
+            </select>
+          </div>
+        </div>
+      </div>
       <form
         onSubmit={handleSubmit}
         className="flex flex-col max-w-[1000px] mx-auto p-[40px]"
       >
-        <div className="flex flex-row bg-orange-200 w-full p-[10px] rounded-tr-[16px] rounded-tl-[16px] bg-white border-b-2 border-gray ">
-          <div className="flex flex-row w-1/2 justify-center bg-white">
-            <select className="text-primary"
+        <div className="flex flex-row w-full p-[10px] rounded-tr-[16px] rounded-tl-[16px] bg-white border-b-2 border-gray ">
+          <div className="flex flex-row w-1/2 justify-center bg-white outline-none">
+            <select
+              className="text-primary outline-none"
               id="input_language"
               name="input_language"
               value={source_language}
-              onChange={(e) => setSource_language(e.target.value)}
+              onChange={(e) => setSourceLanguage(e.target.value)}
             >
               <option value="en">English</option>
               <option value="yor">Yoruba</option>
@@ -70,12 +143,13 @@ const TranslateForm = () => {
             alt="change icon"
             className="w-[30px] h-[30px]"
           />
-          <div className="flex flex-row w-1/2 pl-[100px] bg-white">
-            <select className="text-primary"
+          <div className="flex flex-row w-1/2 pl-[100px] bg-white outline-none">
+            <select
+              className="text-primary outline-none"
               id="output_language"
               name="output_language"
               value={target_language}
-              onChange={(e) => setTarget_language(e.target.value)}
+              onChange={(e) => setTargetLanguage(e.target.value)}
             >
               <option value="en">English</option>
               <option value="yor">Yoruba</option>
@@ -85,41 +159,73 @@ const TranslateForm = () => {
         </div>
         <div className="flex flex-row justify-between w-full h-[400px] bg-white pb-[10px] rounded-bl-[16px] rounded-br-[16px]">
           <div className="flex flex-col w-1/2 h-[400px">
-            
+            {inputType === "text" && source_text.length === 0  && (
+              <div className="absolute pl-[180px] pt-[90px] flex flex-col">
+                <img src={ClipBoard} alt="clipboard" className="w-[100px]" />
+                <p className="text-center text-[12px]">Paste your text here</p>
+              </div>
+            )}
+            {inputType === "speech" && source_text.length === 0 &&  (
+              <img
+                src={Inspeaker}
+                alt="speak_img"
+                className="absolute pl-[190px] pt-[90px]"
+              />
+            )}
+
             <textarea
-              className="h-[400px] active:border-0 p-[4px] focus-within:bg-none"
-           
+              className="h-[400px] active:border-0 p-[4px] focus-within:bg-none outline-none"
               id="source_text"
               name="source_text"
               value={source_text}
-              onChange={(e) => setSource_text(e.target.value)}
-            
+              onChange={(e) => setSourceText(e.target.value)}
             />
             <button
               type="submit"
-              className="px-[8px] border-[1px] h-[30px] mx-auto rounded-full text-primary text-center"
+              className="px-[8px] border-[1px] h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center"
               disabled={isLoading}
             >
               {isLoading ? "Please wait" : "Translate"}
             </button>
-            <InputProperties />
+            <div className="flex flex-row justify-between px-[10px]">
+              <div className="flex flex-row justify-around rounded-full px-[5px] h-[30px] border-[1px] border-outline">
+                <img
+                  src={inputSpeaker}
+                  className="w-[30px] h-[30px]"
+                  alt="speaker"
+                />
+                <h3 className="pt-[2px] ">speak</h3>
+              </div>
+              <h3 className="text-center pt-[6px]">0/2mins</h3>
+            </div>
           </div>
 
           <div className="flex flex-col w-1/2 h-[400px] border-l-2 border-gray pb-[10px] ">
-            
+            {outputType === "text" && target_text.length === 0 && (
+              <div className="absolute pl-[80px] w-[300px] pt-[100px] flex flex-col">
+                <Skeleton className="h-[40px]" />
+                <Skeleton animation="wave" className="h-[40px]" />
+                <Skeleton animation={false} className="w-[200px] h-[40px]" />
+              </div>
+            )}
+            {outputType === "speech" && target_text.length === 0 && (
+              <img
+                src={Outspeaker}
+                alt="speak_img"
+                className="absolute pl-[40px] pt-[90px]"
+              />
+            )}
             <textarea
-              className="h-[400px] active:border-none p-[8px]"
-              
+              className="h-[400px] active:border-none p-[8px] outline-none"
               id="target_text"
               name="target_text"
               value={target_text}
-            
-              onChange={(e) => setTarget_text(e.target.value)}
-        
+              onChange={(e) => setTargetText(e.target.value)}
             />
-            <OutputProperties />
+            <OutputProperties translatedAudioUrl={translatedAudioUrl} />
           </div>
         </div>
+        <ToastContainer />
       </form>
     </div>
   );

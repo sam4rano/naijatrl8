@@ -120,32 +120,32 @@ const PasswordChange = () => {
         </ul>
         {activeTab === "tabone" ? (
           <form onClick={handleSubmitUser} className="">
-            <div className="pb-md">
+            <div className="pb-sm">
               <input
-                className="placeholder:p-md appearance-none outline-none flex  h-[40px] border rounded-[15px] w-full p-[1rem] text-gray-700 leading-tight focus:outline-none "
+                className="placeholder:p-md appearance-none outline-none flex  h-[40px] border rounded-[15px] w-full px-[10px] text-gray-700 leading-tight focus:outline-none "
                 id="email"
                 type="email"
                 placeholder="Email"
                 onChange={(e) => setIndividualEmail(e.target.value)}
               />
             </div>
-            <div className="pb-[20px]">
+            <div className="pb-sm">
               <input
-                className="placeholder:p-md outline-none appearance-none  h-[40px] border flex  rounded-[15px] w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none"
+                className="placeholder:p-md outline-none appearance-none  h-[40px] border flex  rounded-[15px] w-full px-[10px] text-gray-700 mb-3 leading-tight focus:outline-none"
                 id="password"
                 type="password"
                 placeholder="Password"
               />
             </div>
-            <div className="pb-[20px]">
+            <div className="pb-sm">
               <input
-                className="placeholder:p-md outline-none appearance-none  h-[40px] border flex  rounded-[15px] w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none"
+                className="placeholder:p-md outline-none appearance-none  h-[40px] border flex  rounded-[15px] w-full px-[10px] text-gray-700 mb-3 leading-tight focus:outline-none"
                 id="confirm_password"
                 type="password"
                 placeholder="Confirm Password"
               />
             </div>
-            <Link to="/logincontainer" className="pb-[20px]">
+            <Link to="/logincontainer" className="">
               <button className="bg-primary text-white rounded-full w-full px-lg h-[40px]">
                 Next
               </button>
@@ -153,7 +153,7 @@ const PasswordChange = () => {
           </form>
         ) : (
           <form onClick={handleSubmitAdmin} className="">
-            <div className="pb-md">
+            <div className="pb-sm">
               <input
                 className="placeholder:p-md appearance-none outline-none flex  h-[40px] border rounded-[15px] w-full p-[1rem] text-gray-700 leading-tight focus:outline-none "
                 id="email"
@@ -161,7 +161,7 @@ const PasswordChange = () => {
                 placeholder="Organisation Email"
               />
             </div>
-            <div className="pb-[20px]">
+            <div className="pb-sm">
               <input
                 className="placeholder:p-md outline-none appearance-none  h-[40px] border flex  rounded-[15px] w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none"
                 id="password"
@@ -169,7 +169,7 @@ const PasswordChange = () => {
                 placeholder="Password"
               />
             </div>
-            <div className="pb-[20px]">
+            <div className="pb-sm">
               <input
                 className="placeholder:p-md outline-none appearance-none  h-[40px] border flex  rounded-[15px] w-full p-[1rem] text-gray-700 mb-3 leading-tight focus:outline-none"
                 id="confirm_password"
@@ -177,7 +177,7 @@ const PasswordChange = () => {
                 placeholder="Confirm Password"
               />
             </div>
-            <Link to="/logincontainer" className="pb-[20px]">
+            <Link to="/logincontainer" className="pb-sm">
               <button className="bg-primary text-white rounded-full w-full px-lg h-[40px]">
                 Next
               </button>

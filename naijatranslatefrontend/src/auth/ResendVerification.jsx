@@ -40,13 +40,13 @@ const ResendVerification = () => {
 
       if (response.ok) {
         toast.success("verification sent");
-        navigate("/logincontainer");
+        navigate("/checkinbox");
       } else {
         const data = await response.json();
 
         toast.error(data.message);
-        navigate("/checkinbox");
-        s;
+        navigate("/logincontainer");
+        
       }
     } catch (error) {
       console.log(error.message);
