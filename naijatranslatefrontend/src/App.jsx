@@ -1,6 +1,8 @@
 import Layout from "./layout/Layout";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Title from "./utils/Title";
+import { QueryClient, QueryClientProvider, useQuery } from "react-query";
+
 import Verify from "./auth/Verify";
 import PasswordResetAdmin from "./auth/PasswordResetAdmin";
 import PasswordReset from "./auth/PasswordReset";
@@ -21,9 +23,11 @@ import Feedback from "./pages/Feedback";
 import HelpCenter from "./pages/HelpCenter";
 import Contact from "./pages/Contact";
 
+const queryClient = new QueryClient();
+
 export default function App() {
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <Router>
         <Routes>
           <Route path="/" element={<Layout />}>
@@ -50,9 +54,12 @@ export default function App() {
             path="organisation/password-reset/*"
             element={<PasswordResetAdmin />}
           />
-          <Route path="resendverifyaccount/*" element={<ResendVerification />} />
+          <Route
+            path="resendverifyaccount/*"
+            element={<ResendVerification />}
+          />
         </Routes>
       </Router>
-    </>
+    </QueryClientProvider>
   );
 }

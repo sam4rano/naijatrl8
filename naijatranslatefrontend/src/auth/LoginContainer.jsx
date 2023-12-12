@@ -73,7 +73,7 @@ const LoginContainer = () => {
       }
     } catch (error) {
       console.log("An error occurred:", error);
-      toast.error("An error occurred");
+      toast.error("Network error, please check your network", error);
     } finally {
       setIsLoading(false);
     }
@@ -129,7 +129,7 @@ const LoginContainer = () => {
   
     } catch (error) {
       console.log("An error occurred:", error);
-      toast.error("An error occurred");
+      toast.error("An error occurred", error);
     } finally {
       setIsLoading(false);
     }

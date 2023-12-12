@@ -15,10 +15,17 @@ import upload from "../assets/upload.svg";
 import close from "../assets/open.svg";
 import open from "../assets/close.svg";
 import Title from "../utils/Title";
+import Inspeaker from "../assets/speakerout.svg";
+import inputSpeaker from "../assets/Inspeaker.svg";
+import Outspeaker from "../assets/loutspeaker.svg";
+import ClipBoard from "../assets/clipboard.svg";
+import Skeleton from "@mui/material/Skeleton";
 import { useNavigate, Link } from "react-router-dom";
 
 const TranslateVerUser = () => {
   const [source_language, setSource_language] = useState("en");
+  const [inputType, setInputType] = useState("text");
+  const [outputType, setOutputType] = useState("text");
   const [target_language, setTarget_language] = useState("");
   const [source_text, setSource_text] = useState("");
   const [target_text, setTarget_text] = useState("");
@@ -27,41 +34,15 @@ const TranslateVerUser = () => {
   const [navbar, setNavbar] = useState(false);
   const navigate = useNavigate();
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
+  const handleInputTypeChange = (e) => {
+    setInputType(e.target.value);
+  };
 
-  //   try {
-  //     const accessToken = getAccessTokenFromCookie();
-  //     const response = await axios.post(
-  //       "http://3.83.243.144/api/v1/translate",
-  //       {
-  //         source_language: source_language,
-  //         target_language: target_language,
-  //         source_text: source_text,
-  //         target_text: target_text,
-  //         feedback: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  //       },
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${accessToken}`,
-  //         },
-  //       }
-  //     );
+  const handleOutputTypeChange = (e) => {
+    setOutputType(e.target.value);
+  };
 
-  //     if (response.ok) {
-  //       const responseData = response.data;
-  //       const { target_text } = responseData.data;
-  //       setTarget_text(target_text);
-  //     } else {
-  //       console.error("Error in translation request");
-  //       // Display an error message to the user
-  //     }
-  //   } catch (error) {
-  //     console.error("An error occurred:", error);
-  //     // Display an error message to the user
-  //   }
-  // };
+  //submit
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -82,12 +63,16 @@ const TranslateVerUser = () => {
         target_text: target_text,
       }),
     };
-
+    //try multiple api
     try {
-      const response = await fetch(
-        "http://3.83.243.144/api/v1/translate-serverless/text-text",
-        requestOptions
-      );
+      let apiUrl = "";
+      if (inputType === "text" && outputType === "text") {
+        apiUrl = "http://3.83.243.144/api/v1/translate-serverless/text-text";
+      } else if (inputType === "text" && outputType === "speech") {
+        apiUrl = "http://3.83.243.144/api/v1/translate-serverless/text-speech";
+      }
+
+      const response = await fetch(apiUrl, requestOptions);
 
       if (response.ok) {
         const responseData = await response.json();
@@ -95,9 +80,8 @@ const TranslateVerUser = () => {
         setTarget_text(target_text);
       } else {
         const errorResponse = await response.json();
-        console.error("Error in translation request:", errorResponse);
 
-        toast.error("Translation request failed. Please try again.");
+        toast.error(errorResponse.message);
       }
     } catch (error) {
       console.error("An error occurred:", error);
@@ -207,11 +191,11 @@ const TranslateVerUser = () => {
                 className="text-primary bg-graylight"
                 id="input_language"
                 name="input_language"
-                // value={source_language}
-                // onChange={(e) => setSource_language(e.target.value)}
+                value={inputType}
+                onChange={handleInputTypeChange}
               >
-                <option value="sp">Speech</option>
-                <option value="txt">Text</option>
+                <option value="text">Text</option>
+                <option value="speech">Speech</option>
               </select>
             </div>
 
@@ -225,11 +209,11 @@ const TranslateVerUser = () => {
                 className="text-primary bg-graylight"
                 id="output_language"
                 name="output_language"
-                // value={target_language}
-                // onChange={(e) => setTarget_language(e.target.value)}
+                value={outputType}
+                onChange={handleOutputTypeChange}
               >
-                <option value="sp">Speech</option>
-                <option value="txt">Text</option>
+                <option value="text">Text</option>
+                <option value="speech">Speech</option>
               </select>
             </div>
           </div>
@@ -243,7 +227,7 @@ const TranslateVerUser = () => {
           onSubmit={handleSubmit}
           className="flex flex-col max-w-[1000px] mx-auto p-[40px] "
         >
-          <div className="flex flex-row bg-orange-200 w-full p-[10px] rounded-tr-[16px] rounded-tl-[16px] bg-white border-b-2 border-gray outline-none">
+          <div className="flex flex-row w-full p-[10px] rounded-tr-[16px] rounded-tl-[16px] bg-white border-b-2 border-gray outline-none">
             <div className="flex flex-row w-1/2 justify-center bg-white outline-none">
               <select
                 id="input_language"
@@ -277,7 +261,23 @@ const TranslateVerUser = () => {
             </div>
           </div>
           <div className="flex flex-row justify-between w-full h-[400px] bg-white pb-[10px] rounded-bl-[16px] rounded-br-[16px]outline-none ">
-            <div className="flex flex-col w-1/2 h-[400px outline-none">
+            <div className="flex flex-col w-1/2 h-[400px] outline-none">
+              {inputType === "text" && source_text.length === 0 && (
+                <div className="absolute pl-[180px] pt-[90px] flex flex-col">
+                  <img src={ClipBoard} alt="clipboard" className="w-[100px]" />
+                  <p className="text-center text-[12px]">
+                    Paste your text here
+                  </p>
+                </div>
+              )}
+              {inputType === "speech" && source_text.length === 0 && (
+                <img
+                  src={Inspeaker}
+                  alt="speak_img"
+                  className="absolute pl-[190px] pt-[90px]"
+                />
+              )}
+
               <textarea
                 className="h-[400px] active:border-0 p-[4px] focus-within:bg-none outline-none"
                 id="source_text"
@@ -287,15 +287,29 @@ const TranslateVerUser = () => {
               />
               <button
                 type="submit"
-                className="px-[8px] border-[2px] h-[30px] mx-auto rounded-full text-primary text-center"
+                className="px-[8px] border  bg-blue-100 h-[30px] mx-auto rounded-full text-primary text-center"
                 disabled={isLoading}
               >
                 {isLoading ? "Please wait" : "Translate"}
               </button>
-              <InputProperties />
+              <InputProperties outputType={outputType} />
             </div>
 
             <div className="flex flex-col w-1/2 h-[400px] border-l-2 border-gray pb-[10px] ">
+              {outputType === "text" && target_text.length === 0 && (
+                <div className="absolute pl-[80px] w-[300px] pt-[100px] flex flex-col">
+                  <Skeleton className="h-[40px]" />
+                  <Skeleton animation="wave" className="h-[40px]" />
+                  <Skeleton animation={false} className="w-[200px] h-[40px]" />
+                </div>
+              )}
+              {outputType === "speech" && target_text.length === 0 && (
+                <img
+                  src={Outspeaker}
+                  alt="speak_img"
+                  className="absolute pl-[40px] pt-[90px]"
+                />
+              )}
               <textarea
                 className="h-[400px] active:border-none p-[8px] outline-none"
                 id="target_text"
@@ -303,7 +317,7 @@ const TranslateVerUser = () => {
                 value={target_text}
                 onChange={(e) => setTarget_text(e.target.value)}
               />
-              <OutputProperties />
+              <OutputProperties outputType={outputType} />
             </div>
           </div>
 
