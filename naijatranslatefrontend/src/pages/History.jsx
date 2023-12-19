@@ -2,15 +2,13 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { useDataStore } from "../Stores/Stores";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const History = () => {
   const { getUserHistory, userHistory } = useDataStore();
   const [loading, setLoading] = useState(true);
 
-  const getAccessTokenFromCookie = () => {
-    const accessToken = Cookies.get("access_token");
-    return accessToken || "unauthenticated user";
-  };
 
   const accessToken = getAccessTokenFromCookie();
 
@@ -41,6 +39,18 @@ const History = () => {
 
     fetchData();
   }, [accessToken]);
+
+  const getAccessTokenFromCookie = async () => {
+    // Use async/await to wrap the cookie access
+    try {
+      const accessToken = await Cookies.get("access_token");
+      return accessToken || "unauthenticated user";
+    } catch (error) {
+      console.error("Error while fetching access token:", error);
+      toast.error("Error fetching access token: " + error.message);
+      return "unauthenticated user";
+    }
+  };
 
   return (
     <div className="h-[600px] w-[500px] flex p-[10px]">
@@ -99,7 +109,7 @@ export default History;
 //   const [isLoading, setIsLoading] = useState(false);
 //   const [isLogout, setIsLogout] = useState(false);
 //   const [navbar, setNavbar] = useState(false);
-//   const [translatedAudioUrl, setTranslatedAudioUrl] = useState("");
+  // const [translatedAudioUrl, setTranslatedAudioUrl] = useState("");
 //   const [isText, setIsText] = useState("");
 //   const navigate = useNavigate();
 
@@ -111,74 +121,74 @@ export default History;
 //     setOutputType(e.target.value);
 //   };
 
-//   const handleSubmit = async (e) => {
-//     e.preventDefault();
-//     setIsLoading(true);
-//     try {
-//       const accessToken = getAccessTokenFromCookie();
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setIsLoading(true);
+  //   try {
+  //     const accessToken = getAccessTokenFromCookie();
 
-//       const formDataText = {
-//         source_language: source_language,
-//         target_language: target_language,
-//         source_text: source_text,
-//         target_text: target_text,
-//       };
+  //     const formDataText = {
+  //       source_language: source_language,
+  //       target_language: target_language,
+  //       source_text: source_text,
+  //       target_text: target_text,
+  //     };
 
-//       const formDataSpeech = {
-//         text: isText,
-//       };
+  //     const formDataSpeech = {
+  //       text: isText,
+  //     };
 
-//       const requestOptionText = {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `JWT ${accessToken}`,
-//         },
-//         data: formDataText,
-//       };
+  //     const requestOptionText = {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `JWT ${accessToken}`,
+  //       },
+  //       data: formDataText,
+  //     };
 
-//       const requestOptionSpeech = {
-//         method: "POST",
-//         headers: {
-//           "Content-Type": "application/json",
-//           Authorization: `JWT ${accessToken}`,
-//         },
-//         data: formDataSpeech,
-//       };
+  //     const requestOptionSpeech = {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `JWT ${accessToken}`,
+  //       },
+  //       data: formDataSpeech,
+  //     };
 
-//       // multiple API text-to-text and text-to-speech
-//       if (inputType === "text" && outputType === "text") {
-//         await textToTextTranslate(requestOptionText);
-//       } else if (inputType === "text" && outputType === "speech") {
-//         await textToSpeechTranslate(requestOptionSpeech);
-//       }
-//     } catch (error) {
-//       console.error("An error occurred:", error);
-//       toast.error("An error occurred: " + error.message);
-//     } finally {
-//       setIsLoading(false);
-//     }
-//   };
+  //     // multiple API text-to-text and text-to-speech
+  //     if (inputType === "text" && outputType === "text") {
+  //       await textToTextTranslate(requestOptionText);
+  //     } else if (inputType === "text" && outputType === "speech") {
+  //       await textToSpeechTranslate(requestOptionSpeech);
+  //     }
+  //   } catch (error) {
+  //     console.error("An error occurred:", error);
+  //     toast.error("An error occurred: " + error.message);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
 //   // API endpoint for text-to-text translation
-//   const textToTextTranslate = async (requestOptionText) => {
-//     const apiUrl = "http://3.83.243.144/api/v1/translate-serverless/text-text";
+  // const textToTextTranslate = async (requestOptionText) => {
+  //   const apiUrl = "http://3.83.243.144/api/v1/translate-serverless/text-text";
 
-//     try {
-//       const response = await axios.post(apiUrl, requestOptionText);
+  //   try {
+  //     const response = await axios.post(apiUrl, requestOptionText);
 
-//       if (response.data && response.data.data) {
-//         const { target_text } = response.data.data;
-//         setTarget_text(target_text);
-//       } else {
-//         console.error("Error occurred while translating text.");
-//         toast.error("Error occurred while translating text.");
-//       }
-//     } catch (error) {
-//       console.error("An error occurred:", error);
-//       toast.error("An error occurred: " + error.message);
-//     }
-//   };
+  //     if (response.data && response.data.data) {
+  //       const { target_text } = response.data.data;
+  //       setTarget_text(target_text);
+  //     } else {
+  //       console.error("Error occurred while translating text.");
+  //       toast.error("Error occurred while translating text.");
+  //     }
+  //   } catch (error) {
+  //     console.error("An error occurred:", error);
+  //     toast.error("An error occurred: " + error.message);
+  //   }
+  // };
 
 //   // API endpoint for text-to-speech translation
 //   const textToSpeechTranslate = async (requestOptionSpeech) => {
@@ -480,3 +490,91 @@ export default History;
 // };
 
 // export default TranslateVerUser;
+
+
+
+
+
+
+// const handleSubmit = async (e) => {
+//   e.preventDefault();
+//   setIsLoading(true);
+
+//   try {
+//     const accessToken = getAccessTokenFromCookie();
+//     const commonHeaders = {
+//       "Content-Type": "application/json",
+//       Authorization: `JWT ${accessToken}`,
+//     };
+
+//     const formDataText = {
+//       source_language: source_language,
+//       target_language: target_language,
+//       source_text: source_text,
+//       target_text: target_text,
+//     };
+
+//     const formDataSpeech = {
+//       text: isText,
+//     };
+
+//     let result;
+
+//     // multiple API text-to-text and text-to-speech
+//     if (inputType === "text" && outputType === "text") {
+//       result = await textToTextTranslate(formDataText, commonHeaders);
+//     } else if (inputType === "text" && outputType === "speech") {
+//       result = await textToSpeechTranslate(formDataSpeech, commonHeaders);
+//     }
+
+//     // Handle the result here if needed
+//     console.log("Result:", result);
+//   } catch (error) {
+//     console.error("An error occurred:", error);
+//     toast.error("An error occurred: " + error.message);
+//   } finally {
+//     setIsLoading(false);
+//   }
+// };
+
+// // ...
+
+// // API endpoint for text-to-text translation
+// const textToTextTranslate = async (formDataText, commonHeaders) => {
+//   const apiUrl = "http://3.83.243.144/api/v1/translate-serverless/text-text";
+
+//   try {
+//     const response = await fetch(apiUrl, {
+//       method: 'POST',
+//       headers: {
+//         ...commonHeaders,
+//       },
+//       body: JSON.stringify(formDataText),
+//     });
+
+//     if (response.ok) {
+//       const responseData = await response.json();
+//       if (responseData && responseData.data) {
+//         const { target_text } = responseData.data;
+//         setTarget_text(target_text);
+//         return target_text; // Return the result
+//       } else {
+//         console.error("Error occurred while translating text.");
+//         toast.error("Error occurred while translating text.");
+//         return null; // or handle error as needed
+//       }
+//     } else {
+//       const errorMessage = `Error: ${response.status} - ${response.statusText}`;
+//       console.error(errorMessage);
+//       toast.error(errorMessage);
+//       return null; // or handle error as needed
+//     }
+//   } catch (error) {
+//     console.error("An error occurred:", error);
+//     toast.error("An error occurred: " + error.message);
+//     return null; // or handle error as needed
+//   }
+// };
+
+// ...
+

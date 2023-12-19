@@ -9,5 +9,10 @@ const allHistory = (set) => ({
   getUserHistory: (data) => set({ userHistory: data }),
 });
 
+const logAuth = (set) => ({
+  isLogOut: false,
+  setIsLogOut: (value) => set({ isLogOut: value })
+})
+export const useLogin = create(logAuth)
 export const useBarStore = create(barStore);
 export const useDataStore = create(allHistory);

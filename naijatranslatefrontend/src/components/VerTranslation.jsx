@@ -1,20 +1,25 @@
-// export default TranslateVerUser;
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
 import { useState } from "react";
+import Navbar from "../navbar/Navbar";
+import axios from "axios";
 import InputProperties from "./inputfiles/InputProperties";
 import OutputProperties from "./outputfiles/OutputProperties";
 import changeIcon from "../assets/Changeicon.png";
 import history from "../assets/history.svg";
+import feedback from "../assets/feedback.svg";
+import contact from "../assets/contact.svg";
+import upload from "../assets/upload.svg";
+import close from "../assets/open.svg";
+import open from "../assets/close.svg";
+import Title from "../utils/Title";
 import Inspeaker from "../assets/speakerout.svg";
+import inputSpeaker from "../assets/Inspeaker.svg";
 import Outspeaker from "../assets/loutspeaker.svg";
 import ClipBoard from "../assets/clipboard.svg";
 import Skeleton from "@mui/material/Skeleton";
-import { Link } from "react-router-dom";
-import NavVerified from "../navbar/NavVerified";
-
-import { useBarStore } from "../Stores/Stores";
+import { useNavigate, Link } from "react-router-dom";
 
 const TranslateVerUser = () => {
   const [source_language, setSource_language] = useState("en");
@@ -24,12 +29,13 @@ const TranslateVerUser = () => {
   const [source_text, setSource_text] = useState("");
   const [target_text, setTarget_text] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
-  const [isText, setIsText] = useState("");
+  const [isLogout, setIsLogout] = useState(false);
+  const [navbar, setNavbar] = useState(false);
   const [translatedAudioUrl, setTranslatedAudioUrl] = useState("");
+  const [isText, setIsText] = useState("");
+  const navigate = useNavigate();
 
-  const { isOpen, setOpen, setClose } = useBarStore();
-
+  //input change handler
   const handleInputTypeChange = (e) => {
     setInputType(e.target.value);
   };
@@ -43,43 +49,42 @@ const TranslateVerUser = () => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      let accessToken = "";
-      await getAccessTokenFromCookie().then(
-        (accessTokenId) => {
-          accessToken = accessTokenId;
-        },
-        (error) => {
-          console.error("Error while fetching access token:", error);
-        }
-      );
-
+      const accessToken = getAccessTokenFromCookie();
+      //requestheader
       const commonHeaders = {
         "Content-Type": "application/json",
         Authorization: `JWT ${accessToken}`,
       };
-
+      //formdata for text to text
       const formDataText = {
         source_language: source_language,
         target_language: target_language,
         source_text: source_text,
         target_text: target_text,
       };
-
+      //formdata for text to speech
       const formDataSpeech = {
         text: isText,
       };
 
-      let result;
+      const requestOptionText = {
+        method: "POST",
+        headers: commonHeaders,
+        data: formDataText,
+      };
+
+      const requestOptionSpeech = {
+        method: "POST",
+        headers: commonHeaders,
+        data: formDataSpeech,
+      };
 
       // multiple API text-to-text and text-to-speech
       if (inputType === "text" && outputType === "text") {
-        result = await textToTextTranslate(formDataText, commonHeaders);
+        await textToTextTranslate(requestOptionText);
       } else if (inputType === "text" && outputType === "speech") {
-        result = await textToSpeechTranslate(formDataSpeech, commonHeaders);
+        await textToSpeechTranslate(requestOptionSpeech);
       }
-
-      // Handle the result here if needed
-      console.log("Result:", result);
     } catch (error) {
       console.error("An error occurred:", error);
       toast.error("An error occurred: " + error.message);
@@ -89,32 +94,18 @@ const TranslateVerUser = () => {
   };
 
   // API endpoint for text-to-text translation
-  const textToTextTranslate = async (formDataText, commonHeaders) => {
+  const textToTextTranslate = async (requestOptionText) => {
     const apiUrl = "http://3.83.243.144/api/v1/translate-serverless/text-text";
 
     try {
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          ...commonHeaders,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formDataText),
-      });
+      const response = await axios.post(apiUrl, requestOptionText);
 
-      if (response.ok) {
-        const responseData = await response.json();
-        if (responseData && responseData.data) {
-          const { target_text } = responseData.data;
-          setTarget_text(target_text);
-        } else {
-          console.error("Error occurred while translating text.");
-          toast.error("Error occurred while translating text.");
-        }
+      if (response.data && response.data.data) {
+        const { target_text } = response.data.data;
+        setTarget_text(target_text);
       } else {
-        const errorMessage = `Error: ${response.status} - ${response.statusText}`;
-        console.error(errorMessage);
-        toast.error(errorMessage);
+        console.error("Error occurred while translating text.");
+        toast.error("Error occurred while translating text.");
       }
     } catch (error) {
       console.error("An error occurred:", error);
@@ -123,44 +114,38 @@ const TranslateVerUser = () => {
   };
 
   // API endpoint for text-to-speech translation
-
-  const textToSpeechTranslate = async (formDataSpeech, commonHeaders) => {
+  const textToSpeechTranslate = async (requestOptionSpeech) => {
     const apiUrl =
       "http://3.83.243.144/api/v1/translate-serverless/text-speech";
 
     try {
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          ...commonHeaders,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formDataSpeech),
-      });
+      const response = await axios.post(apiUrl, requestOptionSpeech);
 
-      if (response.ok) {
-        const responseData = await response.json();
-        if (responseData && !responseData.error) {
-          const { message, data } = responseData;
+      if (response.data && !response.data.error) {
+        const { message, data } = response.data;
 
-          if (data && data.url) {
-            const { url } = data;
-            console.log("data url", url);
-            setTranslatedAudioUrl(url);
-          } else {
-            console.error(
-              "Error occurred while translating text to speech:",
-              message
-            );
-            toast.error(
-              "Error occurred while translating text to speech: " + message
-            );
-          }
+        if (data && data.url) {
+          const { url } = data;
+          console.log("data url", url);
+          setTranslatedAudioUrl(url);
         } else {
-          const errorMessage = `Error: ${response.status} - ${response.statusText}`;
-          console.error(errorMessage);
-          toast.error(errorMessage);
+          console.error(
+            "Error occurred while translating text to speech:",
+            message
+          );
+          toast.error(
+            "Error occurred while translating text to speech: " + message
+          );
         }
+      } else {
+        console.error(
+          "Error occurred while processing the request:",
+          response.data.message
+        );
+        toast.error(
+          "Error occurred while processing the request: " +
+            response.data.message
+        );
       }
     } catch (error) {
       console.error("An error occurred:", error);
@@ -182,11 +167,94 @@ const TranslateVerUser = () => {
     }
   };
 
+  const handleLogout = () => {
+    navigate("/");
+    setIsLogout(true);
+  };
+
+  const handleClose = () => {
+    setNavbar(false);
+  };
+  const handleOpen = () => {
+    setNavbar(true);
+  };
+
   return (
     <>
       <div className="bg-graylight">
-        <NavVerified />
+        <div className="flex flex-row justify-between w-full p-[10px]">
+          <div className="flex flex-row">
+            <div
+              className=" text-dark focus:border-gray-400 cursor-pointer"
+              onClick={() => setNavbar(!navbar)}
+            >
+              {!navbar && <img src={close} alt="close" onClick={handleClose} />}
+              {navbar && (
+                <img
+                  src={open}
+                  alt="open"
+                  onClick={handleOpen}
+                  className="w-[30px] h-[30px]"
+                />
+              )}
+              {navbar && (
+                <ul className="w-[200px] absolute p-[10px] rounded-[16px] min-h-[600px] z-30 bg-white flex flex-col gap-lg">
+                  <ul className="">
+                    <Link
+                      to="/history"
+                      className="flex hover:bg-light mb-[20px]"
+                    >
+                      <img src={history} alt="feedback" className="pr-[10px]" />
+                      <div>history</div>
+                    </Link>
+                    <Link
+                      to="/feedback"
+                      className="flex hover:bg-light mb-[20px]"
+                    >
+                      <img
+                        src={feedback}
+                        alt="feedback"
+                        className="pr-[10px]"
+                      />
+                      <div>feedback</div>
+                    </Link>
+                    <Link
+                      to="help_center"
+                      className="flex hover:bg-light mb-[20px]"
+                    >
+                      <img
+                        src={upload}
+                        alt="help_center"
+                        className="pr-[10px]"
+                      />
+                      <div>Help Center</div>
+                    </Link>
+                    <Link to="/contact" className="flex hover:bg-light">
+                      <img src={contact} alt="contact" className="pr-[10px]" />
+                      <div>Contact us</div>
+                    </Link>
+                  </ul>
+                  <Link to="/" className="flex mt-auto hover:bg-light">
+                    <img src={contact} alt="contact" className="pr-[10px]" />
+                    <div>Logout</div>
+                  </Link>
+                </ul>
+              )}
+            </div>
+            <Title />
+          </div>
 
+          <div className="flex flex-row justify-around">
+            <button
+              onClick={handleLogout}
+              type="submit"
+              className="px-[8px] border-[1px] h-[30px] rounded-full text-primary text-center "
+            >
+              Logout
+            </button>
+            <p className="rounded-full h-[30px] w-[30px] bg-primary pl-[5px]"></p>
+          </div>
+        </div>
         <div className="flex flex-row justify-around w-full px-[10px]">
           <div className="flex flex-row border-gray ">
             <div className="flex flex-row">
@@ -220,7 +288,7 @@ const TranslateVerUser = () => {
               </select>
             </div>
           </div>
-          <Link to="/internalhistory" className="flex hover:bg-light mb-[20px]">
+          <Link to="/history" className="flex hover:bg-light mb-[20px]">
             <img src={history} alt="feedback" className="pr-[10px]" />
             <div>history</div>
           </Link>
@@ -263,8 +331,8 @@ const TranslateVerUser = () => {
               </select>
             </div>
           </div>
-          <div className="flex flex-row justify-between w-full h-[410px] bg-white pb-[10px] rounded-bl-[16px] rounded-br-[16px]outline-none ">
-            <div className="flex flex-col w-1/2 h-[400px] outline-none">
+          <div className="flex flex-row justify-between w-full h-[400px] bg-white pb-[10px] rounded-bl-[16px] rounded-br-[16px]outline-none ">
+            <div className="flex flex-col w-1/2 h-[400px outline-none">
               {inputType === "text" && source_text.length === 0 && (
                 <div className="absolute pl-[180px] pt-[90px] flex flex-col">
                   <img src={ClipBoard} alt="clipboard" className="w-[100px]" />
@@ -301,12 +369,22 @@ const TranslateVerUser = () => {
 
               <button
                 type="submit"
-                className="px-[10px] border  bg-blue-100 h-[30px] mx-auto rounded-full text-primary text-center"
+                className="px-[8px] border w-[100px] bg-blue-100 h-[30px] mx-auto rounded-full text-primary text-center"
                 disabled={isLoading}
               >
                 {isLoading ? "Please wait" : "Translate"}
               </button>
-              <InputProperties outputType={outputType} />
+              <div className="flex flex-row justify-between px-[10px]">
+                <div className="flex flex-row justify-around rounded-full px-[5px] h-[30px] border-[1px] border-outline">
+                  <img
+                    src={inputSpeaker}
+                    className="w-[30px] h-[30px]"
+                    alt="speaker"
+                  />
+                  <h3 className="pt-[2px] ">speak</h3>
+                </div>
+                <h3 className="text-center pt-[6px]">0/2mins</h3>
+              </div>
             </div>
 
             <div className="flex flex-col w-1/2 h-[400px] border-l-2 border-gray pb-[10px] ">
@@ -331,15 +409,11 @@ const TranslateVerUser = () => {
                 value={target_text}
                 onChange={(e) => setTarget_text(e.target.value)}
               />
-              <OutputProperties
-                translatedAudioUrl={translatedAudioUrl}
-                outputType={outputType}
-              />
+              <OutputProperties translatedAudioUrl={translatedAudioUrl} />
             </div>
           </div>
-
-          <ToastContainer />
         </form>
+        <ToastContainer />
       </div>
     </>
   );
