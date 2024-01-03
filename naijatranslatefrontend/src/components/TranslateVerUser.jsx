@@ -146,6 +146,7 @@ const TranslateVerUser = () => {
           if (data && data.url) {
             const { url } = data;
             console.log("data url", url);
+            toast.success("converted successfully, click on listen button");
             setTranslatedAudioUrl(url);
           } else {
             console.error(
@@ -220,9 +221,12 @@ const TranslateVerUser = () => {
               </select>
             </div>
           </div>
-          <Link to="/internalhistory" className="flex hover:bg-light mb-[20px]">
+          <Link
+            to="/internalhistory"
+            className="flex hover:px-[5px] hover:bg-light mb-[20px]"
+          >
             <img src={history} alt="feedback" className="pr-[10px]" />
-            <div>history</div>
+            <div className="">history</div>
           </Link>
         </div>
 
@@ -265,14 +269,20 @@ const TranslateVerUser = () => {
           </div>
           <div className="flex flex-row justify-between w-full h-[410px] bg-white pb-[10px] rounded-bl-[16px] rounded-br-[16px]outline-none ">
             <div className="flex flex-col w-1/2 h-[400px] outline-none">
-              {inputType === "text" && source_text.length === 0 && (
-                <div className="absolute pl-[180px] pt-[90px] flex flex-col">
-                  <img src={ClipBoard} alt="clipboard" className="w-[100px]" />
-                  <p className="text-center text-[12px]">
-                    Paste your text here
-                  </p>
-                </div>
-              )}
+              {inputType === "text" &&
+                source_text.length === 0 &&
+                isText.length === 0 && (
+                  <div className="absolute pl-[180px] pt-[90px] flex flex-col">
+                    <img
+                      src={ClipBoard}
+                      alt="clipboard"
+                      className="w-[100px]"
+                    />
+                    <p className="text-center text-[12px]">
+                      Paste your text here
+                    </p>
+                  </div>
+                )}
               {inputType === "speech" && source_text.length === 0 && (
                 <img
                   src={Inspeaker}

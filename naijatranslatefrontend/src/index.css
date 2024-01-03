@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@100;200;300;400;500;600;700;800;900&family=M+PLUS+Rounded+1c&family=Metal+Mania&family=Poppins&family=Space+Mono&family=Tilt+Neon&family=Ubuntu&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

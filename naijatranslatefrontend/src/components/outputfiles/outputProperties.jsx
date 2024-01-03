@@ -5,8 +5,13 @@ import Close from "../../assets/close.svg";
 import share from "../../assets/Share.svg";
 import copy from "../../assets/Copy.svg";
 import { useState, useRef } from "react";
+import { useOpenNavbar } from "../../Stores/Stores";
+import UnverifiedRating from "../UnverifiedRating";
+
 
 const OutputProperties = ({ translatedAudioUrl, outputType }) => {
+  const {openNav, setOpenNav} = useOpenNavbar();
+
   const [openAudio, setOpenAudio] = useState(false);
 
   const toggleAudio = () => {
@@ -31,7 +36,7 @@ const OutputProperties = ({ translatedAudioUrl, outputType }) => {
 
       <div className="flex flex-row justify-around">
         <img src={copy} className="w-[30px] h-[30px]" alt="copy" />
-        <img src={thumbup} alt="thumbup" className="w-[30px] h-[30px]" />
+        <UnverifiedRating />
         <img src={thumbdown} alt="thumbdown" className="w-[30px] h-[30px]" />
         <img src={share} alt="share" className="w-[30px] h-[30px]" />
       </div>

@@ -23,7 +23,7 @@ export default {
         transparent: "transparent",
       },
       fontFamily: {
-        sans: ["Iconsolata", "sans-serif"],
+        iconsolata: ["Iconsolata", "sans-serif"],
         serif: ["Merriweather", "serif"],
       },
       screens: {

@@ -8,6 +8,7 @@ import close from "../assets/open.svg";
 import open from "../assets/close.svg";
 import Title from "../utils/Title";
 import { useBarStore, useLogin } from "../Stores/Stores";
+import { HiOutlineUser } from "react-icons/hi";
 
 const NavVerified = () => {
   const [navbar, setNavbar] = useState(false);
@@ -94,7 +95,9 @@ const NavVerified = () => {
         >
           Logout
         </button>
-        <p className="rounded-full h-[30px] w-[30px] bg-primary pl-[5px]"></p>
+        <div className="outline-1 outline-slate-400">
+          <HiOutlineUser className="rounded-full h-[30px] w-[30px]  pl-[5px]" />
+        </div>
       </div>
     </div>
   );

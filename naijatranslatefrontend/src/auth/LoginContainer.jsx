@@ -50,8 +50,7 @@ const LoginContainer = () => {
         withCredentials: true,
         body: JSON.stringify(formData),
       });
-      // console.log("response data", response);
-
+    
       if (response.ok) {
         toast.success("Registration successful");
         const data = await response.json();
@@ -59,7 +58,7 @@ const LoginContainer = () => {
         const refreshToken = data.refresh;
 
         console.log("token", refreshToken);
-        console.log("Registration successful");
+       
         setRegistrationSuccess(true);
         // Save the access token in an HttpOnly cookie
         document.cookie = `access_token=${accessToken}; Secure; SameSite=None`;
@@ -106,7 +105,7 @@ const LoginContainer = () => {
         }
       );
 
-      console.log("org", response);
+     
       if (response.ok) {
         toast.success("Registration successful");
         const data = await response.json();
@@ -114,7 +113,7 @@ const LoginContainer = () => {
         const refreshToken = data.refresh;
 
         console.log("token", refreshToken);
-        console.log("Registration successful");
+       
         setRegistrationSuccess(true);
        
         document.cookie = `access_token=${accessToken}; HttpOnly; Secure; SameSite=Strict`;
@@ -124,7 +123,7 @@ const LoginContainer = () => {
         console.log("Registration failed");
         const data = await response.json();
 
-        toast.error(data.error);
+        toast.error(data.detail);
       }
   
     } catch (error) {

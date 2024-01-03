@@ -151,6 +151,10 @@ const SignupContainer = () => {
       account_manager_last_name: acctManagerLname,
       account_manager_email: acctManagerEmail,
     };
+
+    console.log("FORM DATA",checkedFormData)
+
+    console.log("FORM DATA",unCheckedFormData)
     try {
       const response = await fetch(
         "http://3.83.243.144/api/v1/organization/register",
@@ -323,7 +327,7 @@ const SignupContainer = () => {
                         id="organisation name"
                         type="text"
                         required
-                        placeholder="organisation Name"
+                        placeholder="Organisation Name"
                         value={orgName}
                         onChange={(e) => setOrgName(e.target.value)}
                         autoComplete="off"
@@ -335,7 +339,7 @@ const SignupContainer = () => {
                         id="organisation-address"
                         type="text"
                         required
-                        placeholder="organisation address"
+                        placeholder="Organisation address"
                         value={orgAddress}
                         onChange={(e) => setOrgAddress(e.target.value)}
                         autoComplete="off"
@@ -368,9 +372,9 @@ const SignupContainer = () => {
                     <div className="pb-sm">
                       <input
                         className="placeholder:p-md appearance-none  h-[40px] border flex  rounded-[15px] w-full text-gray-700 px-[10px] leading-tight focus:outline-none"
-                        id="organsisation_email"
+                        id="Organsisation_email"
                         type="text"
-                        placeholder="Organisation email"
+                        placeholder="Organisation Email"
                         required
                         value={orgEmail}
                         onChange={(e) => setOrgEmail(e.target.value)}
@@ -382,7 +386,7 @@ const SignupContainer = () => {
                         className="placeholder:p-md appearance-none  h-[40px] border flex  rounded-[15px] w-full text-gray-700 px-[10px] leading-tight focus:outline-none"
                         id="acct_first_name"
                         type="text"
-                        placeholder="account manager first name"
+                        placeholder="Account Manager First Name"
                         required
                         value={acctManagerFname}
                         onChange={(e) => setAcctManagerFname(e.target.value)}
@@ -395,7 +399,7 @@ const SignupContainer = () => {
                         id="acct_last_name"
                         type="text"
                         required
-                        placeholder="account manager last Name"
+                        placeholder="Account Manager Last Name"
                         value={acctManagerLname}
                         onChange={(e) => setAcctManagerLname(e.target.value)}
                         autoComplete="off"
@@ -407,7 +411,7 @@ const SignupContainer = () => {
                         id="account_manager_email"
                         type="text"
                         required
-                        placeholder="account manager email"
+                        placeholder="Account Manager Email"
                         value={acctManagerEmail}
                         onChange={(e) => setAcctManagerEmail(e.target.value)}
                         autoComplete="off"
@@ -418,7 +422,7 @@ const SignupContainer = () => {
                         className="placeholder:p-md appearance-none  h-[40px] border flex  rounded-[15px] w-full text-gray-700 px-[10px] leading-tight focus:outline-none"
                         id="email"
                         type="password"
-                        placeholder="account manager password "
+                        placeholder="Account Manager Password "
                         required
                         value={acctManagerPwd}
                         minLength={8}

@@ -8,6 +8,7 @@ import Outspeaker from "../assets/loutspeaker.svg";
 import ClipBoard from "../assets/clipboard.svg";
 import Skeleton from "@mui/material/Skeleton";
 import { ToastContainer, toast } from "react-toastify";
+import { useOpenNavbar } from "../Stores/Stores";
 
 const TranslateForm = () => {
   //text to text
@@ -85,6 +86,7 @@ const TranslateForm = () => {
 
         if (data && data.url) {
           const { url } = data;
+          toast.success("converted successfully, click on listen button")
           console.log("data url", url);
           setTranslatedAudioUrl(url);
         } else {
@@ -194,12 +196,13 @@ const TranslateForm = () => {
         </div>
         <div className="flex flex-row justify-between w-full h-[400px] bg-white pb-[10px] rounded-bl-[16px] rounded-br-[16px]">
           <div className="flex flex-col w-1/2 h-[400px">
-            {inputType === "text" && source_text.length === 0 && (
+            {inputType === "text" && source_text.length === 0 && isText.length === 0 && (
               <div className="absolute pl-[180px] pt-[90px] flex flex-col">
                 <img src={ClipBoard} alt="clipboard" className="w-[100px]" />
                 <p className="text-center text-[12px]">Paste your text here</p>
               </div>
             )}
+            
             {inputType === "speech" && source_text.length === 0 && (
               <img
                 src={Inspeaker}

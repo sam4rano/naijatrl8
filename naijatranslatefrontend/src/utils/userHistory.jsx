@@ -48,7 +48,7 @@ const InternalHistory = () => {
   };
 
   const { data, status } = useQuery("users", fetchHistory, {
-    enabled: !!accessToken, 
+    enabled: !!accessToken,
   });
   console.log("data", data);
 

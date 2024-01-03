@@ -26,30 +26,27 @@ const OrganisationVerify = () => {
 
         if (res.ok) {
           const responseData = await res.json();
-          console.log("resp", responseData); // Log the parsed data
+         
           setIsSuccess(true);
           toast.success(responseData.message);
           setTimeout(() => {
-            navigate("/logincontainer"); // Navigate after a delay
+            navigate("/logincontainer");
           }, 2000);
-          // navigate("/logincontainer");
         } else {
           const errorData = await res.json();
           if (
             "message" in errorData &&
-            errorData.message === "Admin with email already verified"
+            errorData.error === "Organization with email already verified"
           ) {
-            setVerified("Admin with email already verified");
-            setTimeout(() => {
-              navigate("/logincontainer"); // Navigate after a delay
-            }, 2000);
-            // navigate("/logincontainer");
+            setVerified("Organization with email already verified");
+            navigate("/logincontainer");
           } else {
-            setVerified(errorData.message);
+            setVerified(errorData.error);
           }
         }
       } catch (error) {
-        console.log(error);
+        
+        toast.error("request for new verification link"+error)
         navigate("/resendverification");
       }
     };
@@ -57,19 +54,105 @@ const OrganisationVerify = () => {
   }, [uidb64, token, navigate, isSuccess]);
 
   return (
-    <div>
-      <div className="p-[20px]">
-        <div>
-          <Title />
-        </div>
-        {verified && (
-          <Link to="/resendverification">Resend Verification Link</Link>
-        )}
-        {isSuccess ? <h1>Verification successful</h1> : <h1>{verified}</h1>}
+    <div className="p-[20px]">
+      <div>
+        <Title />
       </div>
+      <div className="flex flex-col justify-center items-center align-middle pt-[150px]">
+        {isSuccess ? (
+          <div className="py-[10px]">
+            <h1 className="">Verification successful</h1>
+          </div>
+        ) : (
+          <div className="py-[10px]">
+            <h1>{verified}</h1>
+          </div>
+        )}
+        {!isSuccess && (
+          <Link
+            to="/logincontainer"
+            className="bg-primary hover:bg-blue-800 text-white rounded-full px-[10px] py-[3px]"
+          >
+            Go to Login
+          </Link>
+        )}
+      </div>
+
       <ToastContainer />
     </div>
   );
 };
 
 export default OrganisationVerify;
+
+
+// import { useNavigate, useParams, Link } from "react-router-dom";
+// import Title from "../utils/Title";
+// import { useQuery } from 'react-query';
+// import { ToastContainer, toast } from "react-toastify";
+// import "react-toastify/dist/ReactToastify.css";
+
+// const OrganisationVerify = () => {
+//   const navigate = useNavigate();
+//   let params = useParams();
+//   const [uidb64, token] = params["*"].split("/");
+
+//   const { status, data } = useQuery(
+//     ['verification', uidb64, token],
+//     async () => {
+//       const res = await fetch(
+//         `http://3.83.243.144/organization/verify-account/${uidb64}/${token}`,
+//         {
+//           headers: {
+//             "Content-Type": "application/json",
+//           },
+//         }
+//       );
+//       if (!res.ok) {
+//         throw new Error('Network response was not ok');
+//       }
+//       return res.json();
+//     },
+//     {
+//       onSuccess: (responseData) => {
+//         toast.success(responseData.message);
+//         navigate("/logincontainer");
+//       },
+//       onError: (error) => {
+//         toast.error(`Request for new verification link: ${error.message}`);
+//         navigate("/resendverifyaccount");
+//       },
+//     }
+//   );
+
+//   return (
+//     <div className="p-[20px]">
+//       <div>
+//         <Title />
+//       </div>
+//       <div className="flex flex-col justify-center items-center align-middle pt-[150px]">
+//         {status === 'success' ? (
+//           <div className="py-[10px]">
+//             <h1 className="">Verification successful</h1>
+//           </div>
+//         ) : (
+//           <div className="py-[10px]">
+//             <h1>{status === 'loading' ? 'Loading...' : 'Error'}</h1>
+//           </div>
+//         )}
+//         {status === 'success' && (
+//           <Link
+//             to="/logincontainer"
+//             className="bg-primary hover:bg-blue-800 text-white rounded-full px-[10px] py-[3px]"
+//           >
+//             Go to Login
+//           </Link>
+//         )}
+//       </div>
+//       <ToastContainer />
+//     </div>
+//   );
+// };
+
+// export default OrganisationVerify;
+

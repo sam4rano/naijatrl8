@@ -15,7 +15,7 @@ const PasswordResetAdmin = () => {
   let params = useParams();
 
   const [uidb64, token] = params["*"].split("/");
-  console.log(uidb64, token);
+
 
   useEffect(() => {
     const confirmVerified = async () => {
