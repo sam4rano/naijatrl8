@@ -142,9 +142,6 @@ const ForgotPassword = () => {
                 }}
               />
             </div>
-            {/* <button className="bg-primary text-white rounded-full w-[327px] px-lg h-[40px]">
-              Send Instructions
-            </button> */}
             <button
               className="bg-primary hover:cursor-pointer text-white rounded-full w-full px-lg h-[40px]"
               type="submit"
