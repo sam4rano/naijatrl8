@@ -33,6 +33,8 @@ const NavVerified = () => {
     setIsLogOut(isLogOut);
   };
 
+  
+
   return (
     <div className="flex flex-row justify-between p-[10px]">
       <div className="flex flex-row">
@@ -95,7 +97,7 @@ const NavVerified = () => {
         >
           Logout
         </button>
-        <div className="outline-1 outline-slate-400">
+        <div className="">
           <HiOutlineUser className="rounded-full h-[30px] w-[30px]  pl-[5px]" />
         </div>
       </div>

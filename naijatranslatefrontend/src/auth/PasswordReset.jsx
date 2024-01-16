@@ -1,12 +1,12 @@
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Title from "../utils/Title";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { baseURL } from "../api/SpeechApi";
 
 const PasswordReset = () => {
   const [isSuccess, setIsSuccess] = useState(false);
-  const [verified, setVerified] = useState(false);
   const [userPassword, setUserPassword] = useState("");
   const [confirmUserPassword, setConfirmUserPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -17,46 +17,9 @@ const PasswordReset = () => {
   const [uidb64, token] = params["*"].split("/");
   console.log(uidb64, token);
 
-  useEffect(() => {
-    const confirmVerified = async () => {
-      try {
-        const res = await fetch(
-          `http://3.83.243.144/password-reset/${uidb64}/${token}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (res.ok) {
-          const responseData = await res.json();
-          setIsSuccess(true);
-          toast.success(responseData.message);
-        } else {
-          const errorData = await res.json();
-          if (
-            "message" in errorData &&
-            errorData.message === "User with email already verified"
-          ) {
-            setVerified(true);
-            toast.success("User with email already verified");
-            navigate("/logincontainer");
-          } else {
-            setVerified(false);
-            navigate("/resendverifyaccount");
-          }
-        }
-      } catch (error) {
-        console.error(error);
-        toast.error("An error occurred while confirming.");
-      }
-    };
-    confirmVerified();
-  }, [uidb64, token, navigate, isSuccess]);
-
   const handleSubmitUser = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const formData = {
       new_password: userPassword,
@@ -66,26 +29,23 @@ const PasswordReset = () => {
     };
 
     try {
-      const response = await fetch(
-        "http://3.83.243.144/api/v1/password-reset/confirm",
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`${baseURL}/password-reset/confirm`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       if (response.ok) {
-        console.log("Registration successful");
-        toast.success("Password reset successful.");
         setIsSuccess(true);
+        setIsLoading(false);
+        const responseData = await response.json();
+        toast.success(responseData.message);
         setTimeout(() => {
           navigate("/logincontainer");
         }, 2000);
       } else {
-        console.log("Registration failed");
         const errorData = await response.json();
         toast.error(errorData.message || "Password reset failed.");
       }
@@ -103,9 +63,6 @@ const PasswordReset = () => {
         <div>
           <Title />
         </div>
-        {/* {verified && (
-          <Link to="/resendverification">Resend Verification Link</Link>
-        )} */}
 
         {isSuccess && (
           <form

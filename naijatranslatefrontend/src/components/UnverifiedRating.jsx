@@ -11,28 +11,21 @@ import { useRatingStoreUnverified, useOpenNavbar } from "../Stores/Stores";
 import thumbUp from "../assets/Thumbup.svg";
 import { useState } from "react";
 import close from "../assets/close.svg";
-import { useMutation } from "react-query";
+import { useMutation } from '@tanstack/react-query';
 import axios from "axios";
 
-export default function UnverifiedRating() {
+export default function UnverifiedRating({feedbackData}) {
   const [open, setOpen] = useState(false);
   const { ratingParams, setRatingParams } = useRatingStoreUnverified();
   const { setOpenNav } = useOpenNavbar();
 
-  const mutation = useMutation(
-    (updatedRatings) =>
-      axios.put(
-        "http://3.83.243.144/api/v1/task/unregistered-trial/rate",
-        updatedRatings
-      ),
-    {
-      onError: (error) => {
-        // Handle error here
-        console.error("Error during mutation:", error);
-        toast.error("Error submitting data: " + error.message);
-      },
-    }
-  );
+
+
+  const mutation = useMutation({
+    mutationFn: (updatedRatings) => {
+      return axios.put('http://3.83.243.144/api/v1/task/unregistered-trial/rate', updatedRatings)
+    },
+  })
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,31 +33,28 @@ export default function UnverifiedRating() {
   };
 
   const submitData = () => {
-    mutation.mutate({ ...ratingParams, is_rated: true });
+    mutation.mutate({ ...ratingParams });
   };
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
+  const toggleDialog = () => {
+    setOpen(!open);
     setRatingParams({
+      id:feedbackData,
       rating: 0,
       feedback: "",
       correct_translation: "",
-      is_rated: false,
+     
     });
   };
 
   return (
-    <React.Fragment>
-      <button onClick={handleClickOpen}>
-        <img src={thumbUp} alt="thump up" className="w-[30px] h-[30px]" />
+    <>
+      <button onClick={toggleDialog}>
+        Feedback
       </button>
       <Dialog
         open={open}
-        onClose={handleClose}
+        onClose={toggleDialog}
         aria-labelledby="draggable-dialog-title"
       >
         <DialogTitle style={{ cursor: "move" }}>Rating Form</DialogTitle>
@@ -76,15 +66,17 @@ export default function UnverifiedRating() {
               name="rating"
               value={ratingParams.rating}
               onChange={handleChange}
+              className="placeholder:p-md appearance-none outline-none flex  h-[40px] border rounded-[15px] px-[10px] w-full text-gray-700 leading-tight focus:outline-none "
             />
           </label>
           <br />
           <label>
             Feedback:
-            <textarea
+            <input
               name="feedback"
               value={ratingParams.feedback}
               onChange={handleChange}
+              className="placeholder:p-md appearance-none outline-none flex  h-[40px] border rounded-[15px] px-[10px] w-full text-gray-700 leading-tight focus:outline-none "
             />
           </label>
           <br />
@@ -95,18 +87,19 @@ export default function UnverifiedRating() {
               name="correct_translation"
               value={ratingParams.correct_translation}
               onChange={handleChange}
+              className="placeholder:p-md appearance-none outline-none flex  h-[40px] border rounded-[15px] px-[10px] w-full text-gray-700 leading-tight focus:outline-none "
             />
           </label>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
+          <Button autoFocus onClick={toggleDialog}>
             <img src={close} alt="close img" />
           </Button>
           <Button
             onClick={() => {
               submitData();
               setOpenNav(true);
-              handleClose();
+              toggleDialog();
             }}
           >
             Submit
@@ -114,6 +107,6 @@ export default function UnverifiedRating() {
         </DialogActions>
         <ToastContainer />
       </Dialog>
-    </React.Fragment>
+    </>
   );
 }

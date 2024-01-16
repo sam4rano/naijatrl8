@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -16,7 +16,6 @@ const InternalHistory = () => {
         const token = await Cookies.get("access_token");
         setAccessToken(token || "unauthenticated user");
       } catch (error) {
-        console.error("Error while fetching access token:", error);
         toast.error("Error fetching access token: " + error.message);
         setAccessToken("unauthenticated user");
       }
@@ -33,24 +32,27 @@ const InternalHistory = () => {
     },
   };
 
-  const fetchHistory = async () => {
-    try {
-      const response = await axios.get(
-        "http://3.83.243.144/api/v1/translate/my-translations",
-        requestOptions
-      );
-      console.log("data", response.data);
-      return response.data;
-    } catch (error) {
-      console.error("Error while fetching users:", error);
-      throw error;
-    }
-  };
-
-  const { data, status } = useQuery("users", fetchHistory, {
+  const { data, status } = useQuery({
+    queryKey: ["reqdata"],
+    queryFn: async () => {
+      try {
+        const response = await axios.get(
+          "http://3.83.243.144/api/v1/translate/my-translations",
+          requestOptions
+        );
+        return response.data;
+      } catch (error) {
+        console.error("Error while fetching users:", error);
+        toast.error(error.response.data.detail);
+        throw error;
+      }
+    },
     enabled: !!accessToken,
   });
-  console.log("data", data);
+
+  // useEffect(() => {
+  //   console.log("Change", data);
+  // }, [data]);
 
   return (
     <>
@@ -94,11 +96,11 @@ const InternalHistory = () => {
                           : item.target_language}
                       </h2>
                     </div>
-                    <div className="flex flex-row justify-between p-[10px]">
-                      <div className=" text-[14px] py-[5px]">
+                    <div className="flex flex-row justify-between  p-[10px]">
+                      <div className=" text-[14px] py-[5px] flex flex-auto">
                         <p className="p-2">{item.source_text}</p>
                       </div>
-                      <div className="bg-gray text-[14px] py-[5px] rounded-[6px]">
+                      <div className="bg-gray text-[14px] flex flex-auto py-[5px] rounded-[6px]">
                         <p className="p-2">{item.target_text}</p>
                       </div>
                     </div>

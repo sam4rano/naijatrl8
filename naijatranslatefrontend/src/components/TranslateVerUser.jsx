@@ -4,7 +4,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import InputProperties from "./inputfiles/InputProperties";
-import OutputProperties from "./outputfiles/OutputProperties";
 import changeIcon from "../assets/Changeicon.png";
 import history from "../assets/history.svg";
 import Inspeaker from "../assets/speakerout.svg";
@@ -15,6 +14,7 @@ import { Link } from "react-router-dom";
 import NavVerified from "../navbar/NavVerified";
 
 import { useBarStore } from "../Stores/Stores";
+import VerOutputProperties from "./outputfiles/VerOutputProperties";
 
 const TranslateVerUser = () => {
   const [source_language, setSource_language] = useState("en");
@@ -24,9 +24,9 @@ const TranslateVerUser = () => {
   const [source_text, setSource_text] = useState("");
   const [target_text, setTarget_text] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-
   const [isText, setIsText] = useState("");
   const [translatedAudioUrl, setTranslatedAudioUrl] = useState("");
+  const [feedbackData, setFeedbackData] = useState("");
 
   const { isOpen, setOpen, setClose } = useBarStore();
 
@@ -37,7 +37,6 @@ const TranslateVerUser = () => {
   const handleOutputTypeChange = (e) => {
     setOutputType(e.target.value);
   };
-
   //handlesubmit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -87,7 +86,6 @@ const TranslateVerUser = () => {
       setIsLoading(false);
     }
   };
-
   // API endpoint for text-to-text translation
   const textToTextTranslate = async (formDataText, commonHeaders) => {
     const apiUrl = "http://3.83.243.144/api/v1/translate-serverless/text-text";
@@ -104,26 +102,24 @@ const TranslateVerUser = () => {
 
       if (response.ok) {
         const responseData = await response.json();
+
+        setFeedbackData(responseData.data.feedback_id);
+        console.log("feedback",responseData.data.feedback_id)
         if (responseData && responseData.data) {
           const { target_text } = responseData.data;
           setTarget_text(target_text);
         } else {
-          console.error("Error occurred while translating text.");
           toast.error("Error occurred while translating text.");
         }
-      } else {
-        const errorMessage = `Error: ${response.status} - ${response.statusText}`;
-        console.error(errorMessage);
-        toast.error(errorMessage);
+      } else if (response.status === 400) {
+        const responseData = await response.json();
+        toast.error(responseData.message);
       }
     } catch (error) {
-      console.error("An error occurred:", error);
-      toast.error("An error occurred: " + error.message);
+      toast.error("Network error, " + error.message);
     }
   };
-
   // API endpoint for text-to-speech translation
-
   const textToSpeechTranslate = async (formDataSpeech, commonHeaders) => {
     const apiUrl =
       "http://3.83.243.144/api/v1/translate-serverless/text-speech";
@@ -140,19 +136,16 @@ const TranslateVerUser = () => {
 
       if (response.ok) {
         const responseData = await response.json();
+
         if (responseData && !responseData.error) {
           const { message, data } = responseData;
-
           if (data && data.url) {
             const { url } = data;
-            console.log("data url", url);
-            toast.success("converted successfully, click on listen button");
+            toast.success(
+              "Text to speech conversion successful, Click on listen button"
+            );
             setTranslatedAudioUrl(url);
           } else {
-            console.error(
-              "Error occurred while translating text to speech:",
-              message
-            );
             toast.error(
               "Error occurred while translating text to speech: " + message
             );
@@ -188,11 +181,11 @@ const TranslateVerUser = () => {
       <div className="bg-graylight">
         <NavVerified />
 
-        <div className="flex flex-row justify-around w-full px-[10px]">
-          <div className="flex flex-row border-gray ">
-            <div className="flex flex-row">
+        <div className="flex flex-row justify-around pl-[220px] w-full pt-[30px]">
+          <div className="flex flex-row justify-around border-gray ">
+            <div className="flex flex-row ">
               <select
-                className="text-primary bg-graylight"
+                className="text-primary bg-light cursor-pointer border rounded-[10px] px-[10px] outline-none"
                 id="input_language"
                 name="input_language"
                 value={inputType}
@@ -206,11 +199,11 @@ const TranslateVerUser = () => {
             <img
               src={changeIcon}
               alt="change icon"
-              className="w-[40px] h-[40px] bg-graylight"
+              className="w-[40px] h-[40px] "
             />
             <div className="flex flex-row">
               <select
-                className="text-primary bg-graylight"
+                className="text-primary cursor-pointer bg-light border rounded-[10px] px-[10px] outline-none"
                 id="output_language"
                 name="output_language"
                 value={outputType}
@@ -311,7 +304,7 @@ const TranslateVerUser = () => {
 
               <button
                 type="submit"
-                className="px-[10px] border  bg-blue-100 h-[30px] mx-auto rounded-full text-primary text-center"
+                className="px-[8px] border-[1px] h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center"
                 disabled={isLoading}
               >
                 {isLoading ? "Please wait" : "Translate"}
@@ -341,15 +334,15 @@ const TranslateVerUser = () => {
                 value={target_text}
                 onChange={(e) => setTarget_text(e.target.value)}
               />
-              <OutputProperties
+              <VerOutputProperties
                 translatedAudioUrl={translatedAudioUrl}
                 outputType={outputType}
+                feedbackId={feedbackData}
               />
             </div>
           </div>
-
-          <ToastContainer />
         </form>
+        <ToastContainer />
       </div>
     </>
   );

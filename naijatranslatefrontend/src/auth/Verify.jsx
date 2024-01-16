@@ -3,10 +3,14 @@ import Title from "../utils/Title";
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { baseURL } from "../api/SpeechApi";
+import axios from "axios";
+
 
 const Verify = () => {
   const [isSuccess, setIsSuccess] = useState(false);
-  const [verified, setVerified] = useState("");
+
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   let params = useParams();
 
@@ -15,44 +19,47 @@ const Verify = () => {
   useEffect(() => {
     const confirmVerified = async () => {
       try {
-        const res = await fetch(
-          `http://3.83.243.144/verify-account/${uidb64}/${token}`,
+        const response = await axios.put(
+          `${baseURL}/verify-account/`,
+          {
+            uidb64: uidb64,
+            token: token,
+          },
           {
             headers: {
-              "Content-Type": "application/json",
+              'Content-Type': 'application/json',
             },
           }
         );
 
-        if (res.ok) {
-          const responseData = await res.json();
+        console.log(response)
 
+        
+        if (response.status === 200) {
+          const responseData = response.data;
+          console.log("response", responseData);
+          setIsLoading(false);
           setIsSuccess(true);
           toast.success(responseData.message);
           setTimeout(() => {
             navigate("/logincontainer");
           }, 2000);
         } else {
-          const errorData = await res.json();
-          if (
-            "message" in errorData &&
-            errorData.message === "User with email already verified"
-          ) {
-            setVerified("User with email already verified");
-            setTimeout(() => {
-              navigate("/logincontainer");
-            }, 2000);
-          } else {
-            setVerified(errorData.message);
-          }
+          const errorData = response.data;
+          console.log("error", errorData);
+        
         }
       } catch (error) {
-        console.log(error);
-        navigate("/resendverification");
+        console.error("Error during verification:", error);
+  
+        navigate("/resendverifyaccount");
+      } finally {
+        setIsLoading(false);
       }
     };
+
     confirmVerified();
-  }, [uidb64, token, navigate, isSuccess]);
+  }, [uidb64, token, navigate]);
 
   return (
     <div>
@@ -60,10 +67,12 @@ const Verify = () => {
         <div>
           <Title />
         </div>
-        {verified && (
-          <Link to="/resendverification">Resend Verification Link</Link>
+        
+        {isLoading && <p className="flex justify-center mx-auto text-center text-[50px]">Loading...</p>}
+        {!isLoading && !isSuccess && (
+          <Link to="/resendverifyaccount">Resend Verification Link</Link>
         )}
-        {isSuccess ? <h1>Verification successful</h1> : <h1>{verified}</h1>}
+        {!isLoading && isSuccess && (<h1>Verification successful</h1>)}
       </div>
       <ToastContainer />
     </div>
@@ -71,3 +80,19 @@ const Verify = () => {
 };
 
 export default Verify;
+
+
+
+
+
+ // if (
+          //   "message" in errorData &&
+          //   errorData.message === "User with email already verified"
+          // ) {
+          //   setVerified("User with email already verified");
+          //   setTimeout(() => {
+          //     navigate("/logincontainer");
+          //   }, 2000);
+          // } else {
+          //   setVerified(errorData.message);
+          // }

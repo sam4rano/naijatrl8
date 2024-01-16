@@ -1,13 +1,18 @@
 import { useState } from "react";
 import Title from "../utils/Title";
 import "./Tabcontainer.css";
+import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Checkbox from "@mui/material/Checkbox";
+import { baseURL } from "../api/SpeechApi";
+
 
 const SignupContainer = () => {
   const navigate = useNavigate();
+
+  //individual
   const [activeTab, setActiveTab] = useState("tabone");
 
   const [individualEmail, setIndividualEmail] = useState("");
@@ -30,6 +35,7 @@ const SignupContainer = () => {
   const [acctManagerLname, setAcctManagerLname] = useState("");
   const [acctManagerEmail, setAcctManagerEmail] = useState("");
   const [acctManagerPwd, setAcctManagerPwd] = useState("");
+  
 
   const [success, setSuccess] = useState(false);
 
@@ -46,6 +52,59 @@ const SignupContainer = () => {
     setActiveTab("tabtwo");
   };
 
+  // const handleSubmitUser = async (e) => {
+  //   e.preventDefault();
+
+  //   if (!individualEmail || !individualPassword) {
+  //     toast.error("Please fill in all fields.");
+  //     return;
+  //   }
+
+  //   const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+
+  //   if (!passwordPattern.test(individualPassword && individualConfirmPassword )) {
+  //     toast.error(
+  //       "Password must contain at least one letter, one number, and be at least 8 characters long."
+  //     );
+  //     return;
+  //   }
+
+  //   const formData = {
+  //     email: individualEmail,
+  //     first_name: individualFirstName,
+  //     last_name: individualLastName,
+  //     password: individualPassword,
+  //     confirm_password: individualConfirmPassword,
+  //   };
+
+  //   console.log("formdata", formData)
+
+  //   try {
+  //     const responseUser = await axios.post("http://3.83.243.144/api/v1/register", {
+
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(formData),
+  //     });
+
+  //     if (responseUser.ok) {
+  //       const data = await responseUser.json();
+
+  //       setSuccess(true);
+  //       toast.success(data.success);
+  //       navigate("/logincontainer");
+  //     } else {
+  //       const data = await responseUser.json();
+
+  //       toast.error(data.email[0]);
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //     toast.error(error.message);
+  //   }
+  // };
+
   const handleSubmitUser = async (e) => {
     e.preventDefault();
 
@@ -56,12 +115,17 @@ const SignupContainer = () => {
 
     const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
 
-    if (!passwordPattern.test(individualPassword)) {
+    if (passwordPattern.test(individualPassword + individualConfirmPassword)) {
       toast.error(
         "Password must contain at least one letter, one number, and be at least 8 characters long."
       );
       return;
     }
+
+    const isPasswordValid = passwordPattern.test(
+      individualPassword + individualConfirmPassword
+    );
+    console.log("isPasswordValid", isPasswordValid);
 
     const formData = {
       email: individualEmail,
@@ -71,29 +135,40 @@ const SignupContainer = () => {
       confirm_password: individualConfirmPassword,
     };
 
+   
+
     try {
-      const responseUser = await fetch("http://3.83.243.144/api/v1/register", {
+      const responseUser = await fetch(`${baseURL}/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
+      
 
       if (responseUser.ok) {
         const data = await responseUser.json();
+        console.log("data",data)
+        
 
         setSuccess(true);
         toast.success(data.success);
-        navigate("/logincontainer");
+        toast.success("Check your email for verification link.");
+        navigate("/checkinbox");
       } else {
         const data = await responseUser.json();
 
         toast.error(data.email[0]);
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.message);
+
+      if(error.message === 'Request failed with status code 400') {
+        toast.error(error.response.data.email[0]);
+      }
+      else {
+        toast.error(error.message);
+      }
     }
   };
 
@@ -152,12 +227,12 @@ const SignupContainer = () => {
       account_manager_email: acctManagerEmail,
     };
 
-    console.log("FORM DATA",checkedFormData)
+    console.log("FORM DATA", checkedFormData);
 
-    console.log("FORM DATA",unCheckedFormData)
+    console.log("FORM DATA", unCheckedFormData);
     try {
       const response = await fetch(
-        "http://3.83.243.144/api/v1/organization/register",
+        `${baseURL}/organization/register`,
         {
           method: "POST",
           headers: {
@@ -315,7 +390,11 @@ const SignupContainer = () => {
                   onChange={handleChange}
                   inputProps={{ "aria-label": "controlled" }}
                 />
-                {checked ? <h3>Register your organisation</h3> : <h3> Don't Register your organisation</h3>}
+                {checked ? (
+                  <h3>Register your organisation</h3>
+                ) : (
+                  <h3> Don't Register your organisation</h3>
+                )}
                 {checked ? (
                   <form
                     onSubmit={handleSubmitAdmin}

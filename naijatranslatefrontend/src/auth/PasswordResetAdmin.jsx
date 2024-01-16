@@ -16,7 +16,6 @@ const PasswordResetAdmin = () => {
 
   const [uidb64, token] = params["*"].split("/");
 
-
   useEffect(() => {
     const confirmVerified = async () => {
       try {
@@ -37,9 +36,9 @@ const PasswordResetAdmin = () => {
           const errorData = await res.json();
           if (
             "message" in errorData &&
-            errorData.message === "Admin with email already verified"
+            errorData.message === "Organization with email already verified"
           ) {
-            setVerified("Admin with email already verified");
+            setVerified("Organization with email already verified");
           } else {
             setVerified(errorData.message);
             navigate("/resendverifyaccount");
@@ -61,7 +60,7 @@ const PasswordResetAdmin = () => {
       new_password_confirm: confirmAdminPassword,
       uid: uidb64,
       token: token,
-      organization_id: 0,
+      organization_id: 3,
     };
 
     try {
@@ -77,13 +76,10 @@ const PasswordResetAdmin = () => {
       );
 
       if (response.ok) {
-        console.log("Registration successful");
         toast.success("Password reset successful.");
-        setTimeout(() => {
-          navigate("/logincontainer");
-        }, 2000);
+        navigate("/logincontainer");
+        
       } else {
-        console.log("Registration failed");
         const errorData = await response.json();
         toast.error(errorData.message || "Password reset failed.");
       }
@@ -157,4 +153,3 @@ const PasswordResetAdmin = () => {
 };
 
 export default PasswordResetAdmin;
-

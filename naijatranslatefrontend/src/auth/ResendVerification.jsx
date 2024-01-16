@@ -4,6 +4,8 @@ import "./Tabcontainer.css";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { axiosApi, baseURL } from "../api/SpeechApi";
+
 
 const ResendVerification = () => {
   const [activeTab, setActiveTab] = useState("tabone");
@@ -27,26 +29,24 @@ const ResendVerification = () => {
     };
 
     try {
-      const response = await fetch(
-        "http://3.83.243.144/api/v1/resend/verify-account",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`${baseURL}/resend/verify-account`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       if (response.ok) {
-        toast.success("verification sent");
-        navigate("/checkinbox");
+        toast.success("verification sent, check your email");
+        setTimeout(() => {
+          navigate("/checkinbox");
+        }, 2000);
       } else {
         const data = await response.json();
 
         toast.error(data.message);
         navigate("/logincontainer");
-        
       }
     } catch (error) {
       console.log(error.message);
@@ -63,7 +63,7 @@ const ResendVerification = () => {
 
     try {
       const response = await fetch(
-        "http://3.83.243.144/api/v1/organization/resend/verify-account",
+        `${baseURL}/organization/resend/verify-account`,
         {
           method: "POST",
           headers: {
@@ -76,11 +76,14 @@ const ResendVerification = () => {
       if (response.ok) {
         console.log("verification successful");
         toast.success("verification sent");
+
         navigate("/logincontainer");
       } else {
         const data = await response.json();
         toast.error(data.error);
-        navigate("/checkinbox");
+        setTimeout(() => {
+          navigate("/checkinbox");
+        }, 2000);
       }
     } catch (error) {
       toast.error(error);

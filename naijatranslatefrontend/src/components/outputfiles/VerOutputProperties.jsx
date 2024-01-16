@@ -1,14 +1,16 @@
 import outspeaker from "../../assets/Outspeaker.svg";
-import thumbup from "../../assets/Thumbup.svg";
-import thumbdown from "../../assets/Thumbdown.svg";
 import Close from "../../assets/close.svg";
 import share from "../../assets/Share.svg";
 import copy from "../../assets/Copy.svg";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useOpenNavbar } from "../../Stores/Stores";
-import UnverifiedRating from "../UnverifiedRating";
+import VerifiedRating from "../VerifiedRating";
 
-const OutputProperties = ({ translatedAudioUrl, outputType, feedbackData }) => {
+const VerOutputProperties = ({
+  translatedAudioUrl,
+  outputType,
+  feedbackId,
+}) => {
   const { openNav, setOpenNav } = useOpenNavbar();
 
   const [openAudio, setOpenAudio] = useState(false);
@@ -35,7 +37,7 @@ const OutputProperties = ({ translatedAudioUrl, outputType, feedbackData }) => {
 
       <div className="flex flex-row justify-around">
         <img src={copy} className="w-[30px] h-[30px]" alt="copy" />
-        <UnverifiedRating feedbackData={feedbackData} />
+        <VerifiedRating feedbackId={feedbackId} />
         <img src={share} alt="share" className="w-[30px] h-[30px]" />
       </div>
       {openAudio && (
@@ -58,4 +60,4 @@ const OutputProperties = ({ translatedAudioUrl, outputType, feedbackData }) => {
   );
 };
 
-export default OutputProperties;
+export default VerOutputProperties;

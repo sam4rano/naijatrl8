@@ -4,13 +4,13 @@ import "./Tabcontainer.css";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { baseURL } from "../api/SpeechApi";
 
-const PasswordResetInvoke = () => {
+const ForgotPassword = () => {
   const [activeTab, setActiveTab] = useState("tabone");
   const [individualEmail, setIndividualEmail] = useState("");
   const [organisationEmail, setOrganisationEmail] = useState("");
-  const [disabled, setDisabled] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleTabOne = () => {
@@ -22,73 +22,71 @@ const PasswordResetInvoke = () => {
 
   const handleSubmitUser = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const formData = {
       email: individualEmail,
     };
 
     try {
-      const response = await fetch(
-        "http://3.83.243.144/api/v1/forgot-password",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`${baseURL}/forgot-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+        body: JSON.stringify(formData),
+      });
 
       if (response.ok) {
-        console.log("Registration successful");
-        navigate("/logincontainer");
-
-        toast.success("Registration successful");
+        const responseData = await response.json();
+        toast.success(responseData.message);
+        setIsLoading(false);
+        setTimeout(() => {
+          navigate("/logincontainer");
+        }, 2000);
       } else {
         const data = await response.json();
-      
-
+        console.log("data", data);
         toast.error(data.message);
       }
     } catch (error) {
       console.log(error.message);
     }
   };
+
   const handleSubmitAdmin = async (e) => {
     e.preventDefault();
-
     const formData = {
       email: organisationEmail,
     };
 
     try {
-      const response = await fetch(
-        "http://3.83.243.144/api/v1/organization/forgot-password",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`${baseURL}/organization/forgot-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
 
       if (response.ok) {
-        console.log("Registration successful");
-        navigate("/logincontainer");
-
-        toast.success("Registration successful");
+        setIsLoading(false);
+        const responseData = await response.json();
+        toast.success(responseData.message);
+        setTimeout(() => {
+          navigate("/logincontainer");
+        }, 2000);
       } else {
         // console.log("Registration failed");
         const data = await response.json();
-        console.log("data",data);
-     
 
         toast.error(data.error);
       }
     } catch (error) {
-      
       toast.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -129,7 +127,7 @@ const PasswordResetInvoke = () => {
         </ul>
         {activeTab === "tabone" ? (
           <form
-            onClick={handleSubmitUser}
+            onSubmit={handleSubmitUser}
             className="rounded-md flex flex-col content-center max-w-[340px] mx-auto"
           >
             <div className="pb-sm">
@@ -144,8 +142,15 @@ const PasswordResetInvoke = () => {
                 }}
               />
             </div>
-            <button className="bg-primary text-white rounded-full w-[327px] px-lg h-[40px]">
+            {/* <button className="bg-primary text-white rounded-full w-[327px] px-lg h-[40px]">
               Send Instructions
+            </button> */}
+            <button
+              className="bg-primary hover:cursor-pointer text-white rounded-full w-full px-lg h-[40px]"
+              type="submit"
+              disabled={isLoading}
+            >
+              {isLoading ? "Please wait .." : "Send Instructions"}
             </button>
 
             <Link to="/logincontainer" className="mx-auto font-[700]">
@@ -169,18 +174,22 @@ const PasswordResetInvoke = () => {
                 }}
               />
             </div>
-            <button className="bg-primary text-white rounded-full w-[327px] px-lg h-[40px]">
-              Send Instructions
+            <button
+              type="submit"
+              className="px-[8px] border-[1px] h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center"
+              disabled={isLoading}
+            >
+              {isLoading ? "Please wait" : "Send Instructions"}
             </button>
             <Link to="/logincontainer" className="mx-auto font-[700] ">
               <h2 className="hover:underline-offset-4">Back to Login Page</h2>
             </Link>
           </form>
         )}
+        <ToastContainer />
       </div>
-      <ToastContainer />
     </div>
   );
 };
 
-export default PasswordResetInvoke;
+export default ForgotPassword;

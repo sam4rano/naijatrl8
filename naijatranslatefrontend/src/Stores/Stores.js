@@ -19,28 +19,41 @@ const openNavbar = (set) => ({
   setOpenNav: (value) => set({ isLogOut: value }),
 });
 
+
+const feedbackData = (set) => ({
+  feedbackID: null,
+  setFeedbackID: (value) => set({ feedbackID: value }),
+});
+
 const ratingStore = (set) => ({
   ratingParams: {
     id: "",
     rating: 0,
     feedback: "",
     correct_translation: "",
-    is_rated: false,
   },
   setRatingParams: (params) => set({ ratingParams: params }),
 });
 
 const ratingStoreUnverified = (set) => ({
   ratingParams: {
+    id:"",
     rating: 0,
     feedback: "",
     correct_translation: "",
-    is_rated: false,
   },
   setRatingParams: (params) => set({ ratingParams: params }),
 });
+
+const adminStore = (set) => ({
+  isAdmin: false,
+  setIsAdmin: (value) => set({ isAdmin: value }),
+});
+
+export const useAdminStore = create(adminStore);
 export const useRatingStoreUnverified = create(ratingStoreUnverified);
 export const useLogin = create(logAuth);
+export const useFeedBackData = create(feedbackData);
 export const useOpenNavbar = create(openNavbar);
 export const useBarStore = create(barStore);
 export const useDataStore = create(allHistory);

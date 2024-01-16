@@ -8,7 +8,7 @@ import Outspeaker from "../assets/loutspeaker.svg";
 import ClipBoard from "../assets/clipboard.svg";
 import Skeleton from "@mui/material/Skeleton";
 import { ToastContainer, toast } from "react-toastify";
-import { useOpenNavbar } from "../Stores/Stores";
+import { baseURL } from "../api/SpeechApi";
 
 const TranslateForm = () => {
   //text to text
@@ -21,6 +21,7 @@ const TranslateForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [translatedAudioUrl, setTranslatedAudioUrl] = useState("");
   const [isText, setIsText] = useState("");
+  const [feedbackData, setFeedbackData] = useState("");
 
   //text to speech
   const handleInputTypeChange = (e) => {
@@ -40,8 +41,7 @@ const TranslateForm = () => {
   //text to speech
   // API endpoint for text-to-text translation
   const textToTextTranslate = async () => {
-    const apiUrl =
-      "http://3.83.243.144/api/v1/translate-serverless/text-text/unregistered-trial";
+    const apiUrl = `${baseURL}/translate-serverless/text-text/unregistered-trial`;
 
     try {
       const response = await axios.post(apiUrl, formData);
@@ -49,10 +49,11 @@ const TranslateForm = () => {
       if (response.data && response.data.data) {
         const { target_text } = response.data.data;
         setTargetText(target_text);
+      
+        setFeedbackData(response.data.data.feedback_id);
       } else if (response.data && response.data.message) {
         const responseError = response.data.message;
-        console.error("Error occurred while translating text.");
-        toast.error("error", responseError);
+        toast.error(responseError);
       }
     } catch (error) {
       if (
@@ -61,8 +62,7 @@ const TranslateForm = () => {
         error.response.data.message
       ) {
         const responseError = error.response.data.message;
-
-        toast.error("Error: " + responseError);
+        toast.error(responseError);
       } else {
         toast.error(error.message + "... please check your network");
       }
@@ -73,8 +73,7 @@ const TranslateForm = () => {
 
   // API endpoint for text-to-speech translation
   const textToSpeechTranslate = async () => {
-    const apiUrl =
-      "http://3.83.243.144/api/v1/translate-serverless/text-speech/unregistered-trial";
+    const apiUrl = `${baseURL}/translate-serverless/text-speech/unregistered-trial`;
 
     try {
       const response = await axios.post(apiUrl, {
@@ -86,14 +85,12 @@ const TranslateForm = () => {
 
         if (data && data.url) {
           const { url } = data;
-          toast.success("converted successfully, click on listen button")
-          console.log("data url", url);
+          toast.success(
+            "Text to speech conversion successful, Click on listen button"
+          );
+
           setTranslatedAudioUrl(url);
         } else {
-          console.error(
-            "Error occurred while translating text to speech:",
-            message
-          );
           toast.error(
             "Error occurred while translating text to speech: " + message
           );
@@ -103,7 +100,6 @@ const TranslateForm = () => {
         toast.error("error:", responseError.data.message);
       }
     } catch (error) {
-      console.error("An error occurred:", error);
       toast.error("An error occurred: " + error.message);
     } finally {
       setIsLoading(false);
@@ -196,13 +192,17 @@ const TranslateForm = () => {
         </div>
         <div className="flex flex-row justify-between w-full h-[400px] bg-white pb-[10px] rounded-bl-[16px] rounded-br-[16px]">
           <div className="flex flex-col w-1/2 h-[400px">
-            {inputType === "text" && source_text.length === 0 && isText.length === 0 && (
-              <div className="absolute pl-[180px] pt-[90px] flex flex-col">
-                <img src={ClipBoard} alt="clipboard" className="w-[100px]" />
-                <p className="text-center text-[12px]">Paste your text here</p>
-              </div>
-            )}
-            
+            {inputType === "text" &&
+              source_text.length === 0 &&
+              isText.length === 0 && (
+                <div className="absolute pl-[180px] pt-[90px] flex flex-col">
+                  <img src={ClipBoard} alt="clipboard" className="w-[100px]" />
+                  <p className="text-center text-[12px]">
+                    Paste your text here
+                  </p>
+                </div>
+              )}
+
             {inputType === "speech" && source_text.length === 0 && (
               <img
                 src={Inspeaker}
@@ -277,6 +277,7 @@ const TranslateForm = () => {
             <OutputProperties
               translatedAudioUrl={translatedAudioUrl}
               outputType={outputType}
+              feedbackData={feedbackData}
             />
           </div>
         </div>

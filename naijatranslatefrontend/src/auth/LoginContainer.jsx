@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { baseURL } from "../api/SpeechApi";
 
 const LoginContainer = () => {
   const [activeTab, setActiveTab] = useState("tabone");
@@ -15,8 +15,6 @@ const LoginContainer = () => {
 
   const [individualPassword, setIndividualPassword] = useState("");
   const [organisationPassword, setOrganisationPassword] = useState("");
-
-  const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -30,19 +28,19 @@ const LoginContainer = () => {
 
   const handleSubmitUser = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     if (!individualEmail || !individualPassword) {
       toast.error("Please fill in all fields.");
       return;
     }
-    setIsLoading(true);
     const formData = {
       email: individualEmail,
       password: individualPassword,
     };
 
     try {
-      const response = await fetch("http://3.83.243.144/api/v1/login", {
+      const response = await fetch(`${baseURL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -50,24 +48,20 @@ const LoginContainer = () => {
         withCredentials: true,
         body: JSON.stringify(formData),
       });
-    
+
       if (response.ok) {
+        setIsLoading(false);
         toast.success("Registration successful");
         const data = await response.json();
+        console.log("resp", response);
         const accessToken = data.access;
-        const refreshToken = data.refresh;
-
-        console.log("token", refreshToken);
-       
-        setRegistrationSuccess(true);
         // Save the access token in an HttpOnly cookie
         document.cookie = `access_token=${accessToken}; Secure; SameSite=None`;
-
-        navigate("/translateveruser");
+        setTimeout(() => {
+          navigate("/translateveruser"), 2000;
+        });
       } else {
-        console.log("Registration failed");
         const data = await response.json();
-
         toast.error(data.detail);
       }
     } catch (error) {
@@ -86,48 +80,38 @@ const LoginContainer = () => {
       toast.error("Please fill in all fields.");
       return;
     }
-
     const formData = {
       email: organisationEmail,
       password: organisationPassword,
     };
 
     try {
-      const response = await fetch(
-        "http://3.83.243.144/api/v1/organization/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`${baseURL}/organization/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+        body: JSON.stringify(formData),
+      });
 
-     
       if (response.ok) {
+        setIsLoading(false);
         toast.success("Registration successful");
         const data = await response.json();
         const accessToken = data.access;
-        const refreshToken = data.refresh;
 
-        console.log("token", refreshToken);
-       
-        setRegistrationSuccess(true);
-       
         document.cookie = `access_token=${accessToken}; HttpOnly; Secure; SameSite=Strict`;
-        navigate("/translateveruser");
+        setTimeout(() => {
+          navigate("/translateveruser"), 2000;
+        });
+
         toast.success("Registration successful");
       } else {
-        console.log("Registration failed");
         const data = await response.json();
-
         toast.error(data.detail);
       }
-  
     } catch (error) {
-      console.log("An error occurred:", error);
       toast.error("An error occurred", error);
     } finally {
       setIsLoading(false);
@@ -211,7 +195,7 @@ const LoginContainer = () => {
                     </Link>
                   </p>
                   <Link
-                    to="/passwordresetinvoke"
+                    to="/forgotpassword"
                     className="underline underline-offset-8 mx-auto"
                   >
                     Forgot Password
@@ -250,9 +234,9 @@ const LoginContainer = () => {
                 <button
                   className="bg-primary text-white rounded-full w-full px-lg h-[40px]"
                   type="submit"
-                   disabled={isLoading}
+                  disabled={isLoading}
                 >
-                {isLoading ? "Please wait" : "Log in"}
+                  {isLoading ? "Please wait" : "Log in"}
                 </button>
 
                 <div className="flex flex-col justify-center mx-auto py-[10px]">
