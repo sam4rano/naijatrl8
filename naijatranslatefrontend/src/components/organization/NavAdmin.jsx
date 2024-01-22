@@ -10,7 +10,7 @@ import Title from "../utils/Title";
 import { useBarStore, useLogin } from "../Stores/Stores";
 import { HiOutlineUser } from "react-icons/hi";
 
-const NavVerified = () => {
+const NavAdmin = () => {
   const [navbar, setNavbar] = useState(false);
   const navigate = useNavigate();
 
@@ -105,4 +105,4 @@ const NavVerified = () => {
   );
 };
 
-export default NavVerified;
+export default NavAdmin;

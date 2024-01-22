@@ -22,6 +22,7 @@ const PasswordResetAdmin = () => {
         const res = await fetch(
           `http://3.83.243.144/organization/password-reset/${uidb64}/${token}`,
           {
+            method:"PUT",
             headers: {
               "Content-Type": "application/json",
             },

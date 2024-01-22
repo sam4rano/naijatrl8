@@ -9,7 +9,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import Verify from "./auth/Verify";
 import PasswordResetAdmin from "./auth/PasswordResetAdmin";
-import PasswordReset from "./auth/PasswordReset";
+import PasswordReset from "./auth/PasswordResetConfirm";
 import ForgotPassword from "./auth/ForgotPassword";
 
 import SignupContainer from "./auth/SignupContainer";
@@ -22,6 +22,7 @@ import Feedback from "./pages/Feedback";
 import HelpCenter from "./pages/HelpCenter";
 import Contact from "./pages/Contact";
 import InternalHistory from "./utils/userHistory";
+import PasswordResetConfirm from "./auth/PasswordResetConfirm";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +50,7 @@ export default function App() {
             element={<OrganisationVerify />}
           />
           <Route path="checkinbox" element={<CheckInbox />} />
+          <Route path="password-reset/confirm/:uidb64/:token" element={<PasswordResetConfirm />} />
           <Route path="password-reset/*" element={<PasswordReset />} />
           <Route
             path="organization/password-reset/*"

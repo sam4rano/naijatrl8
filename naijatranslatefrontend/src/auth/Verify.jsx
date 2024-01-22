@@ -1,6 +1,6 @@
 import { useNavigate, useParams, Link } from "react-router-dom";
 import Title from "../utils/Title";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { baseURL } from "../api/SpeechApi";
@@ -16,50 +16,45 @@ const Verify = () => {
 
   const [uidb64, token] = params["*"].split("/");
 
-  useEffect(() => {
-    const confirmVerified = async () => {
-      try {
-        const response = await axios.put(
-          `${baseURL}/verify-account/`,
-          {
-            uidb64: uidb64,
-            token: token,
-          },
-          {
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          }
-        );
+  const confirmVerified = useCallback(async () => {
+    try {
+      const response = await fetch(`${baseURL}/verify-account/`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          uidb64: uidb64,
+          token: token,
+        }),
+      });
 
-        console.log(response)
+      const responseData = await response.json();
 
-        
-        if (response.status === 200) {
-          const responseData = response.data;
-          console.log("response", responseData);
-          setIsLoading(false);
-          setIsSuccess(true);
-          toast.success(responseData.message);
-          setTimeout(() => {
-            navigate("/logincontainer");
-          }, 2000);
-        } else {
-          const errorData = response.data;
-          console.log("error", errorData);
-        
-        }
-      } catch (error) {
-        console.error("Error during verification:", error);
-  
-        navigate("/resendverifyaccount");
-      } finally {
+      console.log(responseData);
+
+      if (response.ok) {
+        console.log("response", responseData);
         setIsLoading(false);
+        setIsSuccess(true);
+        toast.success(responseData.message);
+        setTimeout(() => {
+          navigate("/logincontainer");
+        }, 2000);
+      } else {
+        console.log("error", responseData);
       }
-    };
-
-    confirmVerified();
+    } catch (error) {
+      console.error("Error during verification:", error);
+      navigate("/resendverifyaccount");
+    } finally {
+      setIsLoading(false);
+    }
   }, [uidb64, token, navigate]);
+
+  useEffect(() => {
+    confirmVerified();
+  }, [confirmVerified]);
 
   return (
     <div>

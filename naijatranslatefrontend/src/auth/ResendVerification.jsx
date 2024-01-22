@@ -4,7 +4,7 @@ import "./Tabcontainer.css";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { axiosApi, baseURL } from "../api/SpeechApi";
+import { baseURL } from "../api/SpeechApi";
 
 
 const ResendVerification = () => {

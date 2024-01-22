@@ -8,7 +8,6 @@ import "react-toastify/dist/ReactToastify.css";
 
 import DialogTitle from "@mui/material/DialogTitle";
 import { useRatingStoreUnverified, useOpenNavbar } from "../Stores/Stores";
-import thumbUp from "../assets/Thumbup.svg";
 import { useState } from "react";
 import close from "../assets/close.svg";
 import { useMutation } from '@tanstack/react-query';
@@ -24,6 +23,16 @@ export default function UnverifiedRating({feedbackData}) {
   const mutation = useMutation({
     mutationFn: (updatedRatings) => {
       return axios.put('http://3.83.243.144/api/v1/task/unregistered-trial/rate', updatedRatings)
+    },
+    onSuccess: (data) => {
+      
+      toast.success(`Rating submitted successfully: ${data.message}`);
+      console.log("data",data)
+    },
+    onError: (error) => {
+      // Access the response error and show error message
+      const errorMessage = error.response?.data?.message || 'An error occurred';
+      toast.error(` ${errorMessage}`);
     },
   })
 
