@@ -4,36 +4,30 @@ import { useEffect, useState, useCallback } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { baseURL } from "../api/SpeechApi";
-import axios from "axios";
-
 
 const Verify = () => {
   const [isSuccess, setIsSuccess] = useState(false);
-
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   let params = useParams();
+  const { uid, token } = params;
 
-  const [uidb64, token] = params["*"].split("/");
+  console.log("params", params);
 
   const confirmVerified = useCallback(async () => {
+    const formData = { uid: uid, token: token };
     try {
-      const response = await fetch(`${baseURL}/verify-account/`, {
-        method: 'PUT',
+      const response = await fetch(`${baseURL}/verify-account`, {
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          uidb64: uidb64,
-          token: token,
-        }),
+        body: JSON.stringify(formData),
       });
-
-      const responseData = await response.json();
-
-      console.log(responseData);
+      console.log("resp", response);
 
       if (response.ok) {
+        const responseData = await response.json();
         console.log("response", responseData);
         setIsLoading(false);
         setIsSuccess(true);
@@ -42,7 +36,7 @@ const Verify = () => {
           navigate("/logincontainer");
         }, 2000);
       } else {
-        console.log("error", responseData);
+        console.log("error", response);
       }
     } catch (error) {
       console.error("Error during verification:", error);
@@ -50,7 +44,13 @@ const Verify = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [uidb64, token, navigate]);
+  }, [navigate, token, uid]);
+
+  // Function to manually trigger the verification
+  const handleManualVerification = () => {
+    setIsLoading(true);
+    confirmVerified();
+  };
 
   useEffect(() => {
     confirmVerified();
@@ -62,12 +62,24 @@ const Verify = () => {
         <div>
           <Title />
         </div>
-        
-        {isLoading && <p className="flex justify-center mx-auto text-center text-[50px]">Loading...</p>}
-        {!isLoading && !isSuccess && (
-          <Link to="/resendverifyaccount">Resend Verification Link</Link>
+
+        {isLoading && (
+          <p className="flex justify-center mx-auto text-center text-[50px]">
+            Loading...
+          </p>
         )}
-        {!isLoading && isSuccess && (<h1>Verification successful</h1>)}
+        {!isLoading && !isSuccess && (
+          <div>
+            <button
+              className="bg-primary text-white rounded-full w-full px-lg h-[40px] mb-4"
+              onClick={handleManualVerification}
+            >
+              Resend Verification Link
+            </button>
+            <Link to="/resendverifyaccount">Resend Verification Link</Link>
+          </div>
+        )}
+        {!isLoading && isSuccess && <h1>Verification successful</h1>}
       </div>
       <ToastContainer />
     </div>
@@ -75,19 +87,3 @@ const Verify = () => {
 };
 
 export default Verify;
-
-
-
-
-
- // if (
-          //   "message" in errorData &&
-          //   errorData.message === "User with email already verified"
-          // ) {
-          //   setVerified("User with email already verified");
-          //   setTimeout(() => {
-          //     navigate("/logincontainer");
-          //   }, 2000);
-          // } else {
-          //   setVerified(errorData.message);
-          // }

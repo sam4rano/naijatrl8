@@ -55,6 +55,7 @@ const LoginContainer = () => {
         const data = await response.json();
         console.log("resp", response);
         const accessToken = data.access;
+        
         // Save the access token in an HttpOnly cookie
         document.cookie = `access_token=${accessToken}; Secure; SameSite=None`;
         setTimeout(() => {
@@ -247,7 +248,7 @@ const LoginContainer = () => {
                     </Link>
                   </p>
                   <Link
-                    to="/passwordresetinvoke"
+                    to="/forgotpassword"
                     className="underline underline-offset-8 mx-auto"
                   >
                     Forgot Password
@@ -257,8 +258,8 @@ const LoginContainer = () => {
             )}
           </div>
         </div>
-      </div>
       <ToastContainer />
+      </div>
     </div>
   );
 };

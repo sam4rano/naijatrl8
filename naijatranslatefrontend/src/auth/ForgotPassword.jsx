@@ -172,14 +172,15 @@ const ForgotPassword = () => {
               />
             </div>
             <button
+              className="bg-primary hover:cursor-pointer text-white rounded-full w-full px-lg h-[40px]"
               type="submit"
-              className="px-[8px] border-[1px] h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center"
               disabled={isLoading}
             >
-              {isLoading ? "Please wait" : "Send Instructions"}
+              {isLoading ? "Please wait .." : "Send Instructions"}
             </button>
-            <Link to="/logincontainer" className="mx-auto font-[700] ">
-              <h2 className="hover:underline-offset-4">Back to Login Page</h2>
+
+            <Link to="/logincontainer" className="mx-auto font-[700]">
+              <h2>Back to Login Page</h2>
             </Link>
           </form>
         )}

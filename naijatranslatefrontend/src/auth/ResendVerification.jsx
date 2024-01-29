@@ -6,11 +6,11 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { baseURL } from "../api/SpeechApi";
 
-
 const ResendVerification = () => {
   const [activeTab, setActiveTab] = useState("tabone");
   const [individualEmail, setIndividualEmail] = useState("");
   const [organisationEmail, setOrganisationEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -23,7 +23,7 @@ const ResendVerification = () => {
 
   const handleSubmitUser = async (e) => {
     e.preventDefault();
-
+    setIsLoading(true);
     const formData = {
       email: individualEmail,
     };
@@ -38,7 +38,10 @@ const ResendVerification = () => {
       });
 
       if (response.ok) {
-        toast.success("verification sent, check your email");
+        const responseData = await response.json();
+        setIsLoading(false);
+
+        toast.success(responseData.message + ",check your email");
         setTimeout(() => {
           navigate("/checkinbox");
         }, 2000);
@@ -51,11 +54,14 @@ const ResendVerification = () => {
     } catch (error) {
       console.log(error.message);
       toast.error(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSubmitAdmin = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const formData = {
       email: organisationEmail,
@@ -74,10 +80,13 @@ const ResendVerification = () => {
       );
 
       if (response.ok) {
-        console.log("verification successful");
-        toast.success("verification sent");
+        setIsLoading(false);
+        const responseData = await response.json();
+        toast.success(responseData.message + ",check your email");
 
-        navigate("/logincontainer");
+        setTimeout(() => {
+          navigate("/logincontainer");
+        }, 3000);
       } else {
         const data = await response.json();
         toast.error(data.error);
@@ -87,6 +96,8 @@ const ResendVerification = () => {
       }
     } catch (error) {
       toast.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -145,8 +156,9 @@ const ResendVerification = () => {
             <button
               className="bg-primary text-white rounded-full w-full px-lg h-[40px]"
               type="submit"
+              disabled={isLoading}
             >
-              Send Instructions
+              {isLoading ? "Submitting..." : "Send Instructions"}
             </button>
 
             <Link to="/logincontainer" className="mx-auto font-[700]">
@@ -170,11 +182,13 @@ const ResendVerification = () => {
                 }}
               />
             </div>
+
             <button
               className="bg-primary text-white rounded-full w-full px-lg h-[40px]"
               type="submit"
+              disabled={isLoading}
             >
-              Send Instructions
+              {isLoading ? "Submitting..." : "Send Instructions"}
             </button>
             <Link to="/logincontainer" className="mx-auto font-[700]">
               <h2>Back to Login Page</h2>

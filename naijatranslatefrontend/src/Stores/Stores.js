@@ -9,6 +9,7 @@ const allHistory = (set) => ({
   getUserHistory: (data) => set({ userHistory: data }),
 });
 
+
 const logAuth = (set) => ({
   isLogOut: false,
   setIsLogOut: (value) => set({ isLogOut: value }),

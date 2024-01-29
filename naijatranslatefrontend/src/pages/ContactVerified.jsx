@@ -1,12 +1,15 @@
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import NavVerified from "../navbar/NavVerified";
 
-const HelpCenter = () => {
+const ContactVerified = () => {
   return (
+	<>
+	<NavVerified />
     <div className="flex justify-center flex-col px-[40px] py-[30px] bg-[#f0f0f0]">
       <div className="bg-white p-[20px]">
         <div className="flex flex-row justify-start px-[10px] py-[20px]">
-          <h2 className=" text-[20px] font-bold">Help Center</h2>
+          <h2 className=" text-[20px] font-bold">Contact </h2>
         </div>
         <div className="py-[10px]">
           <hr className="" />
@@ -19,7 +22,8 @@ const HelpCenter = () => {
 
       <ToastContainer />
     </div>
+	</>
   );
 };
 
-export default HelpCenter;
+export default ContactVerified;

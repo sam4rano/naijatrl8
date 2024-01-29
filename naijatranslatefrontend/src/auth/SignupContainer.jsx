@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Title from "../utils/Title";
 import "./Tabcontainer.css";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -51,59 +50,6 @@ const SignupContainer = () => {
   const handleTabTwo = () => {
     setActiveTab("tabtwo");
   };
-
-  // const handleSubmitUser = async (e) => {
-  //   e.preventDefault();
-
-  //   if (!individualEmail || !individualPassword) {
-  //     toast.error("Please fill in all fields.");
-  //     return;
-  //   }
-
-  //   const passwordPattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
-
-  //   if (!passwordPattern.test(individualPassword && individualConfirmPassword )) {
-  //     toast.error(
-  //       "Password must contain at least one letter, one number, and be at least 8 characters long."
-  //     );
-  //     return;
-  //   }
-
-  //   const formData = {
-  //     email: individualEmail,
-  //     first_name: individualFirstName,
-  //     last_name: individualLastName,
-  //     password: individualPassword,
-  //     confirm_password: individualConfirmPassword,
-  //   };
-
-  //   console.log("formdata", formData)
-
-  //   try {
-  //     const responseUser = await axios.post("http://3.83.243.144/api/v1/register", {
-
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(formData),
-  //     });
-
-  //     if (responseUser.ok) {
-  //       const data = await responseUser.json();
-
-  //       setSuccess(true);
-  //       toast.success(data.success);
-  //       navigate("/logincontainer");
-  //     } else {
-  //       const data = await responseUser.json();
-
-  //       toast.error(data.email[0]);
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //     toast.error(error.message);
-  //   }
-  // };
 
   const handleSubmitUser = async (e) => {
     e.preventDefault();
@@ -376,7 +322,7 @@ const SignupContainer = () => {
                     </Link>
                   </p>
                   <Link
-                    to="/passwordresetinvoke"
+                    to="/forgotpassword"
                     className="underline underline-offset-8 mx-auto"
                   >
                     Forgot Password
@@ -533,7 +479,7 @@ const SignupContainer = () => {
                         </Link>
                       </p>
                       <Link
-                        to="/passwordresetinvoke"
+                        to="/forgotpassword"
                         className="underline underline-offset-8 mx-auto"
                       >
                         Forgot Password
@@ -704,7 +650,7 @@ const SignupContainer = () => {
                         </Link>
                       </p>
                       <Link
-                        to="/passwordresetinvoke"
+                        to="/forgotpassword"
                         className="underline underline-offset-8 mx-auto"
                       >
                         Forgot Password

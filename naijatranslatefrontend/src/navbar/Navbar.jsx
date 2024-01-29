@@ -46,7 +46,7 @@ const Navbar = ({ isLoggedin, handleLogout }) => {
                   <h2 className="font-medium">Contact us</h2>
                 </Link>
               </li>
-              <Link to="/" className="flex mt-auto font-medium hover:bg-light">
+              <Link to="/signupcontainer" className="flex mt-auto font-medium hover:bg-light">
                 Sign Up
               </Link>
             </ul>

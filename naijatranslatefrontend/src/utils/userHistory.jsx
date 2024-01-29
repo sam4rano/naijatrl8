@@ -5,6 +5,8 @@ import Cookies from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import arrowLeft from "../assets/arrowleft.svg";
+
+import { baseURL } from "../api/SpeechApi";
 import NavVerified from "../navbar/NavVerified";
 
 const InternalHistory = () => {
@@ -37,7 +39,7 @@ const InternalHistory = () => {
     queryFn: async () => {
       try {
         const response = await axios.get(
-          "http://3.83.243.144/api/v1/translate/my-translations",
+          `${baseURL}/translate/my-translations`,
           requestOptions
         );
         return response.data;
@@ -50,13 +52,9 @@ const InternalHistory = () => {
     enabled: !!accessToken,
   });
 
-  // useEffect(() => {
-  //   console.log("Change", data);
-  // }, [data]);
-
   return (
     <>
-      <NavVerified />
+    <NavVerified />
       <div className="flex justify-center flex-col px-[40px] py-[30px] bg-[#f0f0f0]">
         <div className="bg-white p-[20px]">
           <div className="flex flex-row justify-start px-[10px] py-[20px]">

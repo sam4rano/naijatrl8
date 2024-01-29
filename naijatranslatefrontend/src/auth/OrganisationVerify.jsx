@@ -1,87 +1,76 @@
 import { useNavigate, useParams, Link } from "react-router-dom";
 import Title from "../utils/Title";
-import { useEffect, useState,useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { baseURL } from "../api/SpeechApi";
+
 
 const OrganisationVerify = () => {
   const [isSuccess, setIsSuccess] = useState(false);
-  const [verified, setVerified] = useState("");
+
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   let params = useParams();
 
-  const [uidb64, token] = params["*"].split("/");
+  const [uid, token] = params["*"].split("/");
 
   const confirmVerified = useCallback(async () => {
     try {
-      const res = await fetch(
-        `http://3.83.243.144/organization/verify-account/${uidb64}/${token}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`${baseURL}/organization/verify-account`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          uid: uid,
+          token: token,
+        }),
+      });
 
-      if (res.ok) {
-        const responseData = await res.json();
+      const responseData = await response.json();
+
+      console.log(responseData);
+
+      if (response.ok) {
+        console.log("response", responseData);
+        setIsLoading(false);
         setIsSuccess(true);
         toast.success(responseData.message);
         setTimeout(() => {
           navigate("/logincontainer");
         }, 2000);
       } else {
-        const errorData = await res.json();
-        if (
-          "message" in errorData &&
-          errorData.error === "Organization with email already verified"
-        ) {
-          setVerified("Organization with email already verified");
-          navigate("/logincontainer");
-        } else {
-          setVerified(errorData.error);
-        }
+        console.log("error", responseData);
       }
     } catch (error) {
-      toast.error("Request for a new verification link: " + error);
+      console.error("Error during verification:", error);
       navigate("/resendverifyaccount");
+    } finally {
+      setIsLoading(false);
     }
-  }, [uidb64, token, navigate]);
+  }, [uid, token, navigate]);
 
   useEffect(() => {
     confirmVerified();
   }, [confirmVerified]);
 
   return (
-    <div className="p-[20px]">
-      <div>
-        <Title />
-      </div>
-      <div className="flex flex-col justify-center items-center align-middle pt-[150px]">
-        {isSuccess ? (
-          <div className="py-[10px]">
-            <h1 className="">Verification successful</h1>
-          </div>
-        ) : (
-          <div className="py-[10px]">
-            <h1>{verified}</h1>
-          </div>
+    <div>
+      <div className="p-[20px]">
+        <div>
+          <Title />
+        </div>
+        
+        {isLoading && <p className="flex justify-center mx-auto text-center text-[50px]">Loading...</p>}
+        {!isLoading && !isSuccess && (
+          <Link to="/resendverifyaccount">Resend Verification Link</Link>
         )}
-        {!isSuccess && (
-          <Link
-            to="/logincontainer"
-            className="bg-primary hover:bg-blue-800 text-white rounded-full px-[10px] py-[3px]"
-          >
-            Go to Login
-          </Link>
-        )}
+        {!isLoading && isSuccess && (<h1>Verification successful</h1>)}
       </div>
-
       <ToastContainer />
     </div>
   );
 };
 
 export default OrganisationVerify;
-

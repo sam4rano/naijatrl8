@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import history from "../assets/history.svg";
 import feedback from "../assets/feedback.svg";
 import contact from "../assets/contact.svg";
@@ -33,8 +33,6 @@ const NavVerified = () => {
     setIsLogOut(isLogOut);
   };
 
-  
-
   return (
     <div className="flex flex-row justify-between p-[10px]">
       <div className="flex flex-row">
@@ -62,20 +60,20 @@ const NavVerified = () => {
                   <div>history</div>
                 </button>
                 <NavLink
-                  to="/feedback"
+                  to="/feedbackver"
                   className="flex hover:bg-light mb-[20px]"
                 >
                   <img src={feedback} alt="feedback" className="pr-[10px]" />
                   <div>feedback</div>
                 </NavLink>
                 <NavLink
-                  to="/help_center"
+                  to="/help_centerver"
                   className="flex hover:bg-light mb-[20px]"
                 >
                   <img src={upload} alt="help_center" className="pr-[10px]" />
                   <div>Help Center</div>
                 </NavLink>
-                <NavLink to="/contact" className="flex hover:bg-light">
+                <NavLink to="/contactver" className="flex hover:bg-light">
                   <img src={contact} alt="contact" className="pr-[10px]" />
                   <div>Contact us</div>
                 </NavLink>
@@ -87,7 +85,9 @@ const NavVerified = () => {
             </ul>
           )}
         </div>
-        <Title />
+        <Link to="/translateveruser" className="text-primary text-lg">
+          <span className="font-bold">Naija</span>Translate
+        </Link>
       </div>
       <div className="flex flex-row justify-around">
         <button
