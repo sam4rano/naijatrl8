@@ -12,6 +12,7 @@ import { useState } from "react";
 import close from "../assets/close.svg";
 import { useMutation } from '@tanstack/react-query';
 import axios from "axios";
+import thumpUp from "../assets/thumbUp.svg";
 
 export default function UnverifiedRating({feedbackData}) {
   const [open, setOpen] = useState(false);
@@ -58,8 +59,8 @@ export default function UnverifiedRating({feedbackData}) {
 
   return (
     <>
-      <button onClick={toggleDialog}>
-        Feedback
+      <button onClick={toggleDialog} className="flex justify-center align-items ">
+        <img src={thumpUp} alt="thumpUp" />
       </button>
       <Dialog
         open={open}

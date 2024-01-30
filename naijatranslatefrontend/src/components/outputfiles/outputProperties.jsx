@@ -33,7 +33,7 @@ const OutputProperties = ({ translatedAudioUrl, outputType, feedbackData }) => {
         </div>
       )}
 
-      <div className="flex flex-row justify-around">
+      <div className="flex flex-row justify-around align-middle items-center">
         <img src={copy} className="w-[30px] h-[30px]" alt="copy" />
         <UnverifiedRating feedbackData={feedbackData} />
         <img src={share} alt="share" className="w-[30px] h-[30px]" />

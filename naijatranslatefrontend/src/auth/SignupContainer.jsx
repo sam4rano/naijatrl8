@@ -206,7 +206,7 @@ const SignupContainer = () => {
 
   return (
     <div className="p-[10px]">
-      <Title />
+     
       <div className="w-[340px] mx-auto pt-[30px] rounded-md">
         <h1 className="font-[700] justify-center align-middle text-[18px] leading-4 flex w-full h-[33px] mx-auto text-center">
           Sign up for your account account

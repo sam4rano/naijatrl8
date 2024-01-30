@@ -16,6 +16,7 @@ const LoginContainer = () => {
   const [individualPassword, setIndividualPassword] = useState("");
   const [organisationPassword, setOrganisationPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false)
 
   const navigate = useNavigate();
 
@@ -55,7 +56,7 @@ const LoginContainer = () => {
         const data = await response.json();
         console.log("resp", response);
         const accessToken = data.access;
-        
+
         // Save the access token in an HttpOnly cookie
         document.cookie = `access_token=${accessToken}; Secure; SameSite=None`;
         setTimeout(() => {
@@ -101,6 +102,8 @@ const LoginContainer = () => {
         toast.success("Registration successful");
         const data = await response.json();
         const accessToken = data.access;
+        setIsAdmin(true);
+        localStorage.setItem("isAdmin", JSON.stringify(true));
 
         document.cookie = `access_token=${accessToken}; HttpOnly; Secure; SameSite=Strict`;
         setTimeout(() => {
@@ -121,7 +124,6 @@ const LoginContainer = () => {
 
   return (
     <div className="p-[10px]">
-      <Title />
       <div className="w-[340px] mx-auto pt-[50px]">
         <h1 className="font-[700] justify-center align-middle text-[18px] leading-4 flex w-full h-[33px] mx-auto text-center">
           Login to your account account
@@ -258,7 +260,7 @@ const LoginContainer = () => {
             )}
           </div>
         </div>
-      <ToastContainer />
+        <ToastContainer />
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import open from "../assets/close.svg";
 import feedback from "../assets/feedback.svg";
 import contact from "../assets/contact.svg";
 
-const Navbar = ({ isLoggedin, handleLogout }) => {
+const Navbar = () => {
   const [navbar, setNavbar] = useState(false);
 
   const handleClose = () => {
@@ -46,7 +46,10 @@ const Navbar = ({ isLoggedin, handleLogout }) => {
                   <h2 className="font-medium">Contact us</h2>
                 </Link>
               </li>
-              <Link to="/signupcontainer" className="flex mt-auto font-medium hover:bg-light">
+              <Link
+                to="/signupcontainer"
+                className="flex mt-auto font-medium hover:bg-light"
+              >
                 Sign Up
               </Link>
             </ul>
@@ -55,20 +58,16 @@ const Navbar = ({ isLoggedin, handleLogout }) => {
         <Title />
       </div>
       <div className="flex flex-row justify-around px-[10px] ">
-        {!isLoggedin && (
-          <Link to="/signupcontainer">
-            <button className="bg-primary hover:text-blue-100 hover:outline-1 text-white rounded-full px-lg h-[30px] mr-[10px]">
-              Sign up
-            </button>
-          </Link>
-        )}
-        {!isLoggedin && (
-          <Link to="/logincontainer">
-            <button className=" text-primary outline outline-offset-0  rounded-full px-lg h-[30px] outline-1 hover:bg-blue-100">
-              Login
-            </button>
-          </Link>
-        )}
+        <Link to="/signupcontainer">
+          <button className="bg-primary hover:text-blue-100 hover:outline-1 text-white rounded-full px-lg h-[30px] mr-[10px]">
+            Sign up
+          </button>
+        </Link>
+        <Link to="/logincontainer">
+          <button className=" text-primary outline outline-offset-0  rounded-full px-lg h-[30px] outline-1 hover:bg-blue-100">
+            Login
+          </button>
+        </Link>
       </div>
     </div>
   );

@@ -10,7 +10,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useRatingStore, useOpenNavbar } from "../Stores/Stores";
 import { useState } from "react";
 import close from "../assets/close.svg";
-import { useMutation } from '@tanstack/react-query';
+import { useMutation } from "@tanstack/react-query";
+import thumbUp from "../assets/thumbUp.svg";
 import axios from "axios";
 
 export default function VerifiedRating({ feedbackId }) {
@@ -18,12 +19,15 @@ export default function VerifiedRating({ feedbackId }) {
   const { ratingParams, setRatingParams } = useRatingStore();
   const { setOpenNav } = useOpenNavbar();
 
-
   const mutation = useMutation({
     mutationFn: (updatedRatings) => {
-      return axios.put('http://3.83.243.144/api/v1/task/unregistered-trial/rate', updatedRatings, {
-        headers: getCommonHeaders(), // Include the headers here
-      })
+      return axios.put(
+        "http://3.83.243.144/api/v1/task/unregistered-trial/rate",
+        updatedRatings,
+        {
+          headers: getCommonHeaders(), // Include the headers here
+        }
+      );
     },
     onError: (error) => {
       // Handle error here
@@ -31,7 +35,6 @@ export default function VerifiedRating({ feedbackId }) {
       toast.error("Error submitting data: " + error.message);
     },
   });
-  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,7 +61,6 @@ export default function VerifiedRating({ feedbackId }) {
     }
   };
 
-
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -72,7 +74,7 @@ export default function VerifiedRating({ feedbackId }) {
       correct_translation: "",
     });
   };
-// working fine too
+  // working fine too
   const getCommonHeaders = async () => {
     try {
       let accessToken = "";
@@ -84,12 +86,12 @@ export default function VerifiedRating({ feedbackId }) {
           console.error("Error while fetching access token", error);
         }
       );
-  
+
       const commonHeaders = {
         "Content-Type": "application/json",
         Authorization: `JWT ${accessToken}`,
       };
-  
+
       console.log("headers", commonHeaders);
       return commonHeaders;
     } catch (error) {
@@ -97,13 +99,12 @@ export default function VerifiedRating({ feedbackId }) {
       throw error;
     }
   };
-  
 
   //working fine
   const getAccessTokenFromCookie = async () => {
     try {
       const accessToken = await Cookies.get("access_token");
-      console.log("Access token: " + accessToken)
+      console.log("Access token: " + accessToken);
       return accessToken || "unauthenticated user";
     } catch (error) {
       console.error("Error during mutation:", error);
@@ -116,7 +117,9 @@ export default function VerifiedRating({ feedbackId }) {
 
   return (
     <React.Fragment>
-      <button onClick={handleClickOpen}>Feedback</button>
+      <button onClick={handleClickOpen}>
+        <img src={thumbUp} alt="thumbUp" />
+      </button>
       <Dialog
         open={open}
         onClose={handleClose}

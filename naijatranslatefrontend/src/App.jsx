@@ -20,7 +20,6 @@ import HelpCenter from "./pages/HelpCenter";
 import Contact from "./pages/Contact";
 import InternalHistory from "./utils/userHistory";
 
-
 const queryClient = new QueryClient();
 
 import "./App.css";
@@ -42,7 +41,7 @@ const App = () => {
       <>
         <Route element={<Layout />}>
           <Route path="/" element={<TranslateForm />} />
-          <Route path="/" element={<Title />} />
+          
           <Route path="help_center" element={<HelpCenter />} />
           <Route path="contact" element={<Contact />} />
           <Route path="logincontainer" element={<LoginContainer />} />
