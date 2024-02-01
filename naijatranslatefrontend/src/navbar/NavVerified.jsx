@@ -6,7 +6,7 @@ import contact from "../assets/contact.svg";
 import upload from "../assets/upload.svg";
 import close from "../assets/open.svg";
 import open from "../assets/close.svg";
-import Title from "../utils/Title";
+
 import { useBarStore, useLogin } from "../Stores/Stores";
 import { HiOutlineUser } from "react-icons/hi";
 

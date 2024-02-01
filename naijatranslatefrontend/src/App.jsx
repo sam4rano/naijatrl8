@@ -1,13 +1,9 @@
 import Layout from "./layout/Layout";
-import Title from "./utils/Title";
-
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
 import Verify from "./auth/Verify";
 import PasswordResetAdmin from "./auth/PasswordResetAdmin";
 import PasswordReset from "./auth/PasswordReset";
 import ForgotPassword from "./auth/ForgotPassword";
-
 import SignupContainer from "./auth/SignupContainer";
 import LoginContainer from "./auth/LoginContainer";
 import CheckInbox from "./auth/CheckInbox";
@@ -34,6 +30,7 @@ import TranslateForm from "./components/TranslateForm";
 import ProtectedRoute from "./components/ProtectedRoute";
 import NavVerified from "./navbar/NavVerified";
 import ContactVerified from "./pages/ContactVerified";
+import UserContainer from "./pages/UserContainer";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -41,11 +38,8 @@ const App = () => {
       <>
         <Route element={<Layout />}>
           <Route path="/" element={<TranslateForm />} />
-          
           <Route path="help_center" element={<HelpCenter />} />
           <Route path="contact" element={<Contact />} />
-          <Route path="logincontainer" element={<LoginContainer />} />
-          <Route path="signupcontainer" element={<SignupContainer />} />
         </Route>
         <Route element={<ProtectedRoute />}>
           <Route path="navverified" element={<NavVerified />} />
@@ -55,25 +49,30 @@ const App = () => {
           <Route path="contactver" element={<ContactVerified />} />
           <Route path="translateveruser" element={<TranslateVerUser />} />
         </Route>
-
-        <Route path="forgotpassword" element={<ForgotPassword />} />
-        <Route path="verify-account/:uid/:token" element={<Verify />} />
-        <Route
-          path="organization/verify-account/*"
-          element={<OrganisationVerify />}
-        />
-        <Route path="checkinbox" element={<CheckInbox />} />
-
-        <Route
-          path="password-reset/:uidb64/:token"
-          id="password-reset"
-          element={<PasswordReset />}
-        />
-        <Route
-          path="organization/password-reset/:uid/:token"
-          element={<PasswordResetAdmin />}
-        />
-        <Route path="resendverifyaccount/*" element={<ResendVerification />} />
+        <Route element={<UserContainer />}>
+          <Route path="logincontainer" element={<LoginContainer />} />
+          <Route path="signupcontainer" element={<SignupContainer />} />
+          <Route path="forgotpassword" element={<ForgotPassword />} />
+          <Route path="verify-account/:uid/:token" element={<Verify />} />
+          <Route
+            path="organization/verify-account/*"
+            element={<OrganisationVerify />}
+          />
+          <Route path="checkinbox" element={<CheckInbox />} />
+          <Route
+            path="password-reset/:uidb64/:token"
+            id="password-reset"
+            element={<PasswordReset />}
+          />
+          <Route
+            path="organization/password-reset/:uid/:token"
+            element={<PasswordResetAdmin />}
+          />
+          <Route
+            path="resendverifyaccount/*"
+            element={<ResendVerification />}
+          />
+        </Route>
       </>
     )
   );

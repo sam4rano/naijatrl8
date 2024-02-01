@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
-import Title from "../utils/Title";
+
 import "./Tabcontainer.css";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { baseURL } from "../api/SpeechApi";
@@ -20,79 +20,87 @@ const ForgotPassword = () => {
     setActiveTab("tabtwo");
   };
 
-  const handleSubmitUser = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const handleSubmitUser = useCallback(
+    async (e) => {
+      e.preventDefault();
+      setIsLoading(true);
 
-    const formData = {
-      email: individualEmail,
-    };
+      const formData = {
+        email: individualEmail,
+      };
 
-    try {
-      const response = await fetch(`${baseURL}/forgot-password`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-        body: JSON.stringify(formData),
-      });
+      try {
+        const response = await fetch(`${baseURL}/forgot-password`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+          body: JSON.stringify(formData),
+        });
 
-      if (response.ok) {
-        const responseData = await response.json();
-        toast.success(responseData.message);
-        setIsLoading(false);
-        setTimeout(() => {
-          navigate("/logincontainer");
-        }, 2000);
-      } else {
-        const data = await response.json();
-        console.log("data", data);
-        toast.error(data.message);
+        if (response.ok) {
+          const responseData = await response.json();
+          toast.success(responseData.message);
+          setIsLoading(false);
+          setTimeout(() => {
+            navigate("/logincontainer");
+          }, 2000);
+        } else {
+          const data = await response.json();
+          console.log("data", data);
+          toast.error(data.message);
+        }
+      } catch (error) {
+        console.log(error.message);
       }
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+    },
+    [individualEmail, navigate]
+  );
 
-  const handleSubmitAdmin = async (e) => {
-    e.preventDefault();
-    const formData = {
-      email: organisationEmail,
-    };
+  const handleSubmitAdmin = useCallback(
+    async (e) => {
+      e.preventDefault();
+      const formData = {
+        email: organisationEmail,
+      };
 
-    try {
-      const response = await fetch(`${baseURL}/organization/forgot-password`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      try {
+        const response = await fetch(
+          `${baseURL}/organization/forgot-password`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+          }
+        );
 
-      if (response.ok) {
+        if (response.ok) {
+          setIsLoading(false);
+          const responseData = await response.json();
+          toast.success(responseData.message);
+          setTimeout(() => {
+            navigate("/logincontainer");
+          }, 2000);
+        } else {
+          // console.log("Registration failed");
+          const data = await response.json();
+
+          toast.error(data.error);
+        }
+      } catch (error) {
+        toast.error(error);
+      } finally {
         setIsLoading(false);
-        const responseData = await response.json();
-        toast.success(responseData.message);
-        setTimeout(() => {
-          navigate("/logincontainer");
-        }, 2000);
-      } else {
-        // console.log("Registration failed");
-        const data = await response.json();
-
-        toast.error(data.error);
       }
-    } catch (error) {
-      toast.error(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    },
+    [organisationEmail, navigate]
+  );
 
   return (
     <div className="flex flex-col p-[20px]">
-      <Title />
       <div className="w-[320px] mx-auto pt-[40px]">
         <div className="flex justify-center align-middle flex-col w-[320px]">
           <h1 className="text-center py-[20px] text-[14px] font-[600]">

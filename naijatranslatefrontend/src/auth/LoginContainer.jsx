@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Title from "../utils/Title";
 import "./Tabcontainer.css";
 import { Link } from "react-router-dom";
@@ -16,7 +16,7 @@ const LoginContainer = () => {
   const [individualPassword, setIndividualPassword] = useState("");
   const [organisationPassword, setOrganisationPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false)
+  const [isAdmin, setIsAdmin] = useState(false);
 
   const navigate = useNavigate();
 
@@ -27,100 +27,106 @@ const LoginContainer = () => {
     setActiveTab("tabtwo");
   };
 
-  const handleSubmitUser = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const handleSubmitUser = useCallback(
+    async (e) => {
+      e.preventDefault();
+      setIsLoading(true);
 
-    if (!individualEmail || !individualPassword) {
-      toast.error("Please fill in all fields.");
-      return;
-    }
-    const formData = {
-      email: individualEmail,
-      password: individualPassword,
-    };
-
-    try {
-      const response = await fetch(`${baseURL}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        setIsLoading(false);
-        toast.success("Registration successful");
-        const data = await response.json();
-        console.log("resp", response);
-        const accessToken = data.access;
-
-        // Save the access token in an HttpOnly cookie
-        document.cookie = `access_token=${accessToken}; Secure; SameSite=None`;
-        setTimeout(() => {
-          navigate("/translateveruser"), 2000;
-        });
-      } else {
-        const data = await response.json();
-        toast.error(data.detail);
+      if (!individualEmail || !individualPassword) {
+        toast.error("Please fill in all fields.");
+        return;
       }
-    } catch (error) {
-      console.log("An error occurred:", error);
-      toast.error("Network error, please check your network", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      const formData = {
+        email: individualEmail,
+        password: individualPassword,
+      };
+
+      try {
+        const response = await fetch(`${baseURL}/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+          body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+          setIsLoading(false);
+          toast.success("Registration successful");
+          const data = await response.json();
+          console.log("resp", response);
+          const accessToken = data.access;
+
+          // Save the access token in an HttpOnly cookie
+          document.cookie = `access_token=${accessToken}; Secure; SameSite=None`;
+          setTimeout(() => {
+            navigate("/translateveruser"), 2000;
+          });
+        } else {
+          const data = await response.json();
+          toast.error(data.detail);
+        }
+      } catch (error) {
+        console.log("An error occurred:", error);
+        toast.error("Network error, please check your network", error);
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [individualEmail, individualPassword, navigate]
+  );
 
   //admin login
-  const handleSubmitAdmin = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    if (!organisationEmail || !organisationPassword) {
-      toast.error("Please fill in all fields.");
-      return;
-    }
-    const formData = {
-      email: organisationEmail,
-      password: organisationPassword,
-    };
+  const handleSubmitAdmin = useCallback(
+    async (e) => {
+      e.preventDefault();
+      setIsLoading(true);
+      if (!organisationEmail || !organisationPassword) {
+        toast.error("Please fill in all fields.");
+        return;
+      }
+      const formData = {
+        email: organisationEmail,
+        password: organisationPassword,
+      };
 
-    try {
-      const response = await fetch(`${baseURL}/organization/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-        body: JSON.stringify(formData),
-      });
-
-      if (response.ok) {
-        setIsLoading(false);
-        toast.success("Registration successful");
-        const data = await response.json();
-        const accessToken = data.access;
-        setIsAdmin(true);
-        localStorage.setItem("isAdmin", JSON.stringify(true));
-
-        document.cookie = `access_token=${accessToken}; HttpOnly; Secure; SameSite=Strict`;
-        setTimeout(() => {
-          navigate("/translateveruser"), 2000;
+      try {
+        const response = await fetch(`${baseURL}/organization/login`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+          body: JSON.stringify(formData),
         });
 
-        toast.success("Registration successful");
-      } else {
-        const data = await response.json();
-        toast.error(data.detail);
+        if (response.ok) {
+          setIsLoading(false);
+          toast.success("Registration successful");
+          const data = await response.json();
+          const accessToken = data.access;
+          setIsAdmin(true);
+          localStorage.setItem("isAdmin", JSON.stringify(true));
+
+          document.cookie = `access_token=${accessToken}; HttpOnly; Secure; SameSite=Strict`;
+          setTimeout(() => {
+            navigate("/translateveruser"), 2000;
+          });
+
+          toast.success("Registration successful");
+        } else {
+          const data = await response.json();
+          toast.error(data.detail);
+        }
+      } catch (error) {
+        toast.error("An error occurred", error);
+      } finally {
+        setIsLoading(false);
       }
-    } catch (error) {
-      toast.error("An error occurred", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    },
+    [organisationEmail, organisationPassword, navigate]
+  );
 
   return (
     <div className="p-[10px]">

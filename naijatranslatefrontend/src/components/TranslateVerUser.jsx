@@ -12,6 +12,7 @@ import ClipBoard from "../assets/clipboard.svg";
 import Skeleton from "@mui/material/Skeleton";
 import { Link } from "react-router-dom";
 import NavVerified from "../navbar/NavVerified";
+import { baseURL } from "../api/SpeechApi";
 
 import { useBarStore } from "../Stores/Stores";
 import VerOutputProperties from "./outputfiles/VerOutputProperties";
@@ -88,7 +89,7 @@ const TranslateVerUser = () => {
   };
   // API endpoint for text-to-text translation
   const textToTextTranslate = async (formDataText, commonHeaders) => {
-    const apiUrl = "http://3.83.243.144/api/v1/translate-serverless/text-text";
+    const apiUrl = `${baseURL}/translate-serverless/text-text`;
 
     try {
       const response = await fetch(apiUrl, {
@@ -104,7 +105,7 @@ const TranslateVerUser = () => {
         const responseData = await response.json();
 
         setFeedbackData(responseData.data.feedback_id);
-        console.log("feedback",responseData.data.feedback_id)
+        console.log("feedback", responseData.data.feedback_id);
         if (responseData && responseData.data) {
           const { target_text } = responseData.data;
           setTarget_text(target_text);
@@ -121,8 +122,7 @@ const TranslateVerUser = () => {
   };
   // API endpoint for text-to-speech translation
   const textToSpeechTranslate = async (formDataSpeech, commonHeaders) => {
-    const apiUrl =
-      "http://3.83.243.144/api/v1/translate-serverless/text-speech";
+    const apiUrl =`${baseURL}/translate-serverless/text-speech`;
 
     try {
       const response = await fetch(apiUrl, {
@@ -176,6 +176,9 @@ const TranslateVerUser = () => {
     }
   };
 
+  const isAdmin = localStorage.getItem("isAdmin") === "true";
+
+  
   return (
     <>
       <div className="bg-graylight">

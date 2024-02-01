@@ -13,6 +13,8 @@ import close from "../assets/close.svg";
 import { useMutation } from "@tanstack/react-query";
 import thumbUp from "../assets/thumbUp.svg";
 import axios from "axios";
+import { baseURL } from "../api/SpeechApi";
+import { useCallback } from "react";
 
 export default function VerifiedRating({ feedbackId }) {
   const [open, setOpen] = useState(false);
@@ -21,59 +23,60 @@ export default function VerifiedRating({ feedbackId }) {
 
   const mutation = useMutation({
     mutationFn: (updatedRatings) => {
-      return axios.put(
-        "http://3.83.243.144/api/v1/task/unregistered-trial/rate",
-        updatedRatings,
-        {
-          headers: getCommonHeaders(), // Include the headers here
-        }
-      );
+      return axios.put(`${baseURL}/task/rate`, updatedRatings, {
+        headers: getCommonHeaders(), // Include the headers here
+      });
+    },
+    onSuccess: (data) => {
+      toast.success(`Rating submitted successfully: ${data.message}`);
+      console.log("data", data);
     },
     onError: (error) => {
       // Handle error here
-      console.error("Error during mutation:", error);
       toast.error("Error submitting data: " + error.message);
     },
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setRatingParams({ ...ratingParams, [name]: value });
+    const updatedValue = name === "rating" ? parseInt(value, 10) : value;
+    setRatingParams({ ...ratingParams, [name]: updatedValue });
   };
 
-  const submitData = async () => {
-    try {
-      const result = await mutation.mutateAsync({ ...ratingParams });
-
-      if (result) {
-        setOpenNav(true);
-        handleClose();
-        toast.success("Data submitted successfully");
-      } else {
-        // Handle the case where the mutation was not successful
-        toast.error("Failed to submit data. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error during mutation:", error);
-      console.error("Response data:", error.response?.data);
-      console.error("Status code:", error.response?.status);
-      toast.error(error.message);
-    }
+  const submitData = () => {
+    mutation.mutate({ ...ratingParams });
   };
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  // const submitData = async () => {
+  //   try {
+  //     const result = await mutation.mutateAsync({ ...ratingParams });
 
-  const handleClose = () => {
-    setOpen(false);
+  //     if (result) {
+  //       setOpenNav(true);
+  //       handleClose();
+  //       toast.success("Data submitted successfully");
+  //     } else {
+  //       // Handle the case where the mutation was not successful
+  //       toast.error("Failed to submit data. Please try again.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error during mutation:", error);
+  //     console.error("Response data:", error.response?.data);
+  //     console.error("Status code:", error.response?.status);
+  //     toast.error(error.message);
+  //   }
+  // };
+
+  const handleClose = useCallback(() => {
+    setOpen(!open);
     setRatingParams({
       id: feedbackId,
-      rating: 0,
-      feedback: " ",
+      rating: 1,
+      feedback: "",
       correct_translation: "",
     });
-  };
+  }, [open, setRatingParams, feedbackId]);
+
   // working fine too
   const getCommonHeaders = async () => {
     try {
@@ -103,7 +106,7 @@ export default function VerifiedRating({ feedbackId }) {
   //working fine
   const getAccessTokenFromCookie = async () => {
     try {
-      const accessToken = await Cookies.get("access_token");
+      const accessToken = Cookies.get("access_token");
       console.log("Access token: " + accessToken);
       return accessToken || "unauthenticated user";
     } catch (error) {
@@ -116,8 +119,8 @@ export default function VerifiedRating({ feedbackId }) {
   };
 
   return (
-    <React.Fragment>
-      <button onClick={handleClickOpen}>
+    <>
+      <button onClick={handleClose}>
         <img src={thumbUp} alt="thumbUp" />
       </button>
       <Dialog
@@ -175,6 +178,6 @@ export default function VerifiedRating({ feedbackId }) {
         </DialogActions>
         <ToastContainer />
       </Dialog>
-    </React.Fragment>
+    </>
   );
 }

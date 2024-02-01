@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import axios from "axios";
 import changeIcon from "../assets/Changeicon.png";
 import OutputProperties from "./outputfiles/OutputProperties";
@@ -32,15 +32,15 @@ const TranslateForm = () => {
     setOutputType(e.target.value);
   };
 
-  const formData = {
-    source_language: source_language,
-    target_language: target_language,
-    source_text: source_text,
-    target_text: target_text,
-  };
   //text to speech
   // API endpoint for text-to-text translation
-  const textToTextTranslate = async () => {
+  const textToTextTranslate = useCallback( async () => {
+    const formData = {
+      source_language: source_language,
+      target_language: target_language,
+      source_text: source_text,
+      target_text: target_text,
+    };
     const apiUrl = `${baseURL}/translate-serverless/text-text/unregistered-trial`;
 
     try {
@@ -69,7 +69,7 @@ const TranslateForm = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [source_language, source_text, target_language, target_text]);
 
   // API endpoint for text-to-speech translation
   const textToSpeechTranslate = async () => {
