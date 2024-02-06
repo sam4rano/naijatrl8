@@ -34,7 +34,7 @@ const TranslateForm = () => {
 
   //text to speech
   // API endpoint for text-to-text translation
-  const textToTextTranslate = useCallback( async () => {
+  const textToTextTranslate = useCallback(async () => {
     const formData = {
       source_language: source_language,
       target_language: target_language,
@@ -49,7 +49,7 @@ const TranslateForm = () => {
       if (response.data && response.data.data) {
         const { target_text } = response.data.data;
         setTargetText(target_text);
-      
+
         setFeedbackData(response.data.data.feedback_id);
       } else if (response.data && response.data.message) {
         const responseError = response.data.message;
@@ -72,7 +72,7 @@ const TranslateForm = () => {
   }, [source_language, source_text, target_language, target_text]);
 
   // API endpoint for text-to-speech translation
-  const textToSpeechTranslate = async () => {
+  const textToSpeechTranslate = useCallback(async () => {
     const apiUrl = `${baseURL}/translate-serverless/text-speech/unregistered-trial`;
 
     try {
@@ -85,6 +85,7 @@ const TranslateForm = () => {
 
         if (data && data.url) {
           const { url } = data;
+          console.log("url", url)
           toast.success(
             "Text to speech conversion successful, Click on listen button"
           );
@@ -104,7 +105,7 @@ const TranslateForm = () => {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [isText]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

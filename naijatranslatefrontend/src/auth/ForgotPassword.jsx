@@ -61,6 +61,7 @@ const ForgotPassword = () => {
   const handleSubmitAdmin = useCallback(
     async (e) => {
       e.preventDefault();
+      setIsLoading(true);
       const formData = {
         email: organisationEmail,
       };
@@ -73,14 +74,15 @@ const ForgotPassword = () => {
             headers: {
               "Content-Type": "application/json",
             },
+            withCredentials: true,
             body: JSON.stringify(formData),
           }
         );
 
         if (response.ok) {
-          setIsLoading(false);
           const responseData = await response.json();
           toast.success(responseData.message);
+          setIsLoading(false);
           setTimeout(() => {
             navigate("/logincontainer");
           }, 2000);
@@ -164,7 +166,7 @@ const ForgotPassword = () => {
           </form>
         ) : (
           <form
-            onClick={handleSubmitAdmin}
+            onSubmit={handleSubmitAdmin}
             className="rounded-md flex flex-col content-center max-w-[340px] mx-auto"
           >
             <div className="pb-sm">
@@ -192,6 +194,7 @@ const ForgotPassword = () => {
             </Link>
           </form>
         )}
+        
         <ToastContainer />
       </div>
     </div>

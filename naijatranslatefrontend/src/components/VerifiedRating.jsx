@@ -47,26 +47,6 @@ export default function VerifiedRating({ feedbackId }) {
     mutation.mutate({ ...ratingParams });
   };
 
-  // const submitData = async () => {
-  //   try {
-  //     const result = await mutation.mutateAsync({ ...ratingParams });
-
-  //     if (result) {
-  //       setOpenNav(true);
-  //       handleClose();
-  //       toast.success("Data submitted successfully");
-  //     } else {
-  //       // Handle the case where the mutation was not successful
-  //       toast.error("Failed to submit data. Please try again.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error during mutation:", error);
-  //     console.error("Response data:", error.response?.data);
-  //     console.error("Status code:", error.response?.status);
-  //     toast.error(error.message);
-  //   }
-  // };
-
   const handleClose = useCallback(() => {
     setOpen(!open);
     setRatingParams({

@@ -10,11 +10,12 @@ import CheckInbox from "./auth/CheckInbox";
 import OrganisationVerify from "./auth/OrganisationVerify";
 import TranslateVerUser from "./components/TranslateVerUser";
 import ResendVerification from "./auth/ResendVerification";
-import Feedbackverified from "./pages/FeedbackVerified";
+import Developeraccount from "./pages/Developeraccount";
 import HelpCenterVerified from "./pages/HelpCenterVerified";
 import HelpCenter from "./pages/HelpCenter";
 import Contact from "./pages/Contact";
 import InternalHistory from "./utils/userHistory";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient();
 
@@ -44,7 +45,7 @@ const App = () => {
         <Route element={<ProtectedRoute />}>
           <Route path="navverified" element={<NavVerified />} />
           <Route path="internalhistory" element={<InternalHistory />} />
-          <Route path="feedbackver" element={<Feedbackverified />} />
+          <Route path="developeraccount" element={<Developeraccount />} />
           <Route path="help_centerver" element={<HelpCenterVerified />} />
           <Route path="contactver" element={<ContactVerified />} />
           <Route path="translateveruser" element={<TranslateVerUser />} />
@@ -80,6 +81,7 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 };

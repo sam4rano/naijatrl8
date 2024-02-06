@@ -60,11 +60,11 @@ const NavVerified = () => {
                   <div>history</div>
                 </button>
                 <NavLink
-                  to="/feedbackver"
+                  to="/developeraccount"
                   className="flex hover:bg-light mb-[20px]"
                 >
-                  <img src={feedback} alt="feedback" className="pr-[10px]" />
-                  <div>feedback</div>
+                  <img src={feedback} alt="dev account" className="pr-[10px]" />
+                  <div>Developer Account</div>
                 </NavLink>
                 <NavLink
                   to="/help_centerver"

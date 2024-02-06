@@ -105,7 +105,7 @@ const TranslateVerUser = () => {
         const responseData = await response.json();
 
         setFeedbackData(responseData.data.feedback_id);
-        console.log("feedback", responseData.data.feedback_id);
+
         if (responseData && responseData.data) {
           const { target_text } = responseData.data;
           setTarget_text(target_text);
@@ -122,7 +122,7 @@ const TranslateVerUser = () => {
   };
   // API endpoint for text-to-speech translation
   const textToSpeechTranslate = async (formDataSpeech, commonHeaders) => {
-    const apiUrl =`${baseURL}/translate-serverless/text-speech`;
+    const apiUrl = `${baseURL}/translate-serverless/text-speech`;
 
     try {
       const response = await fetch(apiUrl, {
@@ -178,7 +178,6 @@ const TranslateVerUser = () => {
 
   const isAdmin = localStorage.getItem("isAdmin") === "true";
 
-  
   return (
     <>
       <div className="bg-graylight">
