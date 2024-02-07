@@ -1,9 +1,11 @@
-import React from 'react'
+import History from "./History";
 
 const HistoryAdmin = () => {
   return (
-	<div>HistoryAdmin</div>
-  )
-}
+    <div className="w-full">
+      <History />
+    </div>
+  );
+};
 
-export default HistoryAdmin
+export default HistoryAdmin;

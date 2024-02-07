@@ -1,5 +1,4 @@
 import { Outlet } from "react-router-dom";
-import TranslateForm from "../components/TranslateForm";
 import Navbar from "../navbar/Navbar";
 import Ads from "../utils/Ads";
 import { useState } from "react";

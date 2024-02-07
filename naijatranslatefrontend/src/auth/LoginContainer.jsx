@@ -57,12 +57,24 @@ const LoginContainer = () => {
           const data = await response.json();
           console.log("resp", response);
           const accessToken = data.access;
+          const isAdmin = data.is_organization;
+
+          console.log("isAdmin", isAdmin);
 
           // Save the access token in an HttpOnly cookie
           document.cookie = `access_token=${accessToken}; Secure; SameSite=None`;
-          setTimeout(() => {
-            navigate("/translateveruser"), 2000;
-          });
+
+          if (isAdmin) {
+            setIsAdmin(true);
+            localStorage.setItem("isAdmin", JSON.stringify(true));
+            setTimeout(() => {
+              navigate("/adminlayout"), 2000;
+            });
+          } else {
+            setTimeout(() => {
+              navigate("/translateveruser"), 2000;
+            });
+          }
         } else {
           const data = await response.json();
           toast.error(data.detail);

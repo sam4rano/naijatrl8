@@ -1,21 +1,20 @@
 import { useState } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import history from "../assets/history.svg";
-import feedback from "../assets/feedback.svg";
-import contact from "../assets/contact.svg";
-import upload from "../assets/upload.svg";
-import close from "../assets/open.svg";
-import open from "../assets/close.svg";
-import Title from "../utils/Title";
-import { useBarStore, useLogin } from "../Stores/Stores";
+import { NavLink, useNavigate, Link } from "react-router-dom";
+import history from "../../assets/history.svg";
+
+import feedback from "../../assets/feedback.svg";
+import contact from "../../assets/contact.svg";
+import upload from "../../assets/upload.svg";
+import close from "../../assets/open.svg";
+import open from "../../assets/close.svg";
+
 import { HiOutlineUser } from "react-icons/hi";
 
 const NavAdmin = () => {
   const [navbar, setNavbar] = useState(false);
   const navigate = useNavigate();
 
-  const { isOpen, setOpen } = useBarStore();
-  const { isLogOut, setIsLogOut } = useLogin();
+
 
   const handleClose = () => {
     setNavbar(false);
@@ -24,16 +23,6 @@ const NavAdmin = () => {
     setNavbar(true);
   };
 
-  const handleHistory = () => {
-    setOpen(isOpen);
-    navigate("/internalhistory");
-  };
-  const handleLogout = () => {
-    navigate("/");
-    setIsLogOut(isLogOut);
-  };
-
-  
 
   return (
     <div className="flex flex-row justify-between p-[10px]">
@@ -55,7 +44,7 @@ const NavAdmin = () => {
             <ul className="w-[200px] absolute p-[10px] rounded-[16px] h-full z-30 bg-gray flex flex-col gap-lg">
               <ul>
                 <button
-                  onClick={handleHistory}
+                  
                   className="flex hover:bg-light mb-[20px]"
                 >
                   <img src={history} alt="feedback" className="pr-[10px]" />
@@ -87,11 +76,15 @@ const NavAdmin = () => {
             </ul>
           )}
         </div>
-        <Title />
+        <div>
+          <Link to="/" className="text-primary text-lg">
+            <span className="font-bold">Naija</span>Translate
+          </Link>
+        </div>
       </div>
       <div className="flex flex-row justify-around">
         <button
-          onClick={handleLogout}
+          onClick={() => navigate("/")}
           type="submit"
           className="px-[8px] border-[1px] h-[30px] rounded-full text-primary text-center "
         >

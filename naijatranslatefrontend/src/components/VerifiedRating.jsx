@@ -15,6 +15,7 @@ import thumbUp from "../assets/thumbUp.svg";
 import axios from "axios";
 import { baseURL } from "../api/SpeechApi";
 import { useCallback } from "react";
+import Cookie from "js-cookie";
 
 export default function VerifiedRating({ feedbackId }) {
   const [open, setOpen] = useState(false);

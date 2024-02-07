@@ -32,6 +32,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import NavVerified from "./navbar/NavVerified";
 import ContactVerified from "./pages/ContactVerified";
 import UserContainer from "./pages/UserContainer";
+import AdminLayout from "./components/organization/AdminLayout";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -49,6 +50,7 @@ const App = () => {
           <Route path="help_centerver" element={<HelpCenterVerified />} />
           <Route path="contactver" element={<ContactVerified />} />
           <Route path="translateveruser" element={<TranslateVerUser />} />
+          <Route path="/adminlayout" element={<AdminLayout />}></Route>
         </Route>
         <Route element={<UserContainer />}>
           <Route path="logincontainer" element={<LoginContainer />} />
@@ -74,6 +76,7 @@ const App = () => {
             element={<ResendVerification />}
           />
         </Route>
+        
       </>
     )
   );

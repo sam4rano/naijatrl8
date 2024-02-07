@@ -2,7 +2,7 @@ import React from 'react'
 
 const AccountAdmin = () => {
   return (
-	<div>AccountAdmin</div>
+	<div className='w-full'>AccountAdmin</div>
   )
 }
 
