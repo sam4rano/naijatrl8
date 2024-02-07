@@ -119,14 +119,13 @@ const LoginContainer = () => {
           const data = await response.json();
           const accessToken = data.access;
           setIsAdmin(true);
+
           localStorage.setItem("isAdmin", JSON.stringify(true));
 
           document.cookie = `access_token=${accessToken}; HttpOnly; Secure; SameSite=Strict`;
           setTimeout(() => {
-            navigate("/translateveruser"), 2000;
-          });
-
-          toast.success("Registration successful");
+            navigate("/adminlayout");
+          }, 2000);
         } else {
           const data = await response.json();
           toast.error(data.detail);

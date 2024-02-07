@@ -176,8 +176,6 @@ const TranslateVerUser = () => {
     }
   };
 
-  const isAdmin = localStorage.getItem("isAdmin") === "true";
-
   return (
     <>
       <div className="bg-graylight">

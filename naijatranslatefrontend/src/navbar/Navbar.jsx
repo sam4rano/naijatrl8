@@ -33,7 +33,7 @@ const Navbar = () => {
           )}
           {navbar && (
             <ul className="w-[200px] absolute p-[10px] rounded-[16px] min-h-[600px] z-30 bg-white flex flex-col gap-lg">
-              <li className="">
+              <div className="">
                 <Link
                   to="help_center"
                   className="flex mb-[20px] hover:bg-light"
@@ -45,7 +45,7 @@ const Navbar = () => {
                   <img src={contact} alt="contact" className="pr-[10px]" />
                   <h2 className="font-medium">Contact us</h2>
                 </Link>
-              </li>
+              </div>
               <Link
                 to="/signupcontainer"
                 className="flex mt-auto font-medium hover:bg-light"

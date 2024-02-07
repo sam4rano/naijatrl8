@@ -12,7 +12,7 @@ import { baseURL } from "../api/SpeechApi";
 
 const TranslateForm = () => {
   //text to text
-  const [inputType, setInputType] = useState("text"); // Default to text input
+  const [inputType, setInputType] = useState("text");
   const [outputType, setOutputType] = useState("text");
   const [source_language, setSourceLanguage] = useState("en");
   const [target_language, setTargetLanguage] = useState("");

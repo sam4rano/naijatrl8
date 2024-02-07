@@ -14,27 +14,28 @@ import { useMutation } from "@tanstack/react-query";
 import thumbUp from "../assets/thumbUp.svg";
 import axios from "axios";
 import { baseURL } from "../api/SpeechApi";
-import { useCallback } from "react";
-import Cookie from "js-cookie";
 
 export default function VerifiedRating({ feedbackId }) {
   const [open, setOpen] = useState(false);
   const { ratingParams, setRatingParams } = useRatingStore();
   const { setOpenNav } = useOpenNavbar();
 
-  const mutation = useMutation({
-    mutationFn: (updatedRatings) => {
-      return axios.put(`${baseURL}/task/rate`, updatedRatings, {
-        headers: getCommonHeaders(), // Include the headers here
-      });
-    },
-    onSuccess: (data) => {
-      toast.success(`Rating submitted successfully: ${data.message}`);
-      console.log("data", data);
-    },
-    onError: (error) => {
-      // Handle error here
-      toast.error("Error submitting data: " + error.message);
+  const { mutate } = useMutation({
+    mutationFn: async () => {
+      try {
+        const commonHeaders = await getCommonHeaders();
+        const response = await axios.put(`${baseURL}/task/rate`, ratingParams, {
+          headers: commonHeaders,
+        });
+        toast.success(response.data.message);
+
+        return response.data;
+      } catch (error) {
+        console.error("Error during mutation:", error);
+        console.error("Response data:", error.response?.data);
+        console.error("Status code:", error.response?.status);
+        throw error;
+      }
     },
   });
 
@@ -44,19 +45,26 @@ export default function VerifiedRating({ feedbackId }) {
     setRatingParams({ ...ratingParams, [name]: updatedValue });
   };
 
-  const submitData = () => {
-    mutation.mutate({ ...ratingParams });
+  const submitData = async () => {
+    try {
+      await mutate();
+      setOpenNav(true);
+      handleClose();
+    } catch (error) {
+      console.error("Error submitting data:", error);
+      toast.error("Error submitting data: " + error.message);
+    }
   };
 
-  const handleClose = useCallback(() => {
-    setOpen(!open);
+  const handleClose = () => {
     setRatingParams({
       id: feedbackId,
       rating: 1,
       feedback: "",
       correct_translation: "",
     });
-  }, [open, setRatingParams, feedbackId]);
+    setOpen(false);
+  };
 
   // working fine too
   const getCommonHeaders = async () => {
@@ -76,7 +84,6 @@ export default function VerifiedRating({ feedbackId }) {
         Authorization: `JWT ${accessToken}`,
       };
 
-      console.log("headers", commonHeaders);
       return commonHeaders;
     } catch (error) {
       console.error("Error in getCommonHeaders:", error);
@@ -88,12 +95,12 @@ export default function VerifiedRating({ feedbackId }) {
   const getAccessTokenFromCookie = async () => {
     try {
       const accessToken = Cookies.get("access_token");
-      console.log("Access token: " + accessToken);
+
       return accessToken || "unauthenticated user";
     } catch (error) {
       console.error("Error during mutation:", error);
       console.error("Response data:", error.response?.data);
-      console.error("Status code:", error.response?.status);
+
       toast.error("Error submitting data: " + error.message);
       return "unauthenticated user";
     }
@@ -101,7 +108,7 @@ export default function VerifiedRating({ feedbackId }) {
 
   return (
     <>
-      <button onClick={handleClose}>
+      <button onClick={() => setOpen(true)}>
         <img src={thumbUp} alt="thumbUp" />
       </button>
       <Dialog
