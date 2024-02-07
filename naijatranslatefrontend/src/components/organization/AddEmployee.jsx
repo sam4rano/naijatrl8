@@ -55,7 +55,7 @@ export default function AddEmployee() {
           }
         );
         toast.success(response.data.message);
-        console.log("response", response.data);
+
         return response.data;
       } catch (error) {
         console.error("Error during mutation:", error);
@@ -93,7 +93,6 @@ export default function AddEmployee() {
         Authorization: `JWT ${accessToken}`,
       };
 
-      console.log("headers", commonHeaders);
       return commonHeaders;
     } catch (error) {
       console.error("Error in getCommonHeaders:", error);

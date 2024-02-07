@@ -57,7 +57,9 @@ const EmployeeList = () => {
   });
 
   if (isLoading) {
-    return <div className="text center text-[10px] font-normal">Loading...</div>;
+    return (
+      <div className="text center text-[10px] font-normal">Loading...</div>
+    );
   }
 
   if (isError) {
@@ -80,56 +82,56 @@ const EmployeeList = () => {
           <thead className="bg-gray-50">
             <tr
               scope="col"
-              className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
+              className="px-2 py-2 text-xs font-semibold text-left text-gray-500 uppercase "
             >
               <th
                 scope="col"
-                className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
+                className="px-2 py-2 text-xs font-semibold text-left text-gray-500 uppercase "
               >
                 Id
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
+                className="px-2 py-2 text-xs font-semibold text-left text-gray-500 uppercase "
               >
                 Email
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
+                className="px-2 py-2 text-xs font-semibold text-left text-gray-500 uppercase "
               >
                 First Name
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
+                className="px-2 py-2 text-xs font-semibold text-left text-gray-500 uppercase "
               >
                 Last Name
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-xs font-bold text-left text-gray-500 uppercase "
+                className="px-2 py-2 text-xs font-semibold text-left text-gray-500 uppercase "
               >
                 is_verified
               </th>
             </tr>
           </thead>
-          <tbody className="">
+          <tbody className="divide-y divide-slate-200">
             {data.map((item) => (
               <tr key={item.id}>
-                <td className="px-6 py-4 text-sm font-medium text-gray-800 whitespace-nowrap">
+                <td className="px-2 py-2 text-sm font-medium text-gray-800 whitespace-nowrap">
                   {item.id}
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                <td className="px-2 py-2 text-sm text-gray-800 whitespace-nowrap">
                   {item.email}
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                <td className="px-2 py-2 text-sm text-gray-800 whitespace-nowrap">
                   {item.first_name}
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                <td className="px-2 py-2 text-sm text-gray-800 whitespace-nowrap">
                   {item.last_name}
                 </td>
-                <td className="px-6 py-4 text-sm text-gray-800 whitespace-nowrap">
+                <td className="px-2 py-2 text-sm text-gray-800 whitespace-nowrap">
                   {item.is_verified}
                 </td>
               </tr>

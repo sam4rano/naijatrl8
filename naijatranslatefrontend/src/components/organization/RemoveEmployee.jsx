@@ -29,10 +29,7 @@ const RemoveEmployee = () => {
   const handleClose = () => setOpen(false);
 
   const [formData, setFormData] = useState({
-    first_name: "",
-    last_name: "",
     email: "",
-    password: "",
   });
 
   const handleChange = (e) => {
@@ -47,20 +44,17 @@ const RemoveEmployee = () => {
     mutationFn: async () => {
       try {
         const commonHeaders = await getCommonHeaders();
-        const response = await axios.post(
-          `${baseURL}/organization/add-user`,
-          formData,
+        const response = await axios.delete(
+          `${baseURL}/organization/remove-user/${formData.email}`,
           {
             headers: commonHeaders,
           }
         );
-        toast.success(response.data.message);
 
         return response.data;
       } catch (error) {
-        console.error("Error during mutation:", error);
-        console.error("Response data:", error.response?.data);
-        console.error("Status code:", error.response?.status);
+        toast.error("Error during mutation:", error);
+        toast.error(error.response?.data);
         throw error;
       }
     },
@@ -70,7 +64,7 @@ const RemoveEmployee = () => {
     e.preventDefault();
     try {
       mutate();
-      toast.success("User added successfully!");
+      toast.success("User removed successfully!");
     } catch (error) {
       toast.error("Error submitting data: " + error.message);
     }
@@ -95,7 +89,7 @@ const RemoveEmployee = () => {
 
       return commonHeaders;
     } catch (error) {
-      console.error("Error in getCommonHeaders:", error);
+      toast.error("Error in getCommonHeaders:", error);
       throw error;
     }
   };
@@ -107,8 +101,7 @@ const RemoveEmployee = () => {
 
       return accessToken || "unauthenticated user";
     } catch (error) {
-      console.error("Error during mutation:", error);
-      console.error("Response data:", error.response?.data);
+      toast.error("Response data:", error.response?.data);
 
       toast.error("Error submitting data: " + error.message);
       return "unauthenticated user";
@@ -146,29 +139,6 @@ const RemoveEmployee = () => {
             >
               <HiOutlineX />
             </div>
-            <label>
-              First Name
-              <input
-                type="text"
-                name="first_name"
-                value={formData.first_name}
-                onChange={handleChange}
-                placeholder="first name"
-                className="placeholder:p-md appearance-none outline-none flex  h-[30px] border rounded-lg px-[10px] w-full text-gray-700 leading-tight focus:outline-none "
-              />
-            </label>
-
-            <label>
-              Last Name
-              <input
-                name="last_name"
-                type="text"
-                value={formData.last_name}
-                onChange={handleChange}
-                placeholder="last name"
-                className="placeholder:p-md appearance-none outline-none flex  h-[30px] border rounded-lg px-[10px] w-full text-gray-700 leading-tight focus:outline-none "
-              />
-            </label>
 
             <label>
               Email
@@ -181,19 +151,8 @@ const RemoveEmployee = () => {
                 className="placeholder:p-md appearance-none outline-none flex  h-[30px] border rounded-lg px-[10px] w-full text-gray-700 leading-tight focus:outline-none "
               />
             </label>
-            <label>
-              Password
-              <input
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="password"
-                className="placeholder:p-md appearance-none outline-none flex  h-[30px] border rounded-lg px-[10px] w-full text-gray-700 leading-tight focus:outline-none "
-              />
-            </label>
             <button className="bg-blue-400 w-full text-white text-[16px] text-center leading-20px font-semibold p-[5px] hover:bg-blue-300 my-[5px] rounded-lg">
-              {isSuccess ? "Employee Added!" : "Add Employee"}
+              {isSuccess ? "Employee Removed" : "Remove Employee"}
             </button>
           </form>
         </Fade>
