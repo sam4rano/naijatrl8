@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import Title from "../utils/Title";
+
 import "./Tabcontainer.css";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
@@ -57,16 +57,15 @@ const LoginContainer = () => {
           const data = await response.json();
           console.log("resp", response);
           const accessToken = data.access;
-          const isAdmin = data.is_organization;
+          const isOrg = data.is_organization;
 
-          console.log("isAdmin", isAdmin);
+          console.log("isOrg", isOrg);
 
           // Save the access token in an HttpOnly cookie
           document.cookie = `access_token=${accessToken}; Secure; SameSite=None`;
 
-          if (isAdmin) {
-            setIsAdmin(true);
-            localStorage.setItem("isAdmin", JSON.stringify(true));
+          if (isOrg) {
+            localStorage.setItem("isOrg", JSON.stringify(true));
             setTimeout(() => {
               navigate("/adminlayout"), 2000;
             });
@@ -80,7 +79,6 @@ const LoginContainer = () => {
           toast.error(data.detail);
         }
       } catch (error) {
-        console.log("An error occurred:", error);
         toast.error("Network error, please check your network", error);
       } finally {
         setIsLoading(false);
@@ -115,17 +113,15 @@ const LoginContainer = () => {
 
         if (response.ok) {
           setIsLoading(false);
+          setIsAdmin(!isAdmin);
           toast.success("Registration successful");
           const data = await response.json();
           const accessToken = data.access;
-          setIsAdmin(true);
 
           localStorage.setItem("isAdmin", JSON.stringify(true));
 
-          document.cookie = `access_token=${accessToken}; HttpOnly; Secure; SameSite=Strict`;
-          setTimeout(() => {
-            navigate("/adminlayout");
-          }, 2000);
+          document.cookie = `access_token=${accessToken}; Secure; SameSite=None`;
+          navigate("/adminlayout");
         } else {
           const data = await response.json();
           toast.error(data.detail);
@@ -136,7 +132,7 @@ const LoginContainer = () => {
         setIsLoading(false);
       }
     },
-    [organisationEmail, organisationPassword, navigate]
+    [organisationEmail, organisationPassword, isAdmin, navigate]
   );
 
   return (
