@@ -77,9 +77,7 @@ const TranslateVerUser = () => {
       } else if (inputType === "text" && outputType === "speech") {
         result = await textToSpeechTranslate(formDataSpeech, commonHeaders);
       }
-
-      // Handle the result here if needed
-      console.log("Result:", result);
+      return result;
     } catch (error) {
       console.error("An error occurred:", error);
       toast.error("An error occurred: " + error.message);

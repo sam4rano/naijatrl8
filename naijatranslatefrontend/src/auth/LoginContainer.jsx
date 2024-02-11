@@ -9,20 +9,18 @@ import { baseURL } from "../api/SpeechApi";
 
 const LoginContainer = () => {
   const [activeTab, setActiveTab] = useState("tabone");
-
   const [individualEmail, setIndividualEmail] = useState("");
   const [organisationEmail, setOrganisationEmail] = useState("");
-
   const [individualPassword, setIndividualPassword] = useState("");
   const [organisationPassword, setOrganisationPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
-
   const navigate = useNavigate();
 
   const handleTabOne = () => {
     setActiveTab("tabone");
   };
+
   const handleTabTwo = () => {
     setActiveTab("tabtwo");
   };
@@ -55,11 +53,9 @@ const LoginContainer = () => {
           setIsLoading(false);
           toast.success("Registration successful");
           const data = await response.json();
-          console.log("resp", response);
+
           const accessToken = data.access;
           const isOrg = data.is_organization;
-
-          console.log("isOrg", isOrg);
 
           // Save the access token in an HttpOnly cookie
           document.cookie = `access_token=${accessToken}; Secure; SameSite=None`;

@@ -37,13 +37,13 @@ const ratingStore = (set) => ({
 });
 
 const ratingStoreUnverified = (set) => ({
-  ratingParams: {
-    id:"",
+  ratingParamsUnverified: {
+    id: "",
     rating: 0,
     feedback: "",
     correct_translation: "",
   },
-  setRatingParams: (params) => set({ ratingParams: params }),
+  setRatingParamsUnverified: (params) => set({ ratingParamsUnverified: params }),
 });
 
 const adminStore = (set) => ({

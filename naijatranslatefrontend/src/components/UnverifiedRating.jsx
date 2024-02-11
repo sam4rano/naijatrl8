@@ -16,11 +16,10 @@ import thumpUp from "../assets/thumbUp.svg";
 import { baseURL } from "../api/SpeechApi";
 import { useCallback } from "react";
 
-
-
 export default function UnverifiedRating({ feedbackData }) {
   const [open, setOpen] = useState(false);
-  const { ratingParams, setRatingParams } = useRatingStoreUnverified();
+  const { ratingParamsUnverified, setRatingParamsUnverified } =
+    useRatingStoreUnverified();
   const { setOpenNav } = useOpenNavbar();
 
   const mutation = useMutation({
@@ -31,8 +30,7 @@ export default function UnverifiedRating({ feedbackData }) {
       );
     },
     onSuccess: (data) => {
-      toast.success(`Rating submitted successfully: ${data.message}`);
-      console.log("data", data);
+      toast.success(data.data.message);
     },
     onError: (error) => {
       // Access the response error and show error message
@@ -43,23 +41,26 @@ export default function UnverifiedRating({ feedbackData }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const updatedValue = name === "rating" ? parseInt(value, 10) : value;
-    setRatingParams({ ...ratingParams, [name]: updatedValue });
+    const updatedValue = name === "rating" ? parseInt(value, 10) || "" : value; // Cast value to string if NaN
+    setRatingParamsUnverified({
+      ...ratingParamsUnverified,
+      [name]: updatedValue,
+    });
   };
 
   const submitData = () => {
-    mutation.mutate({ ...ratingParams });
+    mutation.mutate({ ...ratingParamsUnverified });
   };
 
   const toggleDialog = useCallback(() => {
     setOpen(!open);
-    setRatingParams({
+    setRatingParamsUnverified({
       id: feedbackData,
       rating: 1,
       feedback: "",
       correct_translation: "",
     });
-  }, [open, setRatingParams, feedbackData]);
+  }, [open, setRatingParamsUnverified, feedbackData]);
 
   return (
     <>
@@ -81,7 +82,7 @@ export default function UnverifiedRating({ feedbackData }) {
             <input
               type="number"
               name="rating"
-              value={ratingParams.rating}
+              value={ratingParamsUnverified.rating}
               onChange={handleChange}
               className="placeholder:p-md appearance-none outline-none flex  h-[40px] border rounded-[15px] px-[10px] w-full text-gray-700 leading-tight focus:outline-none "
             />
@@ -91,7 +92,7 @@ export default function UnverifiedRating({ feedbackData }) {
             Feedback:
             <input
               name="feedback"
-              value={ratingParams.feedback}
+              value={ratingParamsUnverified.feedback}
               onChange={handleChange}
               className="placeholder:p-md appearance-none outline-none flex  h-[40px] border rounded-[15px] px-[10px] w-full text-gray-700 leading-tight focus:outline-none "
             />
@@ -103,7 +104,7 @@ export default function UnverifiedRating({ feedbackData }) {
               type="text"
               name="correct_translation"
               step="1"
-              value={ratingParams.correct_translation}
+              value={ratingParamsUnverified.correct_translation}
               onChange={handleChange}
               className="placeholder:p-md appearance-none outline-none flex  h-[40px] border rounded-[15px] px-[10px] w-full text-gray-700 leading-tight focus:outline-none "
             />

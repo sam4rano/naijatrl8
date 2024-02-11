@@ -8,7 +8,6 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import "react-toastify/dist/ReactToastify.css";
 import close from "../assets/close.svg";
 import Cookies from "js-cookie";
 
@@ -22,49 +21,42 @@ const Developeraccount = () => {
   const [open, setOpen] = useState(false);
   const [reason, setReason] = useState("");
 
-  const mutation = useMutation({
-    mutationFn: (updatedRatings) => {
-      return axios.put(`${baseURL}/developer/api-key-request`, updatedRatings, {
-        headers: getCommonHeaders(), // Include the headers here
-      });
-    },
+  const { mutate } = useMutation({
+    mutationFn: async () => {
+      try {
+        const commonHeaders = await getCommonHeaders();
+        const response = await axios.post(
+          `${baseURL}/developer/api-key-request`,
+          {
+            headers: commonHeaders,
+          }
+        );
+        toast.success(response.data.message);
 
-
-    onSuccess: (data) => {
-      toast.success(`Request submitted successfully: ${data.message}`);
-      console.log("data", data);
-    },
-    onError: (error) => {
-      // Access the response error and show error message
-      const errorMessage = error.response?.data?.message || "An error occurred";
-      toast.error(` ${errorMessage}`);
+        return response.data;
+      } catch (error) {
+        console.error("Error during mutation:", error);
+        console.error("Response data:", error.response?.data);
+        console.error("Status code:", error.response?.status);
+        throw error;
+      }
     },
   });
 
   const submitData = () => {
-    mutation.mutate({
+    mutate({
       reason: reason,
     });
   };
 
   const getCommonHeaders = async () => {
     try {
-      let accessToken = "";
-      getAccessTokenFromCookie().then(
-        (accessTokenId) => {
-          accessToken = accessTokenId;
-        },
-        (error) => {
-          console.error("Error while fetching access token", error);
-        }
-      );
-
+      let accessToken = await getAccessTokenFromCookie();
       const commonHeaders = {
         "Content-Type": "application/json",
         Authorization: `JWT ${accessToken}`,
       };
-
-      console.log("headers", commonHeaders);
+      console.log("header", commonHeaders);
       return commonHeaders;
     } catch (error) {
       console.error("Error in getCommonHeaders:", error);
@@ -75,15 +67,12 @@ const Developeraccount = () => {
   //working fine
   const getAccessTokenFromCookie = async () => {
     try {
-      const accessToken = Cookies.get("access_token");
-      console.log("Access token: " + accessToken);
-      return accessToken || "unauthenticated user";
+      const accessToken = Cookies.get("access_token") || "unauthenticated user";
+
+      return accessToken;
     } catch (error) {
-      console.error("Error during mutation:", error);
-      console.error("Response data:", error.response?.data);
-      console.error("Status code:", error.response?.status);
-      toast.error("Error submitting data: " + error.message);
-      return "unauthenticated user";
+      console.error("Error during getAccessTokenFromCookie:", error);
+      throw error;
     }
   };
 

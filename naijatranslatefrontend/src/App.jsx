@@ -40,6 +40,7 @@ const App = () => {
       <>
         <Route element={<Layout />}>
           <Route path="/" element={<TranslateForm />} />
+          
           <Route path="help_center" element={<HelpCenter />} />
           <Route path="contact" element={<Contact />} />
         </Route>

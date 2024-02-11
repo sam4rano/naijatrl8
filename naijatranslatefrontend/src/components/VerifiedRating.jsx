@@ -41,7 +41,7 @@ export default function VerifiedRating({ feedbackId }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const updatedValue = name === "rating" ? parseInt(value, 10) : value;
+    const updatedValue = name === "rating" ? parseInt(value, 10) || "" : value;
     setRatingParams({ ...ratingParams, [name]: updatedValue });
   };
 
@@ -66,19 +66,9 @@ export default function VerifiedRating({ feedbackId }) {
     setOpen(false);
   };
 
-  // working fine too
   const getCommonHeaders = async () => {
     try {
-      let accessToken = "";
-      await getAccessTokenFromCookie().then(
-        (accessTokenId) => {
-          accessToken = accessTokenId;
-        },
-        (error) => {
-          console.error("Error while fetching access token", error);
-        }
-      );
-
+      let accessToken = await getAccessTokenFromCookie();
       const commonHeaders = {
         "Content-Type": "application/json",
         Authorization: `JWT ${accessToken}`,
@@ -91,18 +81,13 @@ export default function VerifiedRating({ feedbackId }) {
     }
   };
 
-  //working fine
   const getAccessTokenFromCookie = async () => {
     try {
-      const accessToken = Cookies.get("access_token");
-
-      return accessToken || "unauthenticated user";
+      const accessToken = Cookies.get("access_token") || "unauthenticated user";
+      return accessToken;
     } catch (error) {
-      console.error("Error during mutation:", error);
-      console.error("Response data:", error.response?.data);
-
-      toast.error("Error submitting data: " + error.message);
-      return "unauthenticated user";
+      console.error("Error during getAccessTokenFromCookie:", error);
+      throw error;
     }
   };
 
@@ -142,7 +127,6 @@ export default function VerifiedRating({ feedbackId }) {
           <label>
             Correct Translation:
             <textarea
-              type="text"
               name="correct_translation"
               value={ratingParams.correct_translation}
               onChange={handleChange}
@@ -154,15 +138,7 @@ export default function VerifiedRating({ feedbackId }) {
           <Button autoFocus onClick={handleClose}>
             <img src={close} alt="close img" />
           </Button>
-          <Button
-            onClick={() => {
-              submitData();
-              setOpenNav(true);
-              handleClose();
-            }}
-          >
-            Submit
-          </Button>
+          <Button onClick={submitData}>Submit</Button>
         </DialogActions>
         <ToastContainer />
       </Dialog>

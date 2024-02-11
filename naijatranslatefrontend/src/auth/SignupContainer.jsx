@@ -173,9 +173,6 @@ const SignupContainer = () => {
       account_manager_email: acctManagerEmail,
     };
 
-    console.log("FORM DATA", checkedFormData);
-
-    console.log("FORM DATA", unCheckedFormData);
     try {
       const response = await fetch(
         `${baseURL}/organization/register`,
@@ -208,14 +205,14 @@ const SignupContainer = () => {
     <div className="p-[10px]">
      
       <div className="w-[340px] mx-auto pt-[30px] rounded-md">
-        <h1 className="font-[700] justify-center align-middle text-[18px] leading-4 flex w-full h-[33px] mx-auto text-center">
+        <h1 className="font-bold justify-center align-middle text-[18px] leading-4 flex w-full h-[33px] mx-auto text-center sm:text-[14px] md:text-[16px]">
           Sign up for your account account
         </h1>
         <div className="tab-ul flex flex-col">
-          <ul className="flex flex-row list-none text-center cursor-pointer justify-around font-[400] text-[13px] pb-[20px] leading-4 w-[327px] mx-auto">
+          <ul className="flex flex-row list-none text-center cursor-pointer justify-around font-normal text-[13px] pb-[20px] leading-4 w-[327px] mx-auto">
             <li
               onClick={handleTabOne}
-              className={`cursor-pointer text-[14px] w-full rounded-full font-[600] ${
+              className={`cursor-pointer text-[14px] w-full rounded-full font-medium ${
                 activeTab === "tabone"
                   ? "active text-white bg-primary rounded-full"
                   : "text-dark bg-gray"
@@ -225,7 +222,7 @@ const SignupContainer = () => {
             </li>
             <li
               onClick={handleTabTwo}
-              className={`cursor-pointer text-[14px] w-full rounded-full font-[600] ${
+              className={`cursor-pointer text-[14px] w-full rounded-full font-medium ${
                 activeTab === "tabtwo"
                   ? "active text-white bg-primary rounded-full"
                   : "text-dark bg-gray "
@@ -242,7 +239,7 @@ const SignupContainer = () => {
               >
                 <div className="pb-sm">
                   <input
-                    className="placeholder:p-md appearance-none flex  h-[40px] border rounded-[15px] w-full outline-none px-[10px] text-gray-700 leading-tight focus:outline-none "
+                    className="placeholder:p-md appearance-none flex  h-[30px] border rounded-[15px] w-full outline-none px-[10px] text-gray-700 leading-tight focus:outline-none "
                     id="individualfirstname"
                     type="text"
                     required
@@ -254,7 +251,7 @@ const SignupContainer = () => {
                 </div>
                 <div className="pb-sm">
                   <input
-                    className="placeholder:p-md outline-none appearance-none flex  h-[40px] border rounded-[15px] w-full px-[10px] text-gray-700 leading-tight focus:outline-none "
+                    className="placeholder:p-md outline-none appearance-none flex  h-[30px] border rounded-[15px] w-full px-[10px] text-gray-700 leading-tight focus:outline-none "
                     id="individuallastname"
                     required
                     autoComplete="off"
@@ -266,7 +263,7 @@ const SignupContainer = () => {
                 </div>
                 <div className="pb-sm">
                   <input
-                    className="placeholder:p-md appearance-none outline-none flex  h-[40px] border rounded-[15px] px-[10px] w-full text-gray-700 leading-tight focus:outline-none "
+                    className="placeholder:p-md appearance-none outline-none flex  h-[30px] border rounded-[15px] px-[10px] w-full text-gray-700 leading-tight focus:outline-none "
                     id="individualemail"
                     type="text"
                     required
@@ -277,7 +274,7 @@ const SignupContainer = () => {
                 </div>
                 <div className="pb-sm">
                   <input
-                    className="placeholder:p-md appearance-none  h-[40px] border flex  rounded-[15px] w-full text-gray-700 px-[10px] leading-tight focus:outline-none"
+                    className="placeholder:p-md appearance-none  h-[30px] border flex  rounded-[15px] w-full text-gray-700 px-[10px] leading-tight focus:outline-none"
                     id="password"
                     type="password"
                     placeholder="Password"
@@ -290,7 +287,7 @@ const SignupContainer = () => {
                 </div>
                 <div className="pb-sm">
                   <input
-                    className="placeholder:p-md appearance-none  h-[40px] border flex  rounded-[15px] w-full px-[10px] text-gray-700 leading-tight focus:outline-none"
+                    className="placeholder:p-md appearance-none  h-[30px] border flex  rounded-[15px] w-full px-[10px] text-gray-700 leading-tight focus:outline-none"
                     id="individual_confirm_ password"
                     type="password"
                     placeholder="confirm Password"
