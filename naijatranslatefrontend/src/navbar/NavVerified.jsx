@@ -54,26 +54,26 @@ const NavVerified = () => {
               <ul>
                 <button
                   onClick={handleHistory}
-                  className="flex hover:bg-light mb-[20px]"
+                  className="flex hover:bg-light mb-[20px] p-[10px] rounded-lg"
                 >
                   <img src={history} alt="feedback" className="pr-[10px]" />
                   <div>history</div>
                 </button>
                 <NavLink
                   to="/developeraccount"
-                  className="flex hover:bg-light mb-[20px]"
+                  className="flex hover:bg-light mb-[20px] p-[10px] rounded-lg"
                 >
                   <img src={feedback} alt="dev account" className="pr-[10px]" />
                   <div>Developer Account</div>
                 </NavLink>
                 <NavLink
                   to="/help_centerver"
-                  className="flex hover:bg-light mb-[20px]"
+                  className="flex hover:bg-light mb-[20px] p-[10px] rounded-lg"
                 >
                   <img src={upload} alt="help_center" className="pr-[10px]" />
                   <div>Help Center</div>
                 </NavLink>
-                <NavLink to="/contactver" className="flex hover:bg-light">
+                <NavLink to="/contactver" className="flex hover:bg-light p-[10px] rounded-lg">
                   <img src={contact} alt="contact" className="pr-[10px]" />
                   <div>Contact us</div>
                 </NavLink>

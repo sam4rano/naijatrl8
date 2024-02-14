@@ -10,6 +10,7 @@ export default {
         lg: "1.5rem",
         xl: "2rem",
       },
+
       colors: {
         primary: "#319CE9",
         secondary: "#F9F9F9",
@@ -22,16 +23,19 @@ export default {
         outline:"#F0F0F0",
         transparent: "transparent",
       },
+
       fontFamily: {
         iconsolata: ["Iconsolata", "sans-serif"],
         serif: ["Merriweather", "serif"],
       },
+
       screens: {
         sm: { min: "340px", max: "540px" },
         md: { min: "541px", max: "767px" },
         lg: { min: "768px", max: "1024px" },
         xl: { min: "1025px" },
       },
+      
     },
   },
   plugins: [],
