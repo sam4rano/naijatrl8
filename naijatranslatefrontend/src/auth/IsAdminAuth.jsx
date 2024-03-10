@@ -3,7 +3,7 @@ Outlet;
 
 const IsAdminAuth = () => {
   const isAdminValue = localStorage.getItem("isAdmin");
-  console.log(isAdminValue);
+  
 
   return isAdminValue ? (
     <Outlet />

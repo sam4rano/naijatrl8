@@ -49,7 +49,7 @@ const ResendVerification = () => {
         const data = await response.json();
 
         toast.error(data.message);
-        navigate("/logincontainer");
+        navigate("/login");
       }
     } catch (error) {
       console.log(error.message);
@@ -85,7 +85,7 @@ const ResendVerification = () => {
         toast.success(responseData.message + ",check your email");
 
         setTimeout(() => {
-          navigate("/logincontainer");
+          navigate("/login");
         }, 3000);
       } else {
         const data = await response.json();
@@ -161,7 +161,7 @@ const ResendVerification = () => {
               {isLoading ? "Submitting..." : "Send Instructions"}
             </button>
 
-            <Link to="/logincontainer" className="mx-auto font-[700]">
+            <Link to="/login" className="mx-auto font-[700]">
               <h2>Back to Login Page</h2>
             </Link>
           </form>
@@ -190,7 +190,7 @@ const ResendVerification = () => {
             >
               {isLoading ? "Submitting..." : "Send Instructions"}
             </button>
-            <Link to="/logincontainer" className="mx-auto font-[700]">
+            <Link to="/login" className="mx-auto font-[700]">
               <h2>Back to Login Page</h2>
             </Link>
           </form>

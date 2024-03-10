@@ -2,11 +2,15 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
+import { useEmployeeDataStore } from "../../Stores/DataStore";
 
 import { baseURL } from "../../api/SpeechApi";
 import { ToastContainer, toast } from "react-toastify";
+import { useEffect } from "react";
 
 const EmployeeList = () => {
+  const { setEmployeeData } = useEmployeeDataStore();
+
   const getAccessTokenFromCookie = async () => {
     try {
       const accessToken = Cookies.get("access_token");
@@ -55,6 +59,12 @@ const EmployeeList = () => {
     queryKey: ["employee_list"],
     queryFn: userData,
   });
+
+  useEffect(() => {
+    if (data) {
+      setEmployeeData(data);
+    }
+  }, [data, setEmployeeData]);
 
   if (isLoading) {
     return (

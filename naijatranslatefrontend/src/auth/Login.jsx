@@ -202,7 +202,7 @@ const LoginContainer = () => {
                 <div className="flex flex-col justify-center mx-auto py-[10px]">
                   <p className=" text-sm">
                     Sign up for an account?
-                    <Link to="/signupcontainer">
+                    <Link to="/signup">
                       <span className="pl-sm pr-sm text-primary">Sign Up</span>
                     </Link>
                   </p>
@@ -254,7 +254,7 @@ const LoginContainer = () => {
                 <div className="flex flex-col justify-center mx-auto py-[10px]">
                   <p className=" text-sm">
                     Sign up for an account?
-                    <Link to="/signupcontainer">
+                    <Link to="/signup">
                       <span className="pl-sm pr-sm text-primary">Sign Up</span>
                     </Link>
                   </p>

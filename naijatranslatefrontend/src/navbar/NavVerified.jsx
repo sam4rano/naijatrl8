@@ -4,8 +4,7 @@ import history from "../assets/history.svg";
 import feedback from "../assets/feedback.svg";
 import contact from "../assets/contact.svg";
 import upload from "../assets/upload.svg";
-import close from "../assets/open.svg";
-import open from "../assets/close.svg";
+import { HiMenu, HiOutlineX } from "react-icons/hi";
 
 import { useBarStore, useLogin } from "../Stores/Stores";
 import { HiOutlineUser } from "react-icons/hi";
@@ -40,25 +39,18 @@ const NavVerified = () => {
           className=" text-dark focus:border-gray-400 cursor-pointer"
           onClick={() => setNavbar(!navbar)}
         >
-          {!navbar && <img src={close} alt="close" onClick={handleClose} />}
+          {!navbar && <HiMenu onClick={handleClose} size={30} />}
+          {navbar && <HiOutlineX onClick={handleOpen} size={25} />}
           {navbar && (
-            <img
-              src={open}
-              alt="open"
-              onClick={handleOpen}
-              className="w-[30px] h-[30px]"
-            />
-          )}
-          {navbar && (
-            <ul className="w-[200px] absolute p-[10px] rounded-[16px] h-full z-30 bg-gray flex flex-col gap-lg">
+            <ul className="w-[200px] absolute p-[10px] rounded-[16px] h-full z-30 bg-gray flex flex-col gap-[50px] my-[10px]">
               <ul>
-                <button
+                <div
                   onClick={handleHistory}
                   className="flex hover:bg-light mb-[20px] p-[10px] rounded-lg"
                 >
                   <img src={history} alt="feedback" className="pr-[10px]" />
                   <div>history</div>
-                </button>
+                </div>
                 <NavLink
                   to="/developeraccount"
                   className="flex hover:bg-light mb-[20px] p-[10px] rounded-lg"
@@ -73,12 +65,15 @@ const NavVerified = () => {
                   <img src={upload} alt="help_center" className="pr-[10px]" />
                   <div>Help Center</div>
                 </NavLink>
-                <NavLink to="/contactver" className="flex hover:bg-light p-[10px] rounded-lg">
+                <NavLink
+                  to="/contactver"
+                  className="flex hover:bg-light p-[10px] rounded-lg"
+                >
                   <img src={contact} alt="contact" className="pr-[10px]" />
                   <div>Contact us</div>
                 </NavLink>
               </ul>
-              <NavLink to="/" className="flex mt-auto hover:bg-light">
+              <NavLink to="/" className="flex mt-[150px] hover:bg-light rounded-lg p-[10px]">
                 <img src={contact} alt="contact" className="pr-[10px]" />
                 <div>Logout</div>
               </NavLink>

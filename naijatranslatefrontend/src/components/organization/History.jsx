@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
@@ -6,6 +6,8 @@ import Cookies from "js-cookie";
 
 import { baseURL } from "../../api/SpeechApi";
 import { ToastContainer, toast } from "react-toastify";
+
+
 
 const History = () => {
   const getAccessTokenFromCookie = async () => {
@@ -58,6 +60,25 @@ const History = () => {
     queryFn: dataHistory,
   });
 
+  // const { mutate, isSuccess } = useMutation({
+  //   mutationFn: async () => {
+  //     try {
+  //       const commonHeaders = await getCommonHeaders();
+  //       const response = await axios.delete(
+  //         `${baseURL}/organization/remove-user/${id}`,
+  //         {
+  //           headers: commonHeaders,
+  //         }
+  //       );
+
+  //       return response.data;
+  //     } catch (error) {
+  //       toast.error("Error during mutation:", error);
+  //       toast.error(error.response?.data);
+  //       throw error;
+  //     }
+  //   },
+  // });
   
 
   if (isLoading) {

@@ -5,7 +5,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { baseURL } from "../api/SpeechApi";
 
-
 const OrganisationVerify = () => {
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -18,9 +17,9 @@ const OrganisationVerify = () => {
   const confirmVerified = useCallback(async () => {
     try {
       const response = await fetch(`${baseURL}/organization/verify-account`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           uid: uid,
@@ -30,10 +29,7 @@ const OrganisationVerify = () => {
 
       const responseData = await response.json();
 
-      console.log(responseData);
-
       if (response.ok) {
-        console.log("response", responseData);
         setIsLoading(false);
         setIsSuccess(true);
         toast.success(responseData.message);
@@ -61,12 +57,16 @@ const OrganisationVerify = () => {
         <div>
           <Title />
         </div>
-        
-        {isLoading && <p className="flex justify-center mx-auto text-center text-[50px]">Loading...</p>}
+
+        {isLoading && (
+          <p className="flex justify-center mx-auto text-center text-[50px]">
+            Loading...
+          </p>
+        )}
         {!isLoading && !isSuccess && (
           <Link to="/resendverifyaccount">Resend Verification Link</Link>
         )}
-        {!isLoading && isSuccess && (<h1>Verification successful</h1>)}
+        {!isLoading && isSuccess && <h1>Verification successful</h1>}
       </div>
       <ToastContainer />
     </div>

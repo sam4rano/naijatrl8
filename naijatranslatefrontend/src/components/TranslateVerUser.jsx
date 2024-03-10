@@ -179,7 +179,7 @@ const TranslateVerUser = () => {
       <div className="bg-graylight">
         <NavVerified />
 
-        <div className="flex flex-row justify-around pl-[220px] w-full pt-[30px]">
+        <div className="flex flex-row justify-around pl-[220px] w-full py-[30px]">
           <div className="flex flex-row justify-around border-gray ">
             <div className="flex flex-row ">
               <select
@@ -212,13 +212,16 @@ const TranslateVerUser = () => {
               </select>
             </div>
           </div>
+          <div>
+
           <Link
             to="/internalhistory"
-            className="flex hover:px-[5px] hover:bg-light mb-[20px]"
+            className="flex px-[10px] hover:bg-light mb-[20px]"
           >
             <img src={history} alt="feedback" className="pr-[10px]" />
             <div className="">history</div>
           </Link>
+          </div>
         </div>
 
         <form

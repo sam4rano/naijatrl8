@@ -41,12 +41,11 @@ const PasswordReset = () => {
 
       if (response.ok) {
         const responseData = await response.json();
-        // console.log("resp", responseData);
+
         toast.success(responseData.message);
 
         setTimeout(() => {
-          forgotpasword
-          navigate("/logincontainer");
+          navigate("/login");
         }, 3000);
       } else {
         const errorData = await response.json();

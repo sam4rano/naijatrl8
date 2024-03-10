@@ -8,7 +8,7 @@ import Checkbox from "@mui/material/Checkbox";
 import { baseURL } from "../api/SpeechApi";
 
 
-const SignupContainer = () => {
+const Signup = () => {
   const navigate = useNavigate();
 
   //individual
@@ -314,7 +314,7 @@ const SignupContainer = () => {
                 <div className="flex flex-col justify-center mx-auto py-[10px]">
                   <p className=" text-sm">
                     Already have an account?
-                    <Link to="/logincontainer">
+                    <Link to="/login">
                       <span className="pl-sm pr-sm text-primary">Login</span>
                     </Link>
                   </p>
@@ -665,4 +665,4 @@ const SignupContainer = () => {
   );
 };
 
-export default SignupContainer;
+export default Signup;

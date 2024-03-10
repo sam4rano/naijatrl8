@@ -10,7 +10,7 @@ const PasswordReset = () => {
 
   const navigate = useNavigate();
   const params = useParams();
-  // console.log("params", params);
+  
 
   const { uid, token } = params;
 
@@ -49,7 +49,7 @@ const PasswordReset = () => {
         toast.success(responseData.message);
 
         setTimeout(() => {
-          // Only navigate to login container if the password reset is successful
+          
           navigate("/logincontainer");
         }, 3000);
       } else {

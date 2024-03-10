@@ -17,19 +17,20 @@ const style = {
   transform: "translate(-50%, -50%)",
   width: 300,
   bgcolor: "white",
-
   boxShadow: 24,
   p: 1,
 };
 
 const RemoveEmployee = () => {
   const [open, setOpen] = React.useState(false);
+  const [removeType, setRemoveType] = useState("email");
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const [formData, setFormData] = useState({
     email: "",
+    id: "",
   });
 
   const handleChange = (e) => {
@@ -40,31 +41,43 @@ const RemoveEmployee = () => {
     }));
   };
 
-  const { mutate, isSuccess } = useMutation({
+  const { mutate, isSuccess, isError } = useMutation({
     mutationFn: async () => {
       try {
         const commonHeaders = await getCommonHeaders();
-        const response = await axios.delete(
-          `${baseURL}/organization/remove-user/${formData.email}`,
-          {
-            headers: commonHeaders,
-          }
-        );
+        let endpoint = "";
+
+        if (removeType === "email") {
+          endpoint = `${baseURL}/organization/remove-user/${formData.email}`;
+        } else if (removeType === "id") {
+          endpoint = `${baseURL}/organization/remove-user/${formData.id}`;
+        }
+
+        const response = await axios.delete(endpoint, {
+          headers: commonHeaders,
+        });
 
         return response.data;
       } catch (error) {
-        toast.error("Error during mutation:", error);
         toast.error(error.response?.data);
         throw error;
       }
     },
+    mutationKey: "remove_user",
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       mutate();
-      toast.success("User removed successfully!");
+      if (isSuccess) {
+        handleClose();
+        toast.success("User removed successfully!");
+      }
+
+      if (isError) {
+        toast.error("User does not exist!");
+      }
     } catch (error) {
       toast.error("Error submitting data: " + error.message);
     }
@@ -94,15 +107,12 @@ const RemoveEmployee = () => {
     }
   };
 
-  //working fine
   const getAccessTokenFromCookie = async () => {
     try {
       const accessToken = Cookies.get("access_token");
-
       return accessToken || "unauthenticated user";
     } catch (error) {
       toast.error("Response data:", error.response?.data);
-
       toast.error("Error submitting data: " + error.message);
       return "unauthenticated user";
     }
@@ -131,7 +141,7 @@ const RemoveEmployee = () => {
           <form
             style={style}
             onSubmit={handleSubmit}
-            className="bg-white p-[20px] rounded-lg gap-[20px]"
+            className="bg-white p-[20px] rounded-lg gap-[20px] "
           >
             <div
               className="flex justify-end align-top cursor-pointer"
@@ -139,18 +149,49 @@ const RemoveEmployee = () => {
             >
               <HiOutlineX />
             </div>
+            <div className="flex flex-col gap-[5px] pb-[5px]">
+              <label className="text-[16px] font-medium text-dark p-[10px] ">
+                Remove Employee by
+              </label>
+              <select
+                value={removeType}
+                className="placeholder:p-md outline-none flex  h-[30px] border rounded-lg px-[10px] w-full text-gray-700 leading-tight focus:outline-none"
+                onChange={(e) => setRemoveType(e.target.value)}
+              >
+                <option value="email">Email</option>
+                <option value="id">ID</option>
+              </select>
+            </div>
+            <div className="py-[10px]">
+              {removeType === "email" && (
+                <label>
+                  Email
+                  <input
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="employee email"
+                    className="placeholder:p-md appearance-none outline-none flex  h-[30px] border rounded-lg px-[10px] w-full text-gray-700 leading-tight focus:outline-none "
+                  />
+                </label>
+              )}
 
-            <label>
-              Email
-              <input
-                name="email"
-                type="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="employee email"
-                className="placeholder:p-md appearance-none outline-none flex  h-[30px] border rounded-lg px-[10px] w-full text-gray-700 leading-tight focus:outline-none "
-              />
-            </label>
+              {removeType === "id" && (
+                <label>
+                  ID
+                  <input
+                    name="id"
+                    type="text"
+                    value={formData.id}
+                    onChange={handleChange}
+                    placeholder="employee ID"
+                    className="placeholder:p-md appearance-none outline-none flex  h-[30px] border rounded-lg px-[10px] w-full text-gray-700 leading-tight focus:outline-none "
+                  />
+                </label>
+              )}
+            </div>
+
             <button className="bg-blue-400 w-full text-white text-[16px] text-center leading-20px font-semibold p-[5px] hover:bg-blue-300 my-[5px] rounded-lg">
               {isSuccess ? "Employee Removed" : "Remove Employee"}
             </button>

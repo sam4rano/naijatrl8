@@ -4,8 +4,8 @@ import Verify from "./auth/Verify";
 import PasswordResetAdmin from "./auth/PasswordResetAdmin";
 import PasswordReset from "./auth/PasswordReset";
 import ForgotPassword from "./auth/ForgotPassword";
-import SignupContainer from "./auth/SignupContainer";
-import LoginContainer from "./auth/LoginContainer";
+import Signup from "./auth/Signup";
+import Login from "./auth/Login";
 import CheckInbox from "./auth/CheckInbox";
 import OrganisationVerify from "./auth/OrganisationVerify";
 import TranslateVerUser from "./components/TranslateVerUser";
@@ -54,8 +54,8 @@ const App = () => {
           <Route path="/adminlayout" element={<AdminLayout />}></Route>
         </Route>
         <Route element={<UserContainer />}>
-          <Route path="logincontainer" element={<LoginContainer />} />
-          <Route path="signupcontainer" element={<SignupContainer />} />
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
           <Route path="forgotpassword" element={<ForgotPassword />} />
           <Route path="verify-account/:uid/:token" element={<Verify />} />
           <Route
