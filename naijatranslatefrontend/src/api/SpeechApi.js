@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = 'http://3.83.243.144/api/v1';
+const baseURL = 'https://test.africantranslate.com/api/v1';
 
 const axiosApi = axios.create({
   baseURL: 'http://3.83.243.144/api/v1',

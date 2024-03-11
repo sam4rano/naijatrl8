@@ -34,7 +34,7 @@ const OrganisationVerify = () => {
         setIsSuccess(true);
         toast.success(responseData.message);
         setTimeout(() => {
-          navigate("/logincontainer");
+          navigate("/login");
         }, 2000);
       } else {
         console.log("error", responseData);

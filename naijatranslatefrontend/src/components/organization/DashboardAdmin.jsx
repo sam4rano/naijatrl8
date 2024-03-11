@@ -24,7 +24,6 @@ const DashboardAdmin = () => {
               {employeeData.length}
             </h1>
             <p>employees</p>
-
           </div>
           <AddEmployee />
           <RemoveEmployee />

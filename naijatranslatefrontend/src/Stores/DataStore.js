@@ -7,7 +7,3 @@ const employeeDataStore = (set) => ({
 });
 
 export const useEmployeeDataStore = create(employeeDataStore);
-
-export const setEmployeeData = (data) => {
-  useEmployeeDataStore.setState({ employeeData: data });
-};
