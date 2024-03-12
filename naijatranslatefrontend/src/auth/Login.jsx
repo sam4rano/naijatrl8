@@ -133,11 +133,11 @@ const LoginContainer = () => {
 
   return (
     <div className="p-[10px]">
-      <div className="w-[340px] mx-auto pt-[50px]">
-        <h1 className="font-[700] justify-center align-middle text-[18px] leading-4 flex w-full h-[33px] mx-auto text-center">
-          Login to your account account
+      <div className="w-[360px] sm:w-full pt-[20px] mx-auto">
+        <h1 className="font-bold text-[30px] leading-[40px] sm:text-[20px] sm:leading-[30px] text-center py-[20px]">
+          Login to your account
         </h1>
-        <div className="tab-ul flex flex-col">
+        <div className="tab-ul flex flex-col ">
           <ul className="flex flex-row list-none text-center cursor-pointer justify-around font-[400] text-[13px] pb-[20px] leading-4 w-[327px] mx-auto">
             <li
               onClick={handleTabOne}

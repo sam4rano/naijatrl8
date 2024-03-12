@@ -204,9 +204,9 @@ const Signup = () => {
   return (
     <div className="p-[10px]">
      
-      <div className="w-[340px] mx-auto pt-[30px] rounded-md">
-        <h1 className="font-bold justify-center align-middle text-[18px] leading-4 flex w-full h-[33px] mx-auto text-center sm:text-[14px] md:text-[16px]">
-          Sign up for your account account
+      <div className="w-[360px] flex align-middle items-center flex-col sm:w-full pt-[10px] rounded-md mx-auto">
+        <h1 className="font-bold text-[25px] leading-[30px] w-full mx-auto text-center sm:text-[18px] sm:leading-[20px] md:text-[16px] py-[20px]">
+          Sign up for your account
         </h1>
         <div className="tab-ul flex flex-col">
           <ul className="flex flex-row list-none text-center cursor-pointer justify-around font-normal text-[13px] pb-[20px] leading-4 w-[327px] mx-auto">

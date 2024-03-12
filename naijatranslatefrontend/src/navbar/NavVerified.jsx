@@ -81,7 +81,7 @@ const NavVerified = () => {
           )}
         </div>
         <Link to="/translateveruser" className="text-primary text-lg">
-          <span className="font-bold">Naija</span>Translate
+          <span className="font-bold">Africa</span>Translate
         </Link>
       </div>
       <div className="flex flex-row justify-around">

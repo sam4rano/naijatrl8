@@ -102,13 +102,13 @@ const ForgotPassword = () => {
   );
 
   return (
-    <div className="flex flex-col p-[20px]">
-      <div className="w-[320px] mx-auto pt-[40px]">
-        <div className="flex justify-center align-middle flex-col w-[320px]">
-          <h1 className="text-center py-[20px] text-[14px] font-[600]">
+    <div className="flex flex-col py-[20px]">
+      <div className="w-[360px] sm:w-full mx-auto pt-[10px] sm:gap-[30px]">
+        <div className="flex justify-center align-middle items-center flex-col w-[360px] sm:gap-[10px]">
+          <h1 className="text-center text-[14px] font-bold">
             Reset your password{" "}
           </h1>
-          <h3 className="text-center py-[10px] text-[12px]">
+          <h3 className="text-center py-[10px] text-[14px] leading-[20px] w-[300px] ">
             Enter your email, and we’ll send you instructions on how to reset
             your password.
           </h3>
@@ -160,7 +160,7 @@ const ForgotPassword = () => {
               {isLoading ? "Please wait .." : "Send Instructions"}
             </button>
 
-            <Link to="/logincontainer" className="mx-auto font-[700]">
+            <Link to="/login" className="mx-auto font-[700]">
               <h2>Back to Login Page</h2>
             </Link>
           </form>
@@ -189,7 +189,7 @@ const ForgotPassword = () => {
               {isLoading ? "Please wait .." : "Send Instructions"}
             </button>
 
-            <Link to="/logincontainer" className="mx-auto font-[700]">
+            <Link to="/login" className="mx-auto font-[700]">
               <h2>Back to Login Page</h2>
             </Link>
           </form>
