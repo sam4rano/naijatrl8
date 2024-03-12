@@ -55,15 +55,15 @@ const InternalHistory = () => {
   return (
     <>
     <NavVerified />
-      <div className="flex justify-center flex-col px-[40px] py-[30px] bg-[#f0f0f0]">
-        <div className="bg-white p-[20px]">
-          <div className="flex flex-row justify-start px-[10px] py-[20px]">
+      <div className="flex justify-center flex-col px-[20px] py-[10px] bg-[#f0f0f0]">
+        <div className="bg-white p-[10px]  rounded-[12px]">
+          <div className="flex flex-row justify-start px-[10px] py-[10px]">
             <h2 className=" text-[20px] font-bold">History</h2>
           </div>
           <div className="py-[10px]">
             <hr className="" />
-            <div className="flex flex-row justify-end p-[10px]">
-              <h2 className=" text-[16px] ">Clear all history</h2>
+            <div className="flex flex-row justify-end">
+              <h2 className=" text-[16px] py-[10px]">Clear all history</h2>
             </div>
             <hr className="" />
           </div>
@@ -76,7 +76,7 @@ const InternalHistory = () => {
                 <p>Error: {data.error}</p>
               ) : (
                 data.data.map((item) => (
-                  <div key={item.id}>
+                  <div key={item.id} className="">
                     <div className="flex ">
                       <h2 className="pr-[10px]">
                         {item.source_language === "en"

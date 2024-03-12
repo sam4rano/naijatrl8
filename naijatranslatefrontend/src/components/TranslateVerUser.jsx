@@ -226,7 +226,7 @@ const TranslateVerUser = () => {
 
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col max-w-[1000px] sm:w-[360px] mx-auto p-[40px] sm:p-[20px]"
+          className="flex flex-col max-w-[1000px] sm:w-[360px] mx-auto p-[40px] sm:p-[10px]"
         >
           <div className="flex flex-row sm:align-middle sm:items-center w-full p-[10px] rounded-tr-[16px] rounded-tl-[16px] bg-white border-b-2 border-gray outline-none">
             <div className="flex flex-row w-1/2 justify-center bg-white outline-none">
