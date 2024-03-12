@@ -119,9 +119,8 @@ const TranslateForm = () => {
   };
 
   return (
-    <div className="">
-      <div className="flex flex-row justify-start pl-[220px] w-full pt-[30px]">
-        <div className="flex flex-row justify-around border-gray ">
+    <div className="overflow-hidden">
+        <div className="flex flex-row pt-[20px] border-gray justify-start pl-[220px] sm:items-center sm:align-middle sm:pl-[0px] w-full">
           <div className="flex flex-row ">
             <select
               className="text-primary bg-light cursor-pointer border rounded-[10px] px-[10px] outline-none"
@@ -138,7 +137,7 @@ const TranslateForm = () => {
           <img
             src={changeIcon}
             alt="change icon"
-            className="w-[40px] h-[40px] "
+            className="w-[40px] h-[40px] sm:h-[25px] sm:w-[25px]"
           />
           <div className="flex flex-row">
             <select
@@ -153,10 +152,11 @@ const TranslateForm = () => {
             </select>
           </div>
         </div>
-      </div>
+      {/* <div className="flex flex-row justify-start pl-[220px] sm:items-center sm:align-middle sm:pl-[0px] w-full pt-[30px]">
+      </div> */}
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col max-w-[1000px] mx-auto p-[40px]"
+        className="flex flex-col max-w-[1000px] sm:w-[400px] sm:p-[20px] mx-auto p-[40px]"
       >
         <div className="flex flex-row w-full p-[10px] rounded-tr-[16px] rounded-tl-[16px] bg-white border-b-2 border-gray ">
           <div className="flex flex-row w-1/2 justify-center bg-white outline-none">
@@ -175,9 +175,9 @@ const TranslateForm = () => {
           <img
             src={changeIcon}
             alt="change icon"
-            className="w-[30px] h-[30px]"
+            className="w-[30px] h-[30px] sm:h-[25px] sm:w-[25px]"
           />
-          <div className="flex flex-row w-1/2 pl-[100px] bg-white outline-none">
+          <div className="flex flex-row w-1/2 pl-[100px] sm:pl-[20px] bg-white outline-none h-auto">
             <select
               className="text-primary outline-none cursor-pointer"
               id="output_language"
@@ -196,9 +196,9 @@ const TranslateForm = () => {
             {inputType === "text" &&
               source_text.length === 0 &&
               isText.length === 0 && (
-                <div className="absolute pl-[180px] pt-[90px] flex flex-col">
-                  <img src={ClipBoard} alt="clipboard" className="w-[100px]" />
-                  <p className="text-center text-[12px]">
+                <div className="absolute pl-[180px] sm:pl-[40px] pt-[90px] flex flex-col">
+                  <img src={ClipBoard} alt="clipboard" className="w-[100px] sm:w-[80px] sm:h-[80px]" />
+                  <p className="text-center text-[12px] sm:text-[10px] sm:leading-[16px]">
                     Paste your text here
                   </p>
                 </div>
@@ -208,7 +208,7 @@ const TranslateForm = () => {
               <img
                 src={Inspeaker}
                 alt="speak_img"
-                className="absolute pl-[190px] pt-[90px]"
+                className="absolute pl-[190px] sm:w-[80px] sm:h-[80px] pt-[90px]"
               />
             )}
             {outputType === "text" && (
@@ -254,10 +254,10 @@ const TranslateForm = () => {
 
           <div className="flex flex-col w-1/2 h-[400px] border-l-2 border-gray pb-[10px] ">
             {outputType === "text" && target_text.length === 0 && (
-              <div className="absolute pl-[80px] w-[300px] pt-[100px] flex flex-col">
-                <Skeleton className="h-[40px]" />
-                <Skeleton animation="wave" className="h-[40px]" />
-                <Skeleton animation={false} className="w-[200px] h-[40px]" />
+              <div className="absolute pl-[80px] sm:pl-[50px] w-[300px] sm:w-[80px] sm:h-[80px] pt-[100px] flex flex-col">
+                <Skeleton className="h-[40px] sm:w-[80px] sm:h-[80px] " />
+                <Skeleton animation="wave" className="h-[40px] sm:w-[80px] sm:h-[80px] " />
+                <Skeleton animation={false} className="w-[200px] sm:w-[80px] sm:h-[80px] h-[40px]" />
               </div>
             )}
             {outputType === "speech" && target_text.length === 0 && (

@@ -179,7 +179,7 @@ const TranslateVerUser = () => {
       <div className="bg-graylight">
         <NavVerified />
 
-        <div className="flex flex-row justify-around pl-[220px] w-full py-[30px]">
+        <div className="flex flex-row justify-around pl-[220px] sm:align-middle sm:items-center sm:pl-[10px] w-full py-[30px] sm:py-[20px]">
           <div className="flex flex-row justify-around border-gray ">
             <div className="flex flex-row ">
               <select
@@ -226,9 +226,9 @@ const TranslateVerUser = () => {
 
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col max-w-[1000px] mx-auto p-[40px] "
+          className="flex flex-col max-w-[1000px] sm:w-[360px] mx-auto p-[40px] sm:p-[20px]"
         >
-          <div className="flex flex-row w-full p-[10px] rounded-tr-[16px] rounded-tl-[16px] bg-white border-b-2 border-gray outline-none">
+          <div className="flex flex-row sm:align-middle sm:items-center w-full p-[10px] rounded-tr-[16px] rounded-tl-[16px] bg-white border-b-2 border-gray outline-none">
             <div className="flex flex-row w-1/2 justify-center bg-white outline-none">
               <select
                 id="input_language"
@@ -247,7 +247,7 @@ const TranslateVerUser = () => {
               alt="change icon"
               className="w-[30px] h-[30px]"
             />
-            <div className="flex flex-row w-1/2 pl-[100px] bg-white ">
+            <div className="flex flex-row w-1/2 pl-[100px] sm:pl-[40px] bg-white ">
               <select
                 className="text-primary"
                 id="output_language"
@@ -266,13 +266,13 @@ const TranslateVerUser = () => {
               {inputType === "text" &&
                 source_text.length === 0 &&
                 isText.length === 0 && (
-                  <div className="absolute pl-[180px] pt-[90px] flex flex-col">
+                  <div className="absolute pl-[180px] sm:pl-[40px] pt-[90px] flex flex-col sm:align-middle sm:items-center">
                     <img
                       src={ClipBoard}
                       alt="clipboard"
-                      className="w-[100px]"
+                      className="w-[100px] sm:w-[40px] sm:h-[40px]"
                     />
-                    <p className="text-center text-[12px]">
+                    <p className="text-center text-[12px] sm:text-[10px] sm:leading-[16px]">
                       Paste your text here
                     </p>
                   </div>
@@ -315,10 +315,10 @@ const TranslateVerUser = () => {
 
             <div className="flex flex-col w-1/2 h-[400px] border-l-2 border-gray pb-[10px] ">
               {outputType === "text" && target_text.length === 0 && (
-                <div className="absolute pl-[80px] w-[300px] pt-[100px] flex flex-col">
+                <div className="absolute pl-[80px] sm:pl-[30px] sm:w-[150px] w-[300px] pt-[100px] flex flex-col">
                   <Skeleton className="h-[40px]" />
                   <Skeleton animation="wave" className="h-[40px]" />
-                  <Skeleton animation={false} className="w-[200px] h-[40px]" />
+                  <Skeleton animation={false} className="w-[200px] sm:w-[100px] h-[40px]" />
                 </div>
               )}
               {outputType === "speech" && target_text.length === 0 && (
