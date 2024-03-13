@@ -203,14 +203,14 @@ const LoginContainer = () => {
                   <p className=" text-sm">
                     Sign up for an account?
                     <Link to="/signup">
-                      <span className="pl-sm pr-sm text-primary">Sign Up</span>
+                      <span className="pl-sm pr-sm text-primary font-medium text-[14px]">Sign Up</span>
                     </Link>
                   </p>
                   <Link
                     to="/forgotpassword"
-                    className="underline underline-offset-8 mx-auto"
+                    className="underline underline-offset-2 mx-auto"
                   >
-                    Forgot Password
+                    <h2 className="underline underline-offset-2 font-bold">Forgot Password</h2>
                   </Link>
                 </div>
               </form>
@@ -255,14 +255,14 @@ const LoginContainer = () => {
                   <p className=" text-sm">
                     Sign up for an account?
                     <Link to="/signup">
-                      <span className="pl-sm pr-sm text-primary">Sign Up</span>
+                      <span className="pl-sm pr-sm text-primary font-medium text-[14px]">Sign Up</span>
                     </Link>
                   </p>
                   <Link
                     to="/forgotpassword"
-                    className="underline underline-offset-8 mx-auto"
+                    className="mx-auto"
                   >
-                    Forgot Password
+                   <h2 className="underline underline-offset-2 font-bold">Forgot Password</h2>
                   </Link>
                 </div>
               </form>

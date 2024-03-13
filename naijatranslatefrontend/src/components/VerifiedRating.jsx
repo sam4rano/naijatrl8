@@ -101,43 +101,47 @@ export default function VerifiedRating({ feedbackId }) {
         onClose={handleClose}
         aria-labelledby="draggable-dialog-title"
       >
-        <DialogTitle style={{ cursor: "move" }}>Rating Form</DialogTitle>
-        <DialogContent>
+        <div className="flex justify-end">
+          <button autoFocus onClick={handleClose} className="p-[5px]">
+            <img src={close} alt="close img" />
+          </button>
+        </div>
+        <p className="text-center text-[20px] font-bold leading-[30px]">
+          Rating Form
+        </p>
+        <div className="p-[10px] flex flex-col gap-[10px]">
           <label>
-            Rating:
+            Rating(number 1-5)
             <input
               type="number"
               name="rating"
               value={ratingParams.rating}
               onChange={handleChange}
-              className="placeholder:p-md appearance-none outline-none flex  h-[40px] border rounded-[15px] px-[10px] w-full text-gray-700 leading-tight focus:outline-none "
+              className="placeholder:p-[10px] appearance-none outline-none flex border rounded-[10px] px-[10px] py-[5px] w-full text-gray-700 leading-tight focus:outline-none "
             />
           </label>
-          <br />
+
           <label>
-            Feedback:
+            Feedback
             <input
               name="feedback"
               value={ratingParams.feedback}
               onChange={handleChange}
-              className="placeholder:p-md appearance-none outline-none flex  h-[40px] border rounded-[15px] px-[10px] w-full text-gray-700 leading-tight focus:outline-none "
+              className="placeholder:p-[10px] appearance-none outline-none flex border rounded-[10px] px-[10px] py-[5px] w-full text-gray-700 leading-tight focus:outline-none "
             />
           </label>
-          <br />
+
           <label>
-            Correct Translation:
+            Correct Translation
             <textarea
               name="correct_translation"
               value={ratingParams.correct_translation}
               onChange={handleChange}
-              className="placeholder:p-md appearance-none outline-none flex  h-[40px] border rounded-[15px] px-[10px] w-full text-gray-700 leading-tight focus:outline-none "
+              className="placeholder:p-[10px] appearance-none outline-none flex h-[40px] border rounded-[15px] px-[10px] w-full text-gray-700 leading-tight focus:outline-none "
             />
           </label>
-        </DialogContent>
+        </div>
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            <img src={close} alt="close img" />
-          </Button>
           <Button onClick={submitData}>Submit</Button>
         </DialogActions>
         <ToastContainer />

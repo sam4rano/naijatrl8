@@ -32,8 +32,7 @@ const TranslateForm = () => {
     setOutputType(e.target.value);
   };
 
-  //text to speech
-  // API endpoint for text-to-text translation
+ 
   const textToTextTranslate = useCallback(async () => {
     const formData = {
       source_language: source_language,

@@ -14,7 +14,6 @@ import { Link } from "react-router-dom";
 import NavVerified from "../navbar/NavVerified";
 import { baseURL } from "../api/SpeechApi";
 
-import { useBarStore } from "../Stores/Stores";
 import VerOutputProperties from "./outputfiles/VerOutputProperties";
 
 const TranslateVerUser = () => {
@@ -29,7 +28,6 @@ const TranslateVerUser = () => {
   const [translatedAudioUrl, setTranslatedAudioUrl] = useState("");
   const [feedbackData, setFeedbackData] = useState("");
 
-  const { isOpen, setOpen, setClose } = useBarStore();
 
   const handleInputTypeChange = (e) => {
     setInputType(e.target.value);

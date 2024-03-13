@@ -44,15 +44,15 @@ const ForgotPassword = () => {
           toast.success(responseData.message);
           setIsLoading(false);
           setTimeout(() => {
-            navigate("/logincontainer");
+            navigate("/login");
           }, 2000);
         } else {
           const data = await response.json();
-          console.log("data", data);
+          
           toast.error(data.message);
         }
       } catch (error) {
-        console.log(error.message);
+        toast.error(error.message);
       }
     },
     [individualEmail, navigate]
@@ -84,7 +84,7 @@ const ForgotPassword = () => {
           toast.success(responseData.message);
           setIsLoading(false);
           setTimeout(() => {
-            navigate("/logincontainer");
+            navigate("/login");
           }, 2000);
         } else {
           // console.log("Registration failed");
@@ -105,7 +105,7 @@ const ForgotPassword = () => {
     <div className="flex flex-col py-[20px]">
       <div className="w-[360px] sm:w-full mx-auto pt-[10px] sm:gap-[30px]">
         <div className="flex justify-center align-middle items-center flex-col w-[360px] sm:gap-[10px]">
-          <h1 className="text-center text-[14px] font-bold">
+          <h1 className="text-center text-[20px] leading-[30px] font-bold">
             Reset your password{" "}
           </h1>
           <h3 className="text-center py-[10px] text-[14px] leading-[20px] w-[300px] ">
@@ -138,11 +138,11 @@ const ForgotPassword = () => {
         {activeTab === "tabone" ? (
           <form
             onSubmit={handleSubmitUser}
-            className="rounded-md flex flex-col content-center max-w-[340px] mx-auto"
+            className="rounded-[10px] flex flex-col align-middle items-center max-w-[360px] mx-auto"
           >
             <div className="pb-sm">
               <input
-                className="shadow placeholder:p-md appearance-none flex  h-[40px] border rounded-[15px] w-[327px] p-[1rem] text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
+                className="shadow placeholder:p-md appearance-none flex border rounded-[15px] w-[360px] text-gray-700 py-[10px]  px-[5px] leading-tight focus:outline-none focus:shadow-outline "
                 id="email"
                 type="text"
                 placeholder="Email"
@@ -153,7 +153,7 @@ const ForgotPassword = () => {
               />
             </div>
             <button
-              className="bg-primary hover:cursor-pointer text-white rounded-full w-full px-lg h-[40px]"
+              className="bg-primary hover:cursor-pointer text-white rounded-full w-full px-[10px] py-[10px]"
               type="submit"
               disabled={isLoading}
             >
@@ -161,17 +161,17 @@ const ForgotPassword = () => {
             </button>
 
             <Link to="/login" className="mx-auto font-[700]">
-              <h2>Back to Login Page</h2>
+              <h2 className="underline underline-offset-2">Back to Login Page</h2>
             </Link>
           </form>
         ) : (
           <form
             onSubmit={handleSubmitAdmin}
-            className="rounded-md flex flex-col content-center max-w-[340px] mx-auto"
+            className="rounded-md flex flex-col align-middle items-center max-w-[360px] mx-auto"
           >
             <div className="pb-sm">
               <input
-                className="shadow placeholder:p-md appearance-none flex  h-[40px] border rounded-[15px] w-[327px] p-[1rem] text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
+                className="shadow placeholder:p-[10px] px-[5px] appearance-none flex border rounded-[15px] w-[360px] text-gray-700 leading-tight focus:outline-none focus:shadow-outline py-[10px]"
                 id="email"
                 type="text"
                 placeholder="Organisation Email"
@@ -182,7 +182,7 @@ const ForgotPassword = () => {
               />
             </div>
             <button
-              className="bg-primary hover:cursor-pointer text-white rounded-full w-full px-lg h-[40px]"
+              className="bg-primary hover:cursor-pointer text-white rounded-full w-full px-[10px] py-[10px]"
               type="submit"
               disabled={isLoading}
             >
@@ -190,7 +190,7 @@ const ForgotPassword = () => {
             </button>
 
             <Link to="/login" className="mx-auto font-[700]">
-              <h2>Back to Login Page</h2>
+              <h2 className="underline underline-offset-2">Back to Login Page</h2>
             </Link>
           </form>
         )}

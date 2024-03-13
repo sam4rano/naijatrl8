@@ -29,7 +29,7 @@ const PasswordReset = () => {
       uid: uidb64,
       token: token,
     };
-    console.log("formdata", formData);
+
     try {
       const response = await fetch(`${baseURL}/password-reset/confirm`, {
         method: "PUT",
@@ -46,7 +46,7 @@ const PasswordReset = () => {
 
         setTimeout(() => {
           navigate("/login");
-        }, 3000);
+        }, 2000);
       } else {
         const errorData = await response.json();
         toast.error(errorData.message || "Password reset failed.");
@@ -63,39 +63,39 @@ const PasswordReset = () => {
     <div>
       <form
         onSubmit={handleSubmitUser}
-        className="rounded-md flex flex-col content-center max-w-[340px] mx-auto p-md mt-[70px] border-[1px]"
+        className="rounded-md flex flex-col content-center items-center al max-w-[360px] mx-auto p-[10px] mt-[70px] border-[1px] gap-[10px]"
       >
-        <h1 className="text-center pb-[10px]">Change your password</h1>
-        <div className="pb-md">
-          <input
-            className="shadow placeholder:p-md appearance-none flex  h-[40px] border rounded-[15px] w-full p-[1rem] text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
-            id="password"
-            type="password"
-            value={userPassword}
-            placeholder="New password"
-            minLength={8}
-            required
-            onChange={(e) => {
-              setUserPassword(e.target.value);
-            }}
-          />
-        </div>
-        <div className="pb-md">
-          <input
-            className="shadow placeholder:p-md appearance-none flex  h-[40px] border rounded-[15px] w-full p-[1rem] text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
-            id="confirm_password"
-            type="password"
-            placeholder="Confirm password"
-            required
-            minLength={8}
-            value={confirmUserPassword}
-            onChange={(e) => {
-              setConfirmUserPassword(e.target.value);
-            }}
-          />
-        </div>
+        <h1 className="text-center pb-[10px] font-bold text-[20px] leading-[30px]">
+          Change your password
+        </h1>
+        <input
+          className="shadow placeholder:p-md appearance-none flex border rounded-[15px] w-full p-[10px] text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
+          id="password"
+          type="password"
+          value={userPassword}
+          placeholder="New password"
+          minLength={8}
+          required
+          onChange={(e) => {
+            setUserPassword(e.target.value);
+          }}
+        />
+
+        <input
+          className="shadow placeholder:p-md appearance-none flex border rounded-[15px] w-full p-[10px] text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
+          id="confirm_password"
+          type="password"
+          placeholder="Confirm password"
+          required
+          minLength={8}
+          value={confirmUserPassword}
+          onChange={(e) => {
+            setConfirmUserPassword(e.target.value);
+          }}
+        />
+
         <button
-          className="bg-primary text-white rounded-full w-full px-lg h-[40px]"
+          className="bg-primary text-white rounded-full w-full p-[10px]"
           type="submit"
           disabled={isLoading}
         >

@@ -3,7 +3,7 @@ import axios from "axios";
 const baseURL = 'https://test.africantranslate.com/api/v1';
 
 const axiosApi = axios.create({
-  baseURL: 'http://3.83.243.144/api/v1',
+  baseURL: 'http://3.83.243h.144/api/v1',
 });
 
 const axiosApiReq = axios.create({

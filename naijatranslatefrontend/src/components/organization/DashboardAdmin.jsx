@@ -3,6 +3,8 @@ import { useEmployeeDataStore } from "../../Stores/DataStore";
 
 import EmployeeList from "./EmployeeList";
 import RemoveEmployee from "./RemoveEmployee";
+import AdminDetails from "./AdminDetails";
+
 
 const DashboardAdmin = () => {
   const { employeeData } = useEmployeeDataStore();
@@ -11,7 +13,7 @@ const DashboardAdmin = () => {
   return (
     <div className="w-full p-[10px] flex flex-col justify-center items-center align-middle gap-[10px] flex-wrap">
       <div className="flex w-full h-[100px] bg-white rounded-[10px] p-[5px]">
-        <div>Admin profile</div>
+        <AdminDetails />
       </div>
       <div className="flex p-[10px] bg-white w-full rounded-[10px] flex-col align-middle justify-center items-center gap-[10px]">
         <div className="font-semibold leading-[30px] text-[16px]">

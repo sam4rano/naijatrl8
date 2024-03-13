@@ -30,7 +30,7 @@ const PasswordReset = () => {
       uid: uid,
       token: token,
     };
-    console.log("formdata", formData);
+    
     try {
       const response = await fetch(
         `${baseURL}/organization/password-reset/confirm`,
@@ -45,12 +45,12 @@ const PasswordReset = () => {
 
       if (response.ok) {
         const responseData = await response.json();
-        // console.log("resp", responseData);
+        
         toast.success(responseData.message);
 
         setTimeout(() => {
           
-          navigate("/logincontainer");
+          navigate("/login");
         }, 3000);
       } else {
         const errorData = await response.json();
@@ -68,12 +68,12 @@ const PasswordReset = () => {
     <div>
       <form
         onSubmit={handleSubmitUser}
-        className="rounded-md flex flex-col content-center max-w-[340px] mx-auto p-md mt-[70px] border-[1px]"
+        className="rounded-[10px] flex flex-col content-center max-w-[360px] mx-auto p-[10px] mt-[70px] border-[1px]"
       >
         <h1 className="text-center pb-[10px]">Change your password</h1>
         <div className="pb-md">
           <input
-            className="shadow placeholder:p-md appearance-none flex  h-[40px] border rounded-[15px] w-full p-[1rem] text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
+            className="shadow placeholder:p-[10px] appearance-none flex py-[10px] border rounded-[15px] w-full px-[10px] text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
             id="password"
             type="password"
             value={userPassword}
@@ -85,9 +85,9 @@ const PasswordReset = () => {
             }}
           />
         </div>
-        <div className="pb-md">
+        <div className="pb-[10px]">
           <input
-            className="shadow placeholder:p-md appearance-none flex  h-[40px] border rounded-[15px] w-full p-[1rem] text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
+            className="shadow placeholder:p-[10px] appearance-none flex py-[10px] border rounded-[15px] w-full px-[10px] text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
             id="confirm_password"
             type="password"
             placeholder="Confirm password"
@@ -100,7 +100,7 @@ const PasswordReset = () => {
           />
         </div>
         <button
-          className="bg-primary text-white rounded-full w-full px-lg h-[40px]"
+          className="bg-primary text-white rounded-full w-full px-[10px] py-[10px]"
           type="submit"
           disabled={isLoading}
         >
