@@ -37,10 +37,10 @@ const OrganisationVerify = () => {
           navigate("/login");
         }, 2000);
       } else {
-        console.log("error", responseData);
-      }
+        toast.error(responseData.message);
+        setIsLoading(false);}
     } catch (error) {
-      console.error("Error during verification:", error);
+      toast.error(error.message);
       navigate("/resendverifyaccount");
     } finally {
       setIsLoading(false);

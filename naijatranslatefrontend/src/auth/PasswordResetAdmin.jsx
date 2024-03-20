@@ -1,57 +1,51 @@
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 import { baseURL } from "../api/SpeechApi";
 import { toast } from "react-toastify";
+import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi"; // Import icons
 
 const PasswordReset = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [userPassword, setUserPassword] = useState("");
-  const [confirmUserPassword, setConfirmUserPassword] = useState("");
-
   const navigate = useNavigate();
-  const params = useParams();
-  
+  const { uid, token } = useParams();
+  const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); 
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false); 
 
-  const { uid, token } = params;
+  const schema = Yup.object({
+    password: Yup.string()
+      .required("Password is required")
+      .min(8, "Password must be at least 8 characters"),
+    confirm_password: Yup.string()
+      .oneOf([Yup.ref("password"), null], "Passwords must match")
+      .required("Confirm Password is required"),
+  }).required();
 
-  const handleSubmitUser = async (e) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-    if (userPassword !== confirmUserPassword) {
-      toast.error("Passwords do not match.");
-      return;
-    }
-
+  const onSubmit = async (data) => {
     setIsLoading(true);
+    const { password, confirm_password } = data;
 
-    const formData = {
-      new_password: userPassword,
-      new_password_confirm: confirmUserPassword,
-      uid: uid,
-      token: token,
-    };
-    
     try {
-      const response = await fetch(
-        `${baseURL}/organization/password-reset/confirm`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`${baseURL}/organization/password-reset/confirm`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ new_password: password,new_password_confirm:confirm_password, uid, token }),
+      });
 
       if (response.ok) {
         const responseData = await response.json();
-        
         toast.success(responseData.message);
-
-        setTimeout(() => {
-          
-          navigate("/login");
-        }, 3000);
+        setTimeout(() => navigate("/login"), 3000);
       } else {
         const errorData = await response.json();
         toast.error(errorData.message || "Password reset failed.");
@@ -67,38 +61,43 @@ const PasswordReset = () => {
   return (
     <div>
       <form
-        onSubmit={handleSubmitUser}
+        onSubmit={handleSubmit(onSubmit)}
         className="rounded-[10px] flex flex-col content-center max-w-[360px] mx-auto p-[10px] mt-[70px] border-[1px]"
       >
         <h1 className="text-center pb-[10px]">Change your password</h1>
-        <div className="pb-md">
+
+        <div className="relative pb-md">
           <input
-            className="shadow placeholder:p-[10px] appearance-none flex py-[10px] border rounded-[15px] w-full px-[10px] text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
-            id="password"
-            type="password"
-            value={userPassword}
+            className="shadow placeholder:p-[10px] appearance-none flex py-[10px] border rounded-[15px] w-full px-[10px] text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            type={showPassword ? "text" : "password"}
             placeholder="New password"
-            minLength={8}
-            required
-            onChange={(e) => {
-              setUserPassword(e.target.value);
-            }}
+            {...register("password")}
           />
+          <i
+            className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 cursor-pointer"
+            onClick={() => setShowPassword(!showPassword)}
+          >
+            {showPassword ? <HiOutlineEyeOff size={20} /> : <HiOutlineEye size={20} />}
+          </i>
+          <p className="text-red-500">{errors.password?.message}</p>
         </div>
-        <div className="pb-[10px]">
+
+        <div className="relative pb-[10px]">
           <input
-            className="shadow placeholder:p-[10px] appearance-none flex py-[10px] border rounded-[15px] w-full px-[10px] text-gray-700 leading-tight focus:outline-none focus:shadow-outline "
-            id="confirm_password"
-            type="password"
+            className="shadow placeholder:p-[10px] appearance-none flex py-[10px] border rounded-[15px] w-full px-[10px] text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            type={showConfirmPassword ? "text" : "password"}
             placeholder="Confirm password"
-            required
-            minLength={8}
-            value={confirmUserPassword}
-            onChange={(e) => {
-              setConfirmUserPassword(e.target.value);
-            }}
+            {...register("confirm_password")}
           />
+          <i
+            className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5 cursor-pointer"
+            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+          >
+            {showConfirmPassword ? <HiOutlineEyeOff size={20} /> : <HiOutlineEye size={20} />}
+          </i>
+          <p className="text-red-500">{errors.confirmPassword?.message}</p>
         </div>
+
         <button
           className="bg-primary text-white rounded-full w-full px-[10px] py-[10px]"
           type="submit"
@@ -112,3 +111,4 @@ const PasswordReset = () => {
 };
 
 export default PasswordReset;
+

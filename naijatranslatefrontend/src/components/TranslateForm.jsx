@@ -151,8 +151,7 @@ const TranslateForm = () => {
             </select>
           </div>
         </div>
-      {/* <div className="flex flex-row justify-start pl-[220px] sm:items-center sm:align-middle sm:pl-[0px] w-full pt-[30px]">
-      </div> */}
+     
       <form
         onSubmit={handleSubmit}
         className="flex flex-col max-w-[1000px] md:w-[400px] sm:w-[360px] sm:p-[10px] mx-auto p-[40px]"

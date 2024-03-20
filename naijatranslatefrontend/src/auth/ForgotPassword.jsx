@@ -35,7 +35,7 @@ const ForgotPassword = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          withCredentials: true,
+
           body: JSON.stringify(formData),
         });
 
@@ -48,11 +48,13 @@ const ForgotPassword = () => {
           }, 2000);
         } else {
           const data = await response.json();
-          
+
           toast.error(data.message);
         }
       } catch (error) {
         toast.error(error.message);
+      } finally {
+        setIsLoading(false);
       }
     },
     [individualEmail, navigate]
@@ -74,7 +76,7 @@ const ForgotPassword = () => {
             headers: {
               "Content-Type": "application/json",
             },
-            withCredentials: true,
+
             body: JSON.stringify(formData),
           }
         );
@@ -87,13 +89,11 @@ const ForgotPassword = () => {
             navigate("/login");
           }, 2000);
         } else {
-          // console.log("Registration failed");
           const data = await response.json();
-
           toast.error(data.error);
         }
       } catch (error) {
-        toast.error(error);
+        toast.error(error.message);
       } finally {
         setIsLoading(false);
       }
@@ -113,7 +113,7 @@ const ForgotPassword = () => {
             your password.
           </h3>
         </div>
-        <ul className="tab-ul flex flex-row list-none text-center cursor-pointer justify-around font-[400] text-[13px] pb-[20px] leading-4 w-[327px] mx-auto">
+        <ul className="tab-ul flex flex-row list-none text-center cursor-pointer justify-around font-[400] text-[13px] pb-[20px] leading-4 w-full max-w-[360px] mx-auto">
           <li
             onClick={handleTabOne}
             className={`cursor-pointer rounded-full font-[600] ${
@@ -138,7 +138,7 @@ const ForgotPassword = () => {
         {activeTab === "tabone" ? (
           <form
             onSubmit={handleSubmitUser}
-            className="rounded-[10px] flex flex-col align-middle items-center max-w-[360px] mx-auto"
+            className="rounded-[10px] flex flex-col align-middle items-center w-full max-w-[360px] mx-auto"
           >
             <div className="pb-sm">
               <input
@@ -161,13 +161,15 @@ const ForgotPassword = () => {
             </button>
 
             <Link to="/login" className="mx-auto font-[700]">
-              <h2 className="underline underline-offset-2">Back to Login Page</h2>
+              <h2 className="underline underline-offset-2">
+                Back to Login Page
+              </h2>
             </Link>
           </form>
         ) : (
           <form
             onSubmit={handleSubmitAdmin}
-            className="rounded-md flex flex-col align-middle items-center max-w-[360px] mx-auto"
+            className="rounded-md flex flex-col align-middle items-center w-full max-w-[360px] mx-auto"
           >
             <div className="pb-sm">
               <input
@@ -190,11 +192,13 @@ const ForgotPassword = () => {
             </button>
 
             <Link to="/login" className="mx-auto font-[700]">
-              <h2 className="underline underline-offset-2">Back to Login Page</h2>
+              <h2 className="underline underline-offset-2">
+                Back to Login Page
+              </h2>
             </Link>
           </form>
         )}
-        
+
         <ToastContainer />
       </div>
     </div>

@@ -17,6 +17,7 @@ import Contact from "./pages/Contact";
 import InternalHistory from "./utils/userHistory";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
+
 const queryClient = new QueryClient();
 
 import "./App.css";
@@ -33,6 +34,7 @@ import NavVerified from "./navbar/NavVerified";
 import ContactVerified from "./pages/ContactVerified";
 import UserContainer from "./pages/UserContainer";
 import AdminLayout from "./components/organization/AdminLayout";
+import ErrorPage from "./ErrorPage";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -77,7 +79,7 @@ const App = () => {
             element={<ResendVerification />}
           />
         </Route>
-        
+        <Route path="*" element={<ErrorPage />} />
       </>
     )
   );

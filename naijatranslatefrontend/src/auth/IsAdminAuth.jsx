@@ -1,9 +1,7 @@
 import { Outlet } from "react-router-dom";
-Outlet;
 
 const IsAdminAuth = () => {
   const isAdminValue = localStorage.getItem("isAdmin");
-  
 
   return isAdminValue ? (
     <Outlet />

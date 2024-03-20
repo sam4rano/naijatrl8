@@ -1,29 +1,74 @@
-import { useCallback, useState } from "react";
-
-import "./Tabcontainer.css";
-import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useNavigate } from "react-router-dom";
 import { baseURL } from "../api/SpeechApi";
 import { HiOutlineEye, HiOutlineEyeOff } from "react-icons/hi";
+import "./Tabcontainer.css";
 
 const LoginContainer = () => {
+  const loginSchema = yup
+    .object({
+      email: yup
+        .string()
+        .required("Email is required")
+        .email("Email is invalid"),
+      password: yup
+        .string()
+        .required("Password is required")
+        .min(8, "Password must be at least 8 characters"),
+    })
+    .required();
+
+  const userSchema = yup
+    .object({
+      individualEmail: yup
+        .string()
+        .email("Invalid email address")
+        .required("Email is required"),
+      individualPassword: yup
+        .string()
+        .min(8, "Password must be at least 8 characters long")
+        .required("Password is required"),
+    })
+    .required();
+
+  const orgSchema = yup.object({
+    orgEmail: yup
+      .string()
+      .email("Invalid email address")
+      .required("Email is required"),
+    orgPwd: yup
+      .string()
+      .min(8, "Password must be at least 8 characters long")
+      .required("Password is required"),
+  });
+
   const [activeTab, setActiveTab] = useState("tabone");
-  const [individualEmail, setIndividualEmail] = useState("");
-  const [organisationEmail, setOrganisationEmail] = useState("");
-  const [individualPassword, setIndividualPassword] = useState("");
-  const [organisationPassword, setOrganisationPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
   const [passwordShown, setPasswordShown] = useState(false);
   const navigate = useNavigate();
 
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(activeTab === "tabone" ? userSchema : orgSchema),
+  });
+
+  const [isAdmin, setIsAdmin] = useState(false);
+
   const handleTabOne = () => {
+    reset();
     setActiveTab("tabone");
   };
 
   const handleTabTwo = () => {
+    reset();
     setActiveTab("tabtwo");
   };
 
@@ -31,111 +76,101 @@ const LoginContainer = () => {
     setPasswordShown(!passwordShown);
   };
 
-  const handleSubmitUser = useCallback(
-    async (e) => {
-      e.preventDefault();
-      setIsLoading(true);
+  const onSubmitUser = async (formData) => {
+    setIsLoading(true);
+    const payload = {
+      email: formData.individualEmail,
+      password: formData.individualPassword,
+    };
 
-      if (!individualEmail || !individualPassword) {
-        toast.error("Please fill in all fields.");
-        return;
-      }
-      const formData = {
-        email: individualEmail,
-        password: individualPassword,
-      };
+    try {
+      const response = await fetch(`${baseURL}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+        body: JSON.stringify(payload),
+      });
+      if (response.ok) {
+        toast.success("Login successful.");
+        const data = await response.json();
 
-      try {
-        const response = await fetch(`${baseURL}/login`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-          body: JSON.stringify(formData),
-        });
+        const accessToken = data.access;
+        const isOrg = data.is_organization;
 
-        if (response.ok) {
-          setIsLoading(false);
-          toast.success("Registration successful");
-          const data = await response.json();
-
-          const accessToken = data.access;
-          const isOrg = data.is_organization;
-
-          // Save the access token in an HttpOnly cookie
-          document.cookie = `access_token=${accessToken}; Secure; SameSite=None`;
-
-          if (isOrg) {
-            localStorage.setItem("isOrg", JSON.stringify(true));
-            setTimeout(() => {
-              navigate("/adminlayout"), 2000;
-            });
-          } else {
-            setTimeout(() => {
-              navigate("/translateveruser"), 2000;
-            });
-          }
+        document.cookie = `access_token=${accessToken}; Secure; SameSite=None`;
+        if (isOrg) {
+          localStorage.setItem("isOrg", JSON.stringify(true));
+          setTimeout(() => {
+            navigate("/adminlayout"), 2000;
+          });
         } else {
-          const data = await response.json();
-          toast.error(data.detail);
+          setTimeout(() => {
+            navigate("/translateveruser"), 2000;
+          });
         }
-      } catch (error) {
-        toast.error("Network error, please check your network", error);
-      } finally {
-        setIsLoading(false);
+      } else {
+        const data = await response.json();
+        toast.error(data.detail);
       }
-    },
-    [individualEmail, individualPassword, navigate]
-  );
+    } catch (error) {
+      toast.error(`An error occurred: ${error.toString()}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   //admin login
-  const handleSubmitAdmin = useCallback(
-    async (e) => {
-      e.preventDefault();
-      setIsLoading(true);
-      if (!organisationEmail || !organisationPassword) {
-        toast.error("Please fill in all fields.");
-        return;
-      }
-      const formData = {
-        email: organisationEmail,
-        password: organisationPassword,
-      };
+  const onSubmitAdmin = async (formData) => {
+    setIsLoading(true);
+    const payload = {
+      email: formData.orgEmail,
+      password: formData.orgPwd,
+    };
 
-      try {
-        const response = await fetch(`${baseURL}/organization/login`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-          body: JSON.stringify(formData),
-        });
-
-        if (response.ok) {
-          setIsLoading(false);
-          setIsAdmin(!isAdmin);
-          toast.success("Registration successful");
-          const data = await response.json();
-          const accessToken = data.access;
-
-          localStorage.setItem("isAdmin", JSON.stringify(true));
-
-          document.cookie = `access_token=${accessToken}; Secure; SameSite=None`;
-          navigate("/adminlayout");
-        } else {
-          const data = await response.json();
-          toast.error(data.detail);
-        }
-      } catch (error) {
-        toast.error("An error occurred", error);
-      } finally {
+    try {
+      const response = await fetch(`${baseURL}/organization/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+        body: JSON.stringify(payload),
+      });
+      if (response.ok) {
+        toast.success("Login successful.");
         setIsLoading(false);
+        setIsAdmin(!isAdmin);
+
+        const data = await response.json();
+        const accessToken = data.access;
+
+        localStorage.setItem("isAdmin", JSON.stringify(true));
+
+        document.cookie = `access_token=${accessToken}; Secure; SameSite=None`;
+        navigate("/adminlayout");
+
+        if (isOrg) {
+          localStorage.setItem("isOrg", JSON.stringify(true));
+          setTimeout(() => {
+            navigate("/adminlayout"), 2000;
+          });
+        } else {
+          setTimeout(() => {
+            navigate("/translateveruser"), 2000;
+          });
+        }
+      } else {
+        const data = await response.json();
+        toast.error(data.detail);
       }
-    },
-    [organisationEmail, organisationPassword, isAdmin, navigate]
-  );
+    } catch (error) {
+      toast.error(`An error occurred: ${error.toString()}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="p-[10px]">
@@ -169,30 +204,33 @@ const LoginContainer = () => {
           <div>
             {activeTab === "tabone" ? (
               <form
-                onSubmit={handleSubmitUser}
-                className="rounded-md flex flex-col content-center max-w-[448px] mx-auto gap-[5px]"
+                onSubmit={handleSubmit(onSubmitUser)}
+                className="rounded-md flex flex-col content-center max-w-[360px] mx-auto gap-[5px]"
               >
                 <div className="pb-sm">
                   <input
                     className="placeholder:p-md appearance-none px-[10px] outline-none flex  h-[40px] border rounded-[15px] w-full p-[1rem] text-gray-700 leading-tight focus:outline-none "
-                    id="individualemail"
-                    type="text"
+                    {...register("individualEmail", {
+                      required: true,
+                      pattern: /^\S+@\S+\.\S+$/,
+                    })}
+                    type="email"
                     placeholder="Email"
-                    required
-                    value={individualEmail}
-                    onChange={(e) => setIndividualEmail(e.target.value)}
                   />
+                  {errors.individualEmail && (
+                    <p className="text-red-400 text-center">
+                      This field is required
+                    </p>
+                  )}
                 </div>
                 <div className="flex justify-between relative">
                   <input
                     className="placeholder:p-md appearance-none px-[10px] h-[40px] border rounded-[15px] w-full pr-10 text-gray-700 leading-tight focus:outline-none"
                     id="individual_password"
+                    {...register("individualPassword", { required: true })}
                     type={passwordShown ? "text" : "password"}
                     placeholder="Password"
-                    required
                     minLength={8}
-                    value={individualPassword}
-                    onChange={(e) => setIndividualPassword(e.target.value)}
                     autoComplete="off"
                   />
                   <i
@@ -202,6 +240,11 @@ const LoginContainer = () => {
                     {passwordShown ? <HiOutlineEyeOff /> : <HiOutlineEye />}
                   </i>
                 </div>
+                {errors.individualPassword && (
+                  <p className="text-red-400 text-center">
+                    This field is required
+                  </p>
+                )}
 
                 <button
                   className="bg-primary text-white rounded-full w-full px-lg h-[40px]"
@@ -233,8 +276,8 @@ const LoginContainer = () => {
               </form>
             ) : (
               <form
-                onSubmit={handleSubmitAdmin}
-                className="rounded-md flex flex-col content-center max-w-[448px] mx-auto gap-[5px]"
+                onSubmit={handleSubmit(onSubmitAdmin)}
+                className="rounded-md flex flex-col content-center max-w-[360px] mx-auto gap-[5px]"
               >
                 <div className="pb-sm">
                   <input
@@ -242,21 +285,18 @@ const LoginContainer = () => {
                     id="email"
                     type="email"
                     placeholder="Organisation Email"
-                    required
-                    value={organisationEmail}
-                    onChange={(e) => setOrganisationEmail(e.target.value)}
                   />
                 </div>
+                {errors.organisationEmail && (
+                  <p className="text-red-400">This field is required</p>
+                )}
                 <div className="relative">
                   <input
                     className="placeholder:p-md appearance-none px-[10px]  h-[40px] border flex  rounded-[15px] w-full text-gray-700 leading-tight focus:outline-none"
                     id="organisation_password"
                     type={passwordShown ? "text" : "password"}
                     placeholder="Admin Password"
-                    required
                     minLength={8}
-                    value={organisationPassword}
-                    onChange={(e) => setOrganisationPassword(e.target.value)}
                     autoComplete="off"
                   />
                   <i
@@ -266,6 +306,9 @@ const LoginContainer = () => {
                     {passwordShown ? <HiOutlineEyeOff /> : <HiOutlineEye />}
                   </i>
                 </div>
+                {errors.organisationPassword && (
+                  <p className="text-red-400">This field is required</p>
+                )}
                 <button
                   className="bg-primary text-white rounded-full w-full px-lg h-[40px]"
                   type="submit"
