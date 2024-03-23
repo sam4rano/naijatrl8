@@ -1,5 +1,4 @@
 import { useNavigate, useParams, Link } from "react-router-dom";
-import Title from "../utils/Title";
 import { useEffect, useState, useCallback } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,8 +10,6 @@ const Verify = () => {
   const navigate = useNavigate();
   let params = useParams();
   const { uid, token } = params;
-
-  console.log("params", params);
 
   const confirmVerified = useCallback(async () => {
     const formData = { uid: uid, token: token };
@@ -59,10 +56,6 @@ const Verify = () => {
   return (
     <div>
       <div className="p-[20px]">
-        <div>
-          <Title />
-        </div>
-
         {isLoading && (
           <p className="flex justify-center mx-auto text-center text-[50px]">
             Loading...

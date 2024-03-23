@@ -2,10 +2,9 @@
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import InputProperties from "./inputfiles/InputProperties";
 import changeIcon from "../assets/Changeicon.png";
-import history from "../assets/history.svg";
 import Inspeaker from "../assets/speakerout.svg";
 import Outspeaker from "../assets/loutspeaker.svg";
 import ClipBoard from "../assets/clipboard.svg";
@@ -13,6 +12,9 @@ import Skeleton from "@mui/material/Skeleton";
 import { Link } from "react-router-dom";
 import NavVerified from "../navbar/NavVerified";
 import { baseURL } from "../api/SpeechApi";
+import { IoTimeOutline } from "react-icons/io5";
+
+import copy from "copy-to-clipboard";
 
 import VerOutputProperties from "./outputfiles/VerOutputProperties";
 
@@ -172,12 +174,27 @@ const TranslateVerUser = () => {
     }
   };
 
+  const textRef = useRef();
+
+  //Function to add text to clipboard
+  const copyToClipboard = () => {
+    
+    let copyText = textRef.current.value;
+    
+    let isCopy = copy(copyText);
+
+    //Dispalying notification
+    if (isCopy) {
+      toast.success("Copied to Clipboard");
+    }
+  };
+
   return (
     <>
       <div className="bg-graylight">
         <NavVerified />
 
-        <div className="flex flex-row justify-around pl-[220px] sm:align-middle sm:items-center sm:pl-[10px] w-full py-[30px] sm:py-[20px]">
+        <div className="max-w-[360px] w-full mx-auto flex flex-row justify-between align-middle items-center gap-[10px] pt-[20px]">
           <div className="flex flex-row justify-around border-gray ">
             <div className="flex flex-row ">
               <select
@@ -214,9 +231,10 @@ const TranslateVerUser = () => {
 
           <Link
             to="/internalhistory"
-            className="flex px-[10px] hover:bg-light mb-[20px]"
+            className="flex px-[10px] hover:bg-light flex-row align-middle items-center"
           >
-            <img src={history} alt="feedback" className="pr-[10px]" />
+            <IoTimeOutline size={20} />
+
             <div className="">history</div>
           </Link>
           </div>
@@ -224,7 +242,7 @@ const TranslateVerUser = () => {
 
         <form
           onSubmit={handleSubmit}
-          className="flex flex-col max-w-[1000px] sm:w-[360px] mx-auto p-[40px] sm:p-[10px]"
+          className="flex flex-col max-w-[1000px] sm:w-[360px] mx-auto px-[20px] pt-[10px] pb-[20px]"
         >
           <div className="flex flex-row sm:align-middle sm:items-center w-full p-[10px] rounded-tr-[16px] rounded-tl-[16px] bg-white border-b-2 border-gray outline-none">
             <div className="flex flex-row w-1/2 justify-center bg-white outline-none">
@@ -288,6 +306,7 @@ const TranslateVerUser = () => {
                   id="source_text"
                   name="source_text"
                   value={source_text}
+                  ref={textRef}
                   onChange={(e) => setSource_text(e.target.value)}
                 />
               )}
@@ -335,6 +354,7 @@ const TranslateVerUser = () => {
               />
               <VerOutputProperties
                 translatedAudioUrl={translatedAudioUrl}
+                copyToClipboard={copyToClipboard}
                 outputType={outputType}
                 feedbackId={feedbackData}
               />

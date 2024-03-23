@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useState, useRef } from "react";
 import axios from "axios";
 import changeIcon from "../assets/Changeicon.png";
 import OutputProperties from "./outputfiles/OutputProperties";
@@ -9,6 +9,7 @@ import ClipBoard from "../assets/clipboard.svg";
 import Skeleton from "@mui/material/Skeleton";
 import { ToastContainer, toast } from "react-toastify";
 import { baseURL } from "../api/SpeechApi";
+import copy from "copy-to-clipboard";
 
 const TranslateForm = () => {
   //text to text
@@ -21,6 +22,7 @@ const TranslateForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [translatedAudioUrl, setTranslatedAudioUrl] = useState("");
   const [isText, setIsText] = useState("");
+  
   const [feedbackData, setFeedbackData] = useState("");
 
   //text to speech
@@ -117,9 +119,24 @@ const TranslateForm = () => {
     }
   };
 
+  const textRef = useRef();
+
+  //Function to add text to clipboard
+  const copyToClipboard = () => {
+    
+    let copyText = textRef.current.value;
+    
+    let isCopy = copy(copyText);
+
+    //Dispalying notification
+    if (isCopy) {
+      toast.success("Copied to Clipboard");
+    }
+  };
+
   return (
-    <div className="overflow-hidden">
-        <div className="flex flex-row pt-[20px] border-gray justify-start pl-[220px] sm:items-center sm:align-middle sm:pl-[0px] w-full">
+    <div className="overflow-hidden block">
+        <div className="flex flex-row py-[20px] border-gray justify-center sm:items-center sm:align-middle w-[360px] mx-auto">
           <div className="flex flex-row ">
             <select
               className="text-primary bg-light cursor-pointer border rounded-[10px] px-[10px] outline-none"
@@ -154,7 +171,7 @@ const TranslateForm = () => {
      
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col max-w-[1000px] md:w-[400px] sm:w-[360px] sm:p-[10px] mx-auto p-[40px]"
+        className="flex flex-col max-w-[1000px] md:w-[400px] sm:w-[360px] sm:p-[10px] mx-auto px-[10px] pb-[30px]"
       >
         <div className="flex flex-row w-full p-[10px] rounded-tr-[16px] rounded-tl-[16px] bg-white border-b-2 border-gray ">
           <div className="flex flex-row w-1/2 justify-center bg-white outline-none">
@@ -214,6 +231,7 @@ const TranslateForm = () => {
                 className="h-[400px] active:border-0 p-[4px] focus-within:bg-none outline-none"
                 id="source_text"
                 name="source_text"
+                ref={textRef}
                 value={source_text}
                 onChange={(e) => setSourceText(e.target.value)}
               />
@@ -275,6 +293,7 @@ const TranslateForm = () => {
 
             <OutputProperties
               translatedAudioUrl={translatedAudioUrl}
+              copyToClipboard={copyToClipboard}
               outputType={outputType}
               feedbackData={feedbackData}
             />

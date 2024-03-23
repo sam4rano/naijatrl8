@@ -5,11 +5,13 @@ import copy from "../../assets/Copy.svg";
 import { useState } from "react";
 import { useOpenNavbar } from "../../Stores/Stores";
 import VerifiedRating from "../VerifiedRating";
+import { IoClipboardOutline, IoShareSocialOutline } from "react-icons/io5";
 
 const VerOutputProperties = ({
   translatedAudioUrl,
   outputType,
   feedbackId,
+  copyToClipboard,
 }) => {
   const { openNav, setOpenNav } = useOpenNavbar();
 
@@ -35,10 +37,15 @@ const VerOutputProperties = ({
         </div>
       )}
 
-      <div className="flex flex-row justify-around align-middle items-center">
-        <img src={copy} className="w-[30px] h-[30px]" alt="copy" />
+      <div className="flex flex-row justify-around align-middle items-center gap-[10px]">
+        <IoClipboardOutline
+          size={20}
+          onClick={copyToClipboard}
+          className="cursor-pointer"
+        />
         <VerifiedRating feedbackId={feedbackId} />
-        <img src={share} alt="share" className="w-[30px] h-[30px]" />
+        <IoShareSocialOutline size={20} />
+        
       </div>
       {openAudio && (
         <div className="flex justify-center flex-col align-middle mx-auto">

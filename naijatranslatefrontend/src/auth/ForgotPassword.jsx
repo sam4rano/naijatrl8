@@ -103,20 +103,20 @@ const ForgotPassword = () => {
 
   return (
     <div className="flex flex-col py-[20px]">
-      <div className="w-[360px] sm:w-full mx-auto pt-[10px] sm:gap-[30px]">
-        <div className="flex justify-center align-middle items-center flex-col w-[360px] sm:gap-[10px]">
+      <div className="w-[360px] flex flex-col align-middle items-center justify-center sm:w-full mx-auto pt-[10px] sm:gap-[10px] gap-[20px]">
+        <div className="">
           <h1 className="text-center text-[20px] leading-[30px] font-bold">
             Reset your password{" "}
           </h1>
-          <h3 className="text-center py-[10px] text-[14px] leading-[20px] w-[300px] ">
+          <h3 className="text-center py-[10px] text-[14px] leading-[20px] w-[360px] px-[10px]">
             Enter your email, and we’ll send you instructions on how to reset
             your password.
           </h3>
         </div>
-        <ul className="tab-ul flex flex-row list-none text-center cursor-pointer justify-around font-[400] text-[13px] pb-[20px] leading-4 w-full max-w-[360px] mx-auto">
+        <ul className="tab-ul flex flex-row list-none text-center cursor-pointer justify-around font-normal text-[13px] pb-[10px] leading-4 w-full max-w-[360px] mx-auto">
           <li
             onClick={handleTabOne}
-            className={`cursor-pointer rounded-full font-[600] ${
+            className={`cursor-pointer rounded-full font-[600] w-full ${
               activeTab === "tabone"
                 ? "active text-white bg-primary rounded-full"
                 : "text-dark bg-gray"
@@ -126,7 +126,7 @@ const ForgotPassword = () => {
           </li>
           <li
             onClick={handleTabTwo}
-            className={`cursor-pointer rounded-full font-[600] ${
+            className={`cursor-pointer rounded-full font-[600] w-full ${
               activeTab === "tabtwo"
                 ? "active text-white bg-primary rounded-full"
                 : "text-dark bg-gray "
@@ -142,7 +142,7 @@ const ForgotPassword = () => {
           >
             <div className="pb-sm">
               <input
-                className="shadow placeholder:p-md appearance-none flex border rounded-[15px] w-[360px] text-gray-700 py-[10px]  px-[5px] leading-tight focus:outline-none focus:shadow-outline "
+                className="shadow placeholder:p-md appearance-none flex border rounded-[15px] w-full sm:w-[350px] mdx:w-[350px] mx-auto text-gray-700 py-[10px]  px-[1px] leading-tight focus:outline-none focus:shadow-outline "
                 id="email"
                 type="text"
                 placeholder="Email"
@@ -173,7 +173,8 @@ const ForgotPassword = () => {
           >
             <div className="pb-sm">
               <input
-                className="shadow placeholder:p-[10px] px-[5px] appearance-none flex border rounded-[15px] w-[360px] text-gray-700 leading-tight focus:outline-none focus:shadow-outline py-[10px]"
+                className="shadow placeholder:p-md appearance-none flex border rounded-[15px] w-full sm:w-[35
+                  0px] mdx:w-[350px] mx-auto text-gray-700 py-[10px]  px-[1px] leading-tight focus:outline-none focus:shadow-outline "
                 id="email"
                 type="text"
                 placeholder="Organisation Email"

@@ -14,6 +14,7 @@ import { useMutation } from "@tanstack/react-query";
 import thumbUp from "../assets/thumbUp.svg";
 import axios from "axios";
 import { baseURL } from "../api/SpeechApi";
+import { IoThumbsUpOutline } from "react-icons/io5";
 
 export default function VerifiedRating({ feedbackId }) {
   const [open, setOpen] = useState(false);
@@ -94,7 +95,7 @@ export default function VerifiedRating({ feedbackId }) {
   return (
     <>
       <button onClick={() => setOpen(true)}>
-        <img src={thumbUp} alt="thumbUp" />
+        <IoThumbsUpOutline size={20} />
       </button>
       <Dialog
         open={open}

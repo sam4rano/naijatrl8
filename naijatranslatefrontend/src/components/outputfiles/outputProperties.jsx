@@ -1,14 +1,17 @@
 import outspeaker from "../../assets/Outspeaker.svg";
-import thumbup from "../../assets/Thumbup.svg";
-import thumbdown from "../../assets/Thumbdown.svg";
 import Close from "../../assets/close.svg";
-import share from "../../assets/Share.svg";
-import copy from "../../assets/Copy.svg";
 import { useState, useRef } from "react";
 import { useOpenNavbar } from "../../Stores/Stores";
+import { IoClipboardOutline, IoShareSocialOutline } from "react-icons/io5";
+
 import UnverifiedRating from "../UnverifiedRating";
 
-const OutputProperties = ({ translatedAudioUrl, outputType, feedbackData }) => {
+const OutputProperties = ({
+  translatedAudioUrl,
+  outputType,
+  feedbackData,
+  copyToClipboard,
+}) => {
   const { openNav, setOpenNav } = useOpenNavbar();
 
   const [openAudio, setOpenAudio] = useState(false);
@@ -33,10 +36,11 @@ const OutputProperties = ({ translatedAudioUrl, outputType, feedbackData }) => {
         </div>
       )}
 
-      <div className="flex flex-row justify-around align-middle items-center">
-        <img src={copy} className="w-[30px] h-[30px]" alt="copy" />
+      <div className="flex flex-row align-middle items-center gap-[5px]">
+        <IoClipboardOutline size={20} onClick={copyToClipboard} className="cursor-pointer" />
+
         <UnverifiedRating feedbackData={feedbackData} />
-        <img src={share} alt="share" className="w-[30px] h-[30px]" />
+        <IoShareSocialOutline size={20} />
       </div>
       {openAudio && (
         <div className="flex justify-center flex-col align-middle mx-auto">

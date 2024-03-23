@@ -138,163 +138,161 @@ const LoginContainer = () => {
   );
 
   return (
-    <div className="p-[10px]">
-      <div className="w-[360px] sm:w-full pt-[20px] mx-auto">
-        <h1 className="font-bold text-[30px] leading-[40px] sm:text-[20px] sm:leading-[30px] text-center py-[20px]">
-          Login to your account
-        </h1>
-        <div className="tab-ul flex flex-col ">
-          <ul className="flex flex-row list-none text-center cursor-pointer justify-around font-[400] text-[13px] pb-[20px] leading-4 w-[327px] mx-auto">
-            <li
-              onClick={handleTabOne}
-              className={`cursor-pointer rounded-full font-[600] ${
-                activeTab === "tabone"
-                  ? "active text-white bg-primary rounded-full"
-                  : "text-dark bg-gray"
-              } `}
+    <div className="w-[360px] sm:w-full pt-[20px] mx-auto">
+      <h1 className="font-bold text-[30px] leading-[40px] sm:text-[20px] sm:leading-[30px] text-center py-[20px]">
+        Login to your account
+      </h1>
+      <div className="tab-ul flex flex-col">
+        <ul className="flex flex-row list-none text-center cursor-pointer align-middle items-center font-[400] text-[13px] pb-[20px] leading-4 w-full mx-auto ">
+          <li
+            onClick={handleTabOne}
+            className={`cursor-pointer rounded-full font-[600] w-full ${
+              activeTab === "tabone"
+                ? "active text-white bg-primary rounded-full w-full"
+                : "text-dark bg-gray"
+            } `}
+          >
+            INDIVIDUAL
+          </li>
+          <li
+            onClick={handleTabTwo}
+            className={`cursor-pointer rounded-full font-[600] w-full ${
+              activeTab === "tabtwo"
+                ? "active text-white bg-primary rounded-full"
+                : "text-dark bg-gray "
+            } `}
+          >
+            ORGANISATION
+          </li>
+        </ul>
+        <div>
+          {activeTab === "tabone" ? (
+            <form
+              onSubmit={handleSubmitUser}
+              className="rounded-md flex flex-col content-center max-w-[448px] mx-auto gap-[5px]"
             >
-              INDIVIDUAL
-            </li>
-            <li
-              onClick={handleTabTwo}
-              className={`cursor-pointer rounded-full font-[600] ${
-                activeTab === "tabtwo"
-                  ? "active text-white bg-primary rounded-full"
-                  : "text-dark bg-gray "
-              } `}
-            >
-              ORGANISATION
-            </li>
-          </ul>
-          <div>
-            {activeTab === "tabone" ? (
-              <form
-                onSubmit={handleSubmitUser}
-                className="rounded-md flex flex-col content-center max-w-[448px] mx-auto gap-[5px]"
-              >
-                <div className="pb-sm">
-                  <input
-                    className="placeholder:p-md appearance-none px-[10px] outline-none flex  h-[40px] border rounded-[15px] w-full p-[1rem] text-gray-700 leading-tight focus:outline-none "
-                    id="individualemail"
-                    type="text"
-                    placeholder="Email"
-                    required
-                    value={individualEmail}
-                    onChange={(e) => setIndividualEmail(e.target.value)}
-                  />
-                </div>
-                <div className="flex justify-between relative">
-                  <input
-                    className="placeholder:p-md appearance-none px-[10px] h-[40px] border rounded-[15px] w-full pr-10 text-gray-700 leading-tight focus:outline-none"
-                    id="individual_password"
-                    type={passwordShown ? "text" : "password"}
-                    placeholder="Password"
-                    required
-                    minLength={8}
-                    value={individualPassword}
-                    onChange={(e) => setIndividualPassword(e.target.value)}
-                    autoComplete="off"
-                  />
-                  <i
-                    onClick={togglePasswordVisibility}
-                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 cursor-pointer"
-                  >
-                    {passwordShown ? <HiOutlineEyeOff /> : <HiOutlineEye />}
-                  </i>
-                </div>
-
-                <button
-                  className="bg-primary text-white rounded-full w-full px-lg h-[40px]"
-                  type="submit"
-                  disabled={isLoading}
+              <div className="pb-sm">
+                <input
+                  className="placeholder:p-md appearance-none px-[10px] outline-none flex  h-[40px] border rounded-[15px] w-full p-[1rem] text-gray-700 leading-tight focus:outline-none "
+                  id="individualemail"
+                  type="text"
+                  placeholder="Email"
+                  required
+                  value={individualEmail}
+                  onChange={(e) => setIndividualEmail(e.target.value)}
+                />
+              </div>
+              <div className="flex justify-between relative">
+                <input
+                  className="placeholder:p-md appearance-none px-[10px] h-[40px] border rounded-[15px] w-full pr-10 text-gray-700 leading-tight focus:outline-none"
+                  id="individual_password"
+                  type={passwordShown ? "text" : "password"}
+                  placeholder="Password"
+                  required
+                  minLength={8}
+                  value={individualPassword}
+                  onChange={(e) => setIndividualPassword(e.target.value)}
+                  autoComplete="off"
+                />
+                <i
+                  onClick={togglePasswordVisibility}
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 cursor-pointer"
                 >
-                  {isLoading ? "Please wait" : "Log in"}
-                </button>
-                {/* <Link to="#" className="pb-[20px]">
+                  {passwordShown ? <HiOutlineEyeOff /> : <HiOutlineEye />}
+                </i>
+              </div>
+
+              <button
+                className="bg-primary text-white rounded-full w-full px-lg h-[40px]"
+                type="submit"
+                disabled={isLoading}
+              >
+                {isLoading ? "Please wait" : "Log in"}
+              </button>
+              {/* <Link to="#" className="pb-[20px]">
                 </Link> */}
-                <div className="flex flex-col justify-center mx-auto py-[10px]">
-                  <p className=" text-sm">
-                    Sign up for an account?
-                    <Link to="/signup">
-                      <span className="pl-sm pr-sm text-primary font-medium text-[14px]">
-                        Sign Up
-                      </span>
-                    </Link>
-                  </p>
-                  <Link
-                    to="/forgotpassword"
-                    className="underline underline-offset-2 mx-auto"
-                  >
-                    <h2 className="underline underline-offset-2 font-bold">
-                      Forgot Password
-                    </h2>
+              <div className="flex flex-col justify-center mx-auto py-[10px]">
+                <p className=" text-sm">
+                  Sign up for an account?
+                  <Link to="/signup">
+                    <span className="pl-sm pr-sm text-primary font-medium text-[14px]">
+                      Sign Up
+                    </span>
                   </Link>
-                </div>
-              </form>
-            ) : (
-              <form
-                onSubmit={handleSubmitAdmin}
-                className="rounded-md flex flex-col content-center max-w-[448px] mx-auto gap-[5px]"
-              >
-                <div className="pb-sm">
-                  <input
-                    className="placeholder:p-md px-[10px] appearance-none  h-[40px] border flex  rounded-[15px] w-full text-gray-700 leading-tight focus:outline-none"
-                    id="email"
-                    type="email"
-                    placeholder="Organisation Email"
-                    required
-                    value={organisationEmail}
-                    onChange={(e) => setOrganisationEmail(e.target.value)}
-                  />
-                </div>
-                <div className="relative">
-                  <input
-                    className="placeholder:p-md appearance-none px-[10px]  h-[40px] border flex  rounded-[15px] w-full text-gray-700 leading-tight focus:outline-none"
-                    id="organisation_password"
-                    type={passwordShown ? "text" : "password"}
-                    placeholder="Admin Password"
-                    required
-                    minLength={8}
-                    value={organisationPassword}
-                    onChange={(e) => setOrganisationPassword(e.target.value)}
-                    autoComplete="off"
-                  />
-                  <i
-                    onClick={togglePasswordVisibility}
-                    className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 cursor-pointer"
-                  >
-                    {passwordShown ? <HiOutlineEyeOff /> : <HiOutlineEye />}
-                  </i>
-                </div>
-                <button
-                  className="bg-primary text-white rounded-full w-full px-lg h-[40px]"
-                  type="submit"
-                  disabled={isLoading}
+                </p>
+                <Link
+                  to="/forgotpassword"
+                  className="underline underline-offset-2 mx-auto"
                 >
-                  {isLoading ? "Please wait" : "Log in"}
-                </button>
+                  <h2 className="underline underline-offset-2 font-bold">
+                    Forgot Password
+                  </h2>
+                </Link>
+              </div>
+            </form>
+          ) : (
+            <form
+              onSubmit={handleSubmitAdmin}
+              className="rounded-md flex flex-col content-center max-w-[448px] mx-auto gap-[5px]"
+            >
+              <div className="pb-sm">
+                <input
+                  className="placeholder:p-md px-[10px] appearance-none  h-[40px] border flex  rounded-[15px] w-full text-gray-700 leading-tight focus:outline-none"
+                  id="email"
+                  type="email"
+                  placeholder="Organisation Email"
+                  required
+                  value={organisationEmail}
+                  onChange={(e) => setOrganisationEmail(e.target.value)}
+                />
+              </div>
+              <div className="relative">
+                <input
+                  className="placeholder:p-md appearance-none px-[10px]  h-[40px] border flex  rounded-[15px] w-full text-gray-700 leading-tight focus:outline-none"
+                  id="organisation_password"
+                  type={passwordShown ? "text" : "password"}
+                  placeholder="Admin Password"
+                  required
+                  minLength={8}
+                  value={organisationPassword}
+                  onChange={(e) => setOrganisationPassword(e.target.value)}
+                  autoComplete="off"
+                />
+                <i
+                  onClick={togglePasswordVisibility}
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 cursor-pointer"
+                >
+                  {passwordShown ? <HiOutlineEyeOff /> : <HiOutlineEye />}
+                </i>
+              </div>
+              <button
+                className="bg-primary text-white rounded-full w-full px-lg h-[40px]"
+                type="submit"
+                disabled={isLoading}
+              >
+                {isLoading ? "Please wait" : "Log in"}
+              </button>
 
-                <div className="flex flex-col justify-center mx-auto py-[10px]">
-                  <p className=" text-sm">
-                    Sign up for an account?
-                    <Link to="/signup">
-                      <span className="pl-sm pr-sm text-primary font-medium text-[14px]">
-                        Sign Up
-                      </span>
-                    </Link>
-                  </p>
-                  <Link to="/forgotpassword" className="mx-auto">
-                    <h2 className="underline underline-offset-2 font-bold">
-                      Forgot Password
-                    </h2>
+              <div className="flex flex-col justify-center mx-auto py-[10px]">
+                <p className=" text-sm">
+                  Sign up for an account?
+                  <Link to="/signup">
+                    <span className="pl-sm pr-sm text-primary font-medium text-[14px]">
+                      Sign Up
+                    </span>
                   </Link>
-                </div>
-              </form>
-            )}
-          </div>
+                </p>
+                <Link to="/forgotpassword" className="mx-auto">
+                  <h2 className="underline underline-offset-2 font-bold">
+                    Forgot Password
+                  </h2>
+                </Link>
+              </div>
+            </form>
+          )}
         </div>
-        <ToastContainer />
       </div>
+      <ToastContainer />
     </div>
   );
 };
