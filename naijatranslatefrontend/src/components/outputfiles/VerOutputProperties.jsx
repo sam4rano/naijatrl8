@@ -1,9 +1,6 @@
 import outspeaker from "../../assets/Outspeaker.svg";
 import Close from "../../assets/close.svg";
-import share from "../../assets/Share.svg";
-import copy from "../../assets/Copy.svg";
 import { useState } from "react";
-import { useOpenNavbar } from "../../Stores/Stores";
 import VerifiedRating from "../VerifiedRating";
 import { IoClipboardOutline, IoShareSocialOutline } from "react-icons/io5";
 
@@ -13,8 +10,6 @@ const VerOutputProperties = ({
   feedbackId,
   copyToClipboard,
 }) => {
-  const { openNav, setOpenNav } = useOpenNavbar();
-
   const [openAudio, setOpenAudio] = useState(false);
 
   const toggleAudio = () => {
@@ -36,7 +31,6 @@ const VerOutputProperties = ({
           <h1 className="pt-[3px]">Listen</h1>
         </div>
       )}
-
       <div className="flex flex-row justify-around align-middle items-center gap-[10px]">
         <IoClipboardOutline
           size={20}
@@ -45,7 +39,6 @@ const VerOutputProperties = ({
         />
         <VerifiedRating feedbackId={feedbackId} />
         <IoShareSocialOutline size={20} />
-        
       </div>
       {openAudio && (
         <div className="flex justify-center flex-col align-middle mx-auto">
