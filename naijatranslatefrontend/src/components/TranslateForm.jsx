@@ -1,15 +1,13 @@
 import { useCallback, useState, useRef } from "react";
 import axios from "axios";
 import OutputProperties from "./outputfiles/OutputProperties";
-import Inspeaker from "../assets/speakerout.svg";
-import ClipBoard from "../assets/clipboard.svg";
-import Skeleton from "@mui/material/Skeleton";
 import { ToastContainer, toast } from "react-toastify";
 import { baseURL } from "../api/SpeechApi";
 import copy from "copy-to-clipboard";
 import OutputInputLanguage from "./outputfiles/OutputInputLanguage";
 import { IoClipboardOutline, IoMic } from "react-icons/io5";
 import OutputArea from "./outputfiles/OutputArea";
+import Skeleton from "@mui/material/Skeleton";
 
 const TranslateForm = () => {
   const [source_language, setSourceLanguage] = useState("en");
@@ -143,7 +141,7 @@ const TranslateForm = () => {
             className="h-[400px] active:border-0 p-[4px] focus-within:bg-none outline-none"
             id="source_text"
             name="source_text"
-            ref={textRef}
+            // ref={textRef}
             value={source_text}
             onChange={(e) => setSourceText(e.target.value)}
             placeholder="Enter text to translate..."
@@ -172,12 +170,42 @@ const TranslateForm = () => {
         </div>
 
         <div className="flex flex-col w-1/2 h-[400px] border-l-2 border-gray ">
-          <OutputArea isLoading={isLoading} target_text={target_text} />
-          <OutputProperties
-            translatedAudioUrl={translatedAudioUrl}
-            copyToClipboard={copyToClipboard}
-            feedbackData={feedbackData}
-          />
+          {/* <div>
+            {isLoading ? (
+              <div className="h-[300px] active:border-none p-[8px] outline-none">
+                <div className="absolute pl-[80px] sm:pl-[50px] w-[300px] sm:w-[80px] sm:h-[80px] pt-[100px] flex flex-col">
+                  <Skeleton
+                    animation="wave"
+                    className="h-[40px] sm:w-[80px] sm:h-[80px] "
+                  />
+                  <Skeleton
+                    animation="wave"
+                    className="h-[40px] sm:w-[80px] sm:h-[80px] "
+                  />
+                  <Skeleton
+                    animation="wave"
+                    className="w-[200px] sm:w-[80px] sm:h-[80px] h-[40px]"
+                  />
+                </div>
+              </div>
+            ) : (
+              <textarea
+                className="h-[330px] w-full p-4 border-none outline-none"
+                id="target_text"
+                name="target_text"
+                ref={textRef}
+                value={target_text}
+              />
+            )}
+          </div> */}
+          <OutputArea isLoading={isLoading} target_text={target_text} textRef={textRef} />
+          {(isLoading || translatedAudioUrl || feedbackData) && (
+            <OutputProperties
+              translatedAudioUrl={translatedAudioUrl}
+              copyToClipboard={copyToClipboard}
+              feedbackData={feedbackData}
+            />
+          )}
         </div>
       </div>
       <ToastContainer />
