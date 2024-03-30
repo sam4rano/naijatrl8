@@ -8,10 +8,11 @@ import OutputInputLanguage from "./outputfiles/OutputInputLanguage";
 import { IoClipboardOutline, IoMic } from "react-icons/io5";
 import OutputArea from "./outputfiles/OutputArea";
 import Skeleton from "@mui/material/Skeleton";
+import { IoIosVolumeHigh } from "react-icons/io";
 
 const TranslateForm = () => {
   const [source_language, setSourceLanguage] = useState("en");
-  const [target_language, setTargetLanguage] = useState("");
+  const [target_language, setTargetLanguage] = useState("pcm");
   const [source_text, setSourceText] = useState("");
   const [target_text, setTargetText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -141,7 +142,6 @@ const TranslateForm = () => {
             className="h-[400px] active:border-0 p-[4px] focus-within:bg-none outline-none"
             id="source_text"
             name="source_text"
-            // ref={textRef}
             value={source_text}
             onChange={(e) => setSourceText(e.target.value)}
             placeholder="Enter text to translate..."
@@ -157,7 +157,7 @@ const TranslateForm = () => {
               {isLoading ? "Please wait" : "Translate"}
             </button>
             <div className="flex flex-row align-middle justify-center items-center px-[8px] border-[1px] h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200 cursor-pointer">
-              <IoMic size={20} />
+              <IoIosVolumeHigh size={20} />
               <button
                 type="button"
                 onClick={handleTextToSpeechSubmit}
@@ -198,10 +198,16 @@ const TranslateForm = () => {
               />
             )}
           </div> */}
-          <OutputArea isLoading={isLoading} target_text={target_text} textRef={textRef} />
+          <OutputArea
+            isLoading={isLoading}
+            target_text={target_text}
+            textRef={textRef}
+          />
           {(isLoading || translatedAudioUrl || feedbackData) && (
             <OutputProperties
               translatedAudioUrl={translatedAudioUrl}
+              handleTextToSpeechSubmit={handleTextToSpeechSubmit}
+              loadingAudio={loadingAudio}
               copyToClipboard={copyToClipboard}
               feedbackData={feedbackData}
             />

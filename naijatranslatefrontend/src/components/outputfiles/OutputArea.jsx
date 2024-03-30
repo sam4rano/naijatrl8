@@ -1,6 +1,13 @@
 import Skeleton from "@mui/material/Skeleton";
+import { BiSolidVolumeFull } from "react-icons/bi";
 
-const OutputArea = ({ isLoading, target_text, textRef }) => {
+const OutputArea = ({
+  isLoading,
+  target_text,
+  textRef,
+  handleTextToSpeechSubmit,
+  loadingAudio,
+}) => {
   return (
     <div>
       {isLoading ? (
@@ -21,13 +28,27 @@ const OutputArea = ({ isLoading, target_text, textRef }) => {
           </div>
         </div>
       ) : (
-        <textarea
-          className="h-[330px] w-full p-4 border-none outline-none"
-          id="target_text"
-          name="target_text"
-          ref={textRef}
-          value={target_text}
-        />
+        <>
+          <textarea
+            className="h-[130px] w-full p-4 border-none outline-none"
+            id="target_text"
+            name="target_text"
+            ref={textRef}
+            value={target_text}
+          />
+          {target_text && (
+            <div className="flex flex-row align-middle justify-center items-center px-[8px] border-[1px] h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200 cursor-pointer">
+              <BiSolidVolumeFull size={20} />
+              <button
+                type="button"
+                onClick={handleTextToSpeechSubmit}
+                disabled={loadingAudio}
+              >
+                {loadingAudio ? "Please wait" : "listen"}
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );
