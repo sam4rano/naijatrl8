@@ -1,13 +1,13 @@
 import Skeleton from "@mui/material/Skeleton";
 import { BiSolidVolumeFull } from "react-icons/bi";
 
-const OutputArea = ({
+const OutputAreaVerified = ({
   isLoading,
   target_text,
   textRef,
   handleTextToSpeechSubmit,
   loadingAudio,
-  handleTargetTextChange,
+  setTarget_text
 }) => {
   return (
     <div>
@@ -36,7 +36,7 @@ const OutputArea = ({
             name="target_text"
             ref={textRef}
             value={target_text}
-            onChange={handleTargetTextChange}
+            onChange={(e) => setTarget_text(e.target.value)}
           />
           {target_text && (
             <div className="flex flex-row align-middle justify-center items-center px-[8px] border-[1px] h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200 cursor-pointer">
@@ -56,4 +56,4 @@ const OutputArea = ({
   );
 };
 
-export default OutputArea;
+export default OutputAreaVerified;

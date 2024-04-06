@@ -7,10 +7,9 @@ import copy from "copy-to-clipboard";
 import OutputInputLanguage from "./outputfiles/OutputInputLanguage";
 import { IoClipboardOutline, IoMic } from "react-icons/io5";
 import OutputArea from "./outputfiles/OutputArea";
-import Skeleton from "@mui/material/Skeleton";
 import { IoIosVolumeHigh } from "react-icons/io";
 
-const TranslateForm = () => {
+const TranslateUnregistered = () => {
   const [source_language, setSourceLanguage] = useState("en");
   const [target_language, setTargetLanguage] = useState("pcm");
   const [source_text, setSourceText] = useState("");
@@ -37,7 +36,6 @@ const TranslateForm = () => {
         if (response.data && response.data.data) {
           const { target_text } = response.data.data;
           setTargetText(target_text);
-
           setFeedbackData(response.data.data.feedback_id);
         } else if (response.data && response.data.message) {
           const responseError = response.data.message;
@@ -67,22 +65,17 @@ const TranslateForm = () => {
       e.preventDefault();
       setLoadingAudio(true);
       const apiUrl = `${baseURL}/translate-serverless/text-speech/unregistered-trial`;
-
       try {
         const response = await axios.post(apiUrl, {
           text: source_text,
         });
-
         if (response.data && !response.data.error) {
           const { message, data } = response.data;
-
           if (data && data.url) {
             const { url } = data;
-
             toast.success(
               "Text to speech conversion successful, Click on listen button"
             );
-
             setTranslatedAudioUrl(url);
           } else {
             toast.error(
@@ -103,7 +96,6 @@ const TranslateForm = () => {
   );
 
   const textRef = useRef();
-
   //Function to add text to clipboard
   const copyToClipboard = () => {
     let copyText = textRef.current.value;
@@ -114,6 +106,10 @@ const TranslateForm = () => {
     if (isCopy) {
       toast.success("Copied to Clipboard");
     }
+  };
+
+  const handleTargetTextChange = (e) => {
+    setTargetText(e.target.value);
   };
 
   return (
@@ -170,38 +166,11 @@ const TranslateForm = () => {
         </div>
 
         <div className="flex flex-col w-1/2 h-[400px] border-l-2 border-gray ">
-          {/* <div>
-            {isLoading ? (
-              <div className="h-[300px] active:border-none p-[8px] outline-none">
-                <div className="absolute pl-[80px] sm:pl-[50px] w-[300px] sm:w-[80px] sm:h-[80px] pt-[100px] flex flex-col">
-                  <Skeleton
-                    animation="wave"
-                    className="h-[40px] sm:w-[80px] sm:h-[80px] "
-                  />
-                  <Skeleton
-                    animation="wave"
-                    className="h-[40px] sm:w-[80px] sm:h-[80px] "
-                  />
-                  <Skeleton
-                    animation="wave"
-                    className="w-[200px] sm:w-[80px] sm:h-[80px] h-[40px]"
-                  />
-                </div>
-              </div>
-            ) : (
-              <textarea
-                className="h-[330px] w-full p-4 border-none outline-none"
-                id="target_text"
-                name="target_text"
-                ref={textRef}
-                value={target_text}
-              />
-            )}
-          </div> */}
           <OutputArea
             isLoading={isLoading}
             target_text={target_text}
             textRef={textRef}
+            handleTargetTextChange={handleTargetTextChange}
           />
           {(isLoading || translatedAudioUrl || feedbackData) && (
             <OutputProperties
@@ -219,4 +188,4 @@ const TranslateForm = () => {
   );
 };
 
-export default TranslateForm;
+export default TranslateUnregistered;

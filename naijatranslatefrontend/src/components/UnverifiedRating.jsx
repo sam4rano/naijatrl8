@@ -9,7 +9,6 @@ import { useState } from "react";
 import close from "../assets/close.svg";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import thumpUp from "../assets/thumbUp.svg";
 import { baseURL } from "../api/SpeechApi";
 import { useCallback } from "react";
 import { IoThumbsUpOutline } from "react-icons/io5";
@@ -32,7 +31,7 @@ export default function UnverifiedRating({ feedbackData }) {
       toast.success(data.data.message);
     },
     onError: (error) => {
-      // Access the response error and show error message
+      
       const errorMessage = error.response?.data?.message || "An error occurred";
       toast.error(` ${errorMessage}`);
     },
@@ -40,7 +39,7 @@ export default function UnverifiedRating({ feedbackData }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const updatedValue = name === "rating" ? parseInt(value, 10) || "" : value; // Cast value to string if NaN
+    const updatedValue = name === "rating" ? parseInt(value, 10) || "" : value; 
     setRatingParamsUnverified({
       ...ratingParamsUnverified,
       [name]: updatedValue,

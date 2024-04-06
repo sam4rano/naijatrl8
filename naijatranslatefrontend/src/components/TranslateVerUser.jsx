@@ -1,4 +1,4 @@
-// export default TranslateVerUser;
+// export default translateregisteredusers;
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
@@ -18,7 +18,7 @@ import copy from "copy-to-clipboard";
 
 import VerOutputProperties from "./outputfiles/VerOutputProperties";
 
-const TranslateVerUser = () => {
+const TranslateVer = () => {
   const [source_language, setSource_language] = useState("en");
   const [inputType, setInputType] = useState("text");
   const [outputType, setOutputType] = useState("text");
@@ -367,4 +367,4 @@ const TranslateVerUser = () => {
   );
 };
 
-export default TranslateVerUser;
+export default TranslateVer;

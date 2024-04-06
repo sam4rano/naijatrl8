@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useOpenNavbar } from "../../Stores/Stores";
 import { IoClipboardOutline, IoShareSocialOutline } from "react-icons/io5";
 import { BiSolidVolumeFull, BiXCircle } from "react-icons/bi";
 
@@ -27,24 +26,26 @@ const OutputProperties = ({
 
   return (
     <div className="flex flex-col justify-between  px-[10px]">
-      {showPlayer &&
-        translatedAudioUrl.length > 0 && ( // Use showPlayer to control the visibility
-          <div className="flex flex-col">
-            <BiXCircle
-              size={30}
-              onClick={handleClosePlayer}
-              className="cursor-pointer self-end" // Adjust position if needed
-            />
+      <div className="">
+        {showPlayer &&
+          translatedAudioUrl.length > 0 && ( 
+            <div className="flex flex-col w-[150px] justify-center align-middle items-center mx-auto">
+              <BiXCircle
+                size={20}
+                onClick={handleClosePlayer}
+                className="cursor-pointer self-end text-red-400" 
+              />
 
-            <div
-              className="flex flex-col align-middle justify-center items-center rounded-full border-2 border-outline cursor-pointer"
-              onClick={toggleAudio}
-            >
-              <BiSolidVolumeFull size={100} />
-              <h1 className="pt-3 text-lg">Play</h1>
+              <div
+                className="flex flex-row align-middle justify-center items-center border-outline h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200 cursor-pointer py-[10px] border-[1px]"
+                onClick={toggleAudio}
+              >
+                <BiSolidVolumeFull size={25} />
+                <h1 className=" text-lg">Play</h1>
+              </div>
             </div>
-          </div>
-        )}
+          )}
+      </div>
 
       <div className="flex flex-row items-center gap-1.25">
         <IoClipboardOutline
@@ -56,18 +57,19 @@ const OutputProperties = ({
         <UnverifiedRating feedbackData={feedbackData} />
         <IoShareSocialOutline size={20} />
       </div>
-
-      {openAudio && (
-        <div className="flex justify-center items-center mt-[200px]">
-          <audio
-            src={translatedAudioUrl}
-            autoPlay
-            onEnded={handleAudioEnd}
-            controls
-            className="h-[200px] w-52"
-          />
-        </div>
-      )}
+      <div>
+        {openAudio && (
+          <div className="flex justify-center items-center mt-[200px]">
+            <audio
+              src={translatedAudioUrl}
+              autoPlay
+              onEnded={handleAudioEnd}
+              controls
+              className="h-[200px] w-52"
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

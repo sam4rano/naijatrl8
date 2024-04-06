@@ -4,7 +4,7 @@ import history from "../assets/history.svg";
 import feedback from "../assets/feedback.svg";
 import contact from "../assets/contact.svg";
 import upload from "../assets/upload.svg";
-import { HiMenu, HiOutlineX } from "react-icons/hi";
+import { HiMenu, HiOutlineX, HiOutlineClock } from "react-icons/hi";
 
 import { useBarStore, useLogin } from "../Stores/Stores";
 import { HiOutlineUser } from "react-icons/hi";
@@ -42,45 +42,73 @@ const NavVerified = () => {
           {!navbar && <HiMenu onClick={handleClose} size={30} />}
           {navbar && <HiOutlineX onClick={handleOpen} size={25} />}
           {navbar && (
-            <ul className="w-[200px] sm:w-[150px] absolute p-[10px] rounded-[16px] h-full z-30 bg-gray flex flex-col gap-[50px] my-[10px] sm:h-[500px] sm:gap-[10px]">
+            <ul className="w-[200px] sm:w-[150px] absolute rounded-tr-[10px] h-full z-30 bg-gray flex flex-col gap-[50px] my-[10px] sm:h-[500px] sm:gap-[10px]">
               <ul>
                 <div
                   onClick={handleHistory}
-                  className="flex hover:bg-light mb-[20px] p-[10px] rounded-lg sm:align-middle sm:items-center"
+                  className="flex hover:bg-light mb-[10px] p-[10px] sm:align-middle sm:items-center hover:rounded-[10px]"
                 >
-                  <img src={history} alt="feedback" className="pr-[10px] sm:h-[25px] sm:w-[25px]" />
-                  <div className="sm:text-[12px] sm:leading-[20px]">history</div>
+                  <img
+                    src={history}
+                    alt="feedback"
+                    className="pr-[10px] sm:h-[25px] sm:w-[25px]"
+                  />
+                  <div className="sm:text-[12px] sm:leading-[20px]">
+                    history
+                  </div>
                 </div>
                 <NavLink
                   to="/developeraccount"
-                  className="flex hover:bg-light mb-[20px] p-[10px] rounded-lg sm:align-middle sm:items-center"
+                  className="flex hover:bg-light mb-[20px] p-[10px] sm:align-middle sm:items-center"
                 >
-                  <img src={feedback} alt="dev account" className="pr-[10px] sm:h-[25px] sm:w-[25px]" />
-                  <div className="sm:text-[12px] sm:leading-[20px]"> Developer Account</div>
+                  <img
+                    src={feedback}
+                    alt="dev account"
+                    className="pr-[10px] sm:h-[25px] sm:w-[25px]"
+                  />
+                  <div className="sm:text-[12px] sm:leading-[20px]">
+                    {" "}
+                    Developer Account
+                  </div>
                 </NavLink>
                 <NavLink
                   to="/help_centerver"
-                  className="flex hover:bg-light mb-[20px] p-[10px] rounded-lg"
+                  className="flex hover:bg-light mb-[20px] p-[10px]"
                 >
-                  <img src={upload} alt="help_center" className="pr-[10px] sm:h-[25px] sm:w-[25px] " />
-                  <div className="sm:text-[12px] sm:leading-[20px]">Help Center</div>
+                  <img
+                    src={upload}
+                    alt="help_center"
+                    className="pr-[10px] sm:h-[25px] sm:w-[25px] "
+                  />
+                  <div className="sm:text-[12px] sm:leading-[20px]">
+                    Help Center
+                  </div>
                 </NavLink>
                 <NavLink
                   to="/contactver"
-                  className="flex hover:bg-light p-[10px] rounded-lg"
+                  className="flex hover:bg-light p-[10px]"
                 >
-                  <img src={contact} alt="contact" className="pr-[10px] sm:h-[25px] sm:w-[25px]" />
-                  <div className="sm:text-[12px] sm:leading-[20px]">Contact us</div>
+                  <img
+                    src={contact}
+                    alt="contact"
+                    className="pr-[10px] sm:h-[25px] sm:w-[25px]"
+                  />
+                  <div className="sm:text-[12px] sm:leading-[20px]">
+                    Contact us
+                  </div>
                 </NavLink>
               </ul>
-              <NavLink to="/" className="flex mt-[150px] hover:bg-light rounded-lg p-[10px] sm:h-[25px] sm:w-[25px]">
+              <NavLink
+                to="/"
+                className="flex mt-[150px] hover:bg-light p-[10px] sm:h-[25px] sm:w-[25px]"
+              >
                 <img src={contact} alt="contact" className="pr-[10px]" />
                 <div className="sm:text-[12px] sm:leading-[20px]">Logout</div>
               </NavLink>
             </ul>
           )}
         </div>
-        <Link to="/translateveruser" className="text-primary text-lg">
+        <Link to="/translateregisteredusers" className="text-primary text-lg">
           <span className="font-bold">Africa</span>Translate
         </Link>
       </div>
@@ -88,7 +116,7 @@ const NavVerified = () => {
         <button
           onClick={handleLogout}
           type="submit"
-          className="px-[8px] border-[1px] h-[30px] rounded-full text-primary text-center "
+          className="px-[8px] border-[1px] h-[30px] rounded-full text-primary text-center hover:bg-blue-100"
         >
           Logout
         </button>

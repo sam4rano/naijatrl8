@@ -1,5 +1,4 @@
 import { useNavigate, useParams, Link } from "react-router-dom";
-import Title from "../utils/Title";
 import { useEffect, useState, useCallback } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -38,7 +37,8 @@ const OrganisationVerify = () => {
         }, 2000);
       } else {
         toast.error(responseData.message);
-        setIsLoading(false);}
+        setIsLoading(false);
+      }
     } catch (error) {
       toast.error(error.message);
       navigate("/resendverifyaccount");
@@ -53,20 +53,25 @@ const OrganisationVerify = () => {
 
   return (
     <div>
-      <div className="p-[20px]">
-        <div>
-          <Title />
-        </div>
-
+      <div className="p-8">
         {isLoading && (
-          <p className="flex justify-center mx-auto text-center text-[50px]">
+          <p className="flex justify-center items-center mx-auto text-lg font-medium text-gray-600">
             Loading...
           </p>
         )}
         {!isLoading && !isSuccess && (
-          <Link to="/resendverifyaccount">Resend Verification Link</Link>
+          <Link
+            to="/resendverifyaccount"
+            className="block text-center text-md font-medium text-blue-600 hover:text-blue-800 mt-2"
+          >
+            Resend Verification Link
+          </Link>
         )}
-        {!isLoading && isSuccess && <h1>Verification successful</h1>}
+        {!isLoading && isSuccess && (
+          <h1 className="text-xl font-semibold text-center text-green-600">
+            Verification successful
+          </h1>
+        )}
       </div>
       <ToastContainer />
     </div>

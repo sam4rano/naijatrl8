@@ -107,7 +107,7 @@ const LoginContainer = () => {
           });
         } else {
           setTimeout(() => {
-            navigate("/translateveruser"), 2000;
+            navigate("/translateregisteredusers"), 2000;
           });
         }
       } else {
@@ -158,7 +158,7 @@ const LoginContainer = () => {
           });
         } else {
           setTimeout(() => {
-            navigate("/translateveruser"), 2000;
+            navigate("/translateregisteredusers"), 2000;
           });
         }
       } else {

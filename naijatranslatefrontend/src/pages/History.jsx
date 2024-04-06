@@ -75,7 +75,7 @@ export default History;
 
 
 
-// // export default TranslateVerUser;
+// // export default translateregisteredusers;
 // import { ToastContainer, toast } from "react-toastify";
 // import "react-toastify/dist/ReactToastify.css";
 // import Cookies from "js-cookie";
@@ -99,7 +99,7 @@ export default History;
 // import Skeleton from "@mui/material/Skeleton";
 // import { useNavigate, Link } from "react-router-dom";
 
-// const TranslateVerUser = () => {
+// const translateregisteredusers = () => {
 //   const [source_language, setSource_language] = useState("en");
 //   const [inputType, setInputType] = useState("text");
 //   const [outputType, setOutputType] = useState("text");
@@ -489,7 +489,7 @@ export default History;
 //   );
 // };
 
-// export default TranslateVerUser;
+// export default translateregisteredusers;
 
 
 

@@ -8,7 +8,6 @@ import Signup from "./auth/Signup";
 import Login from "./auth/Login";
 import CheckInbox from "./auth/CheckInbox";
 import OrganisationVerify from "./auth/OrganisationVerify";
-import TranslateVerUser from "./components/TranslateVerUser";
 import ResendVerification from "./auth/ResendVerification";
 import Developeraccount from "./pages/Developeraccount";
 import HelpCenterVerified from "./pages/HelpCenterVerified";
@@ -16,7 +15,6 @@ import HelpCenter from "./pages/HelpCenter";
 import Contact from "./pages/Contact";
 import InternalHistory from "./utils/userHistory";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-
 
 const queryClient = new QueryClient();
 
@@ -27,7 +25,7 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import TranslateForm from "./components/TranslateForm";
+import TranslateUnregistered from "./components/TranslateUnregistered";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import NavVerified from "./navbar/NavVerified";
@@ -35,14 +33,15 @@ import ContactVerified from "./pages/ContactVerified";
 import UserContainer from "./pages/UserContainer";
 import AdminLayout from "./components/organization/AdminLayout";
 import ErrorPage from "./ErrorPage";
+import TranslateRegisteredUsers from "./components/TranslateRegisteredUsers";
 
 const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
         <Route element={<Layout />}>
-          <Route path="/" element={<TranslateForm />} />
-          
+          <Route path="/" element={<TranslateUnregistered />} />
+
           <Route path="help_center" element={<HelpCenter />} />
           <Route path="contact" element={<Contact />} />
         </Route>
@@ -52,7 +51,10 @@ const App = () => {
           <Route path="developeraccount" element={<Developeraccount />} />
           <Route path="help_centerver" element={<HelpCenterVerified />} />
           <Route path="contactver" element={<ContactVerified />} />
-          <Route path="translateveruser" element={<TranslateVerUser />} />
+          <Route
+            path="translateregisteredusers"
+            element={<TranslateRegisteredUsers />}
+          />
           <Route path="/adminlayout" element={<AdminLayout />}></Route>
         </Route>
         <Route element={<UserContainer />}>

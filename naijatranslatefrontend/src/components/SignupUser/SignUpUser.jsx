@@ -1,14 +1,14 @@
 
 import Navbar from '../../navbar/Navbar'
 import Title from '../../utils/Title'
-import TranslateVerUser from '../TranslateVerUser'
+import translateregisteredusers from '../translateregisteredusers'
 
 
 const SignUpUser = () => {
   return (
     <div>
         <Navbar />
-        <TranslateVerUser />
+        <translateregisteredusers />
         <Title />
     </div>
   )

@@ -1,19 +1,95 @@
 import AddEmployee from "./AddEmployee";
 import { useEmployeeDataStore } from "../../Stores/DataStore";
+import { useAdminDataStore } from "../../Stores/AdminStore";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import "react-toastify/dist/ReactToastify.css";
+import { baseURL } from "../../api/SpeechApi";
+import { toast } from "react-toastify";
+import Cookies from "js-cookie";
+import { useCallback, useEffect } from "react";
 
 import EmployeeList from "./EmployeeList";
 import RemoveEmployee from "./RemoveEmployee";
 import AdminDetails from "./AdminDetails";
 
-
 const DashboardAdmin = () => {
   const { employeeData } = useEmployeeDataStore();
+  const { setAdminProfile } = useAdminDataStore();
 
-  console.log("employee data", employeeData.length);
+  const getAccessTokenFromCookie = useCallback(async () => {
+    try {
+      const accessToken = Cookies.get("access_token");
+
+      return accessToken || "unauthenticated user";
+    } catch (error) {
+      console.error("Error during mutation:", error);
+      console.error("Response data:", error.response?.data);
+
+      toast.error("Error submitting data: " + error.message);
+      return "unauthenticated user";
+    }
+  }, []);
+
+  const getCommonHeaders = useCallback(async () => {
+    try {
+      const accessToken = await getAccessTokenFromCookie();
+
+      const commonHeaders = {
+        "Content-Type": "application/json",
+        Authorization: `JWT ${accessToken}`,
+      };
+
+      return commonHeaders;
+    } catch (error) {
+      console.error("Error in getCommonHeaders:", error);
+      throw error;
+    }
+  }, [getAccessTokenFromCookie]);
+
+  const AdminData = useCallback(async () => {
+    try {
+      const headers = await getCommonHeaders(); // Await here
+
+      const response = await axios.get(`${baseURL}/organization/auth-details`, {
+        headers: headers,
+      });
+      return response.data.data;
+    } catch (error) {
+      console.error("Error in userData:", error);
+      throw error;
+    }
+  }, [getCommonHeaders]);
+
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["admin_data"],
+    queryFn: AdminData,
+  });
+
+  useEffect(() => {
+    if (data) {
+      setAdminProfile(data);
+    }
+  }, [data, setAdminProfile]);
+
+  if (isLoading) {
+    return (
+      <div className="text-center text-[20px] font-normal">Loading...</div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="text-center text-[30px] font-bold">
+        Error: {error.message}
+      </div>
+    );
+  }
+
   return (
     <div className="w-full p-[10px] flex flex-col justify-center items-center align-middle gap-[10px] flex-wrap">
       <div className="flex w-full h-[100px] bg-white rounded-[10px] p-[5px]">
-        <AdminDetails />
+        <AdminDetails AdminData={data} />
       </div>
       <div className="flex p-[10px] bg-white w-full rounded-[10px] flex-col align-middle justify-center items-center gap-[10px]">
         <div className="font-semibold leading-[30px] text-[16px]">

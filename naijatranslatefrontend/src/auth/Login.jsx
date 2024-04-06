@@ -57,7 +57,7 @@ const LoginContainer = () => {
 
         if (response.ok) {
           setIsLoading(false);
-          toast.success("Registration successful");
+          toast.success("Login successful");
           const data = await response.json();
 
           const accessToken = data.access;
@@ -73,12 +73,15 @@ const LoginContainer = () => {
             });
           } else {
             setTimeout(() => {
-              navigate("/translateveruser"), 2000;
+              navigate("/translateregisteredusers"), 2000;
             });
           }
-        } else {
+        } else if (response.status === 401) {
           const data = await response.json();
           toast.error(data.detail);
+        } else {
+          const data = await response.json();
+          toast.error(data.message);
         }
       } catch (error) {
         toast.error("Network error, please check your network", error);
@@ -116,7 +119,7 @@ const LoginContainer = () => {
         if (response.ok) {
           setIsLoading(false);
           setIsAdmin(!isAdmin);
-          toast.success("Registration successful");
+          toast.success("Login successful");
           const data = await response.json();
           const accessToken = data.access;
 
@@ -124,9 +127,12 @@ const LoginContainer = () => {
 
           document.cookie = `access_token=${accessToken}; Secure; SameSite=None`;
           navigate("/adminlayout");
-        } else {
+        } else if (response.status === 401) {
           const data = await response.json();
           toast.error(data.detail);
+        } else {
+          const data = await response.json();
+          toast.error(data.message);
         }
       } catch (error) {
         toast.error("An error occurred", error);
@@ -209,8 +215,7 @@ const LoginContainer = () => {
               >
                 {isLoading ? "Please wait" : "Log in"}
               </button>
-              {/* <Link to="#" className="pb-[20px]">
-                </Link> */}
+             
               <div className="flex flex-col justify-center mx-auto py-[10px]">
                 <p className=" text-sm">
                   Sign up for an account?

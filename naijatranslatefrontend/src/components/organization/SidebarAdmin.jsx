@@ -86,7 +86,7 @@ const SidebarAdmin = () => {
             </ul>
           )}
         </div>
-        <Link to="/translateveruser" className="text-primary text-lg">
+        <Link to="/translateregisteredusers" className="text-primary text-lg">
           <span className="font-bold">Naija</span>Translate
         </Link>
       </div>

@@ -2,19 +2,18 @@ import * as React from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
-import DialogTitle from "@mui/material/DialogTitle";
 import { useRatingStore, useOpenNavbar } from "../Stores/Stores";
 import { useState } from "react";
 import close from "../assets/close.svg";
 import { useMutation } from "@tanstack/react-query";
-import thumbUp from "../assets/thumbUp.svg";
 import axios from "axios";
 import { baseURL } from "../api/SpeechApi";
 import { IoThumbsUpOutline } from "react-icons/io5";
+import { useCallback } from "react";
 
 export default function VerifiedRating({ feedbackId }) {
   const [open, setOpen] = useState(false);
@@ -57,7 +56,7 @@ export default function VerifiedRating({ feedbackId }) {
     }
   };
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     setRatingParams({
       id: feedbackId,
       rating: 1,
@@ -65,7 +64,7 @@ export default function VerifiedRating({ feedbackId }) {
       correct_translation: "",
     });
     setOpen(false);
-  };
+  },[setRatingParams, feedbackId]);
 
   const getCommonHeaders = async () => {
     try {

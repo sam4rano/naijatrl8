@@ -1,4 +1,4 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
@@ -26,7 +26,7 @@ const History = () => {
 
   const getCommonHeaders = async () => {
     try {
-      const accessToken = await getAccessTokenFromCookie(); // Await here
+      const accessToken = await getAccessTokenFromCookie(); 
 
       const commonHeaders = {
         "Content-Type": "application/json",
@@ -60,25 +60,6 @@ const History = () => {
     queryFn: dataHistory,
   });
 
-  // const { mutate, isSuccess } = useMutation({
-  //   mutationFn: async () => {
-  //     try {
-  //       const commonHeaders = await getCommonHeaders();
-  //       const response = await axios.delete(
-  //         `${baseURL}/organization/remove-user/${id}`,
-  //         {
-  //           headers: commonHeaders,
-  //         }
-  //       );
-
-  //       return response.data;
-  //     } catch (error) {
-  //       toast.error("Error during mutation:", error);
-  //       toast.error(error.response?.data);
-  //       throw error;
-  //     }
-  //   },
-  // });
   
 
   if (isLoading) {
