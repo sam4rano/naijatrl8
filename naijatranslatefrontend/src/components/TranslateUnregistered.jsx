@@ -8,6 +8,7 @@ import OutputInputLanguage from "./outputfiles/OutputInputLanguage";
 import { IoClipboardOutline, IoMic } from "react-icons/io5";
 import OutputArea from "./outputfiles/OutputArea";
 import { IoIosVolumeHigh } from "react-icons/io";
+import { useAudioDataStore } from "../Stores/AudStoreUnregistered";
 
 const TranslateUnregistered = () => {
   const [source_language, setSourceLanguage] = useState("en");
@@ -18,6 +19,8 @@ const TranslateUnregistered = () => {
   const [loadingAudio, setLoadingAudio] = useState(false);
   const [translatedAudioUrl, setTranslatedAudioUrl] = useState("");
   const [feedbackData, setFeedbackData] = useState("");
+
+  const { setAudioData } = useAudioDataStore();
 
   const handleTextToTextSubmit = useCallback(
     async (e) => {
@@ -66,9 +69,17 @@ const TranslateUnregistered = () => {
       setLoadingAudio(true);
       const apiUrl = `${baseURL}/translate-serverless/text-speech/unregistered-trial`;
       try {
-        const response = await axios.post(apiUrl, {
-          text: source_text,
-        });
+        const response = await axios.post(
+          apiUrl,
+          {
+            text: source_text,
+          },
+          {
+            headers: {
+              Accept: "application/json",
+            },
+          }
+        );
         if (response.data && !response.data.error) {
           const { message, data } = response.data;
           if (data && data.url) {
@@ -77,6 +88,7 @@ const TranslateUnregistered = () => {
               "Text to speech conversion successful, Click on listen button"
             );
             setTranslatedAudioUrl(url);
+            setAudioData(url);
           } else {
             toast.error(
               "Error occurred while translating text to speech: " + message
@@ -92,7 +104,7 @@ const TranslateUnregistered = () => {
         setLoadingAudio(false);
       }
     },
-    [setLoadingAudio, source_text]
+    [setAudioData, source_text]
   );
 
   const textRef = useRef();
@@ -124,7 +136,7 @@ const TranslateUnregistered = () => {
         <div className="flex flex-col w-1/2 h-[400px">
           {source_text.length === 0 && translatedAudioUrl.length === 0 && (
             <div className="absolute pl-[180px] sm:pl-[40px] pt-[90px] flex flex-col">
-              <IoClipboardOutline className="w-[100px] h-[100px] sm:w-[80px] sm:h-[80px]" />
+              <IoClipboardOutline className="w-[100px] h-[100px] sm:w-[80px] sm:h-[80px] pointer-events-none" />
               <p className="text-center text-[12px] sm:text-[10px] sm:leading-[16px]">
                 Paste your text here
               </p>
@@ -135,7 +147,7 @@ const TranslateUnregistered = () => {
             <IoMic className="absolute pl-[190px] sm:w-[80px] sm:h-[80px] pt-[90px]" />
           )}
           <textarea
-            className="h-[400px] active:border-0 p-[4px] focus-within:bg-none outline-none"
+            className="h-[400px] active:border-0 p-[4px] focus-within:bg-none outline-none z-10"
             id="source_text"
             name="source_text"
             value={source_text}
@@ -146,18 +158,28 @@ const TranslateUnregistered = () => {
           <div className="flex flex-row flex-wrap gap-[10px]">
             <button
               type="button"
-              className="px-[8px] border-[1px] h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200"
-              disabled={isLoading}
+              className={`px-[8px] border-[1px] h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200 ${
+                isLoading || source_text.length === 0
+                  ? "cursor-not-allowed"
+                  : "cursor-pointer"
+              }`}
+              disabled={isLoading || source_text.length === 0}
               onClick={handleTextToTextSubmit}
             >
               {isLoading ? "Please wait" : "Translate"}
             </button>
-            <div className="flex flex-row align-middle justify-center items-center px-[8px] border-[1px] h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200 cursor-pointer">
+            <div
+              className={`flex flex-row align-middle justify-center items-center px-[8px] border-[1px] h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200 cursor-pointer ${
+                isLoading || translatedAudioUrl.length === 0
+                  ? "cursor-not-allowed"
+                  : "cursor-pointer"
+              }`}
+            >
               <IoIosVolumeHigh size={20} />
               <button
                 type="button"
+                disabled={isLoading && translatedAudioUrl.length === 0}
                 onClick={handleTextToSpeechSubmit}
-                disabled={loadingAudio}
               >
                 {loadingAudio ? "Please wait" : "listen"}
               </button>
@@ -172,7 +194,7 @@ const TranslateUnregistered = () => {
             textRef={textRef}
             handleTargetTextChange={handleTargetTextChange}
           />
-          {(isLoading || translatedAudioUrl || feedbackData) && (
+          {!isLoading && (translatedAudioUrl || feedbackData) && (
             <OutputProperties
               translatedAudioUrl={translatedAudioUrl}
               handleTextToSpeechSubmit={handleTextToSpeechSubmit}

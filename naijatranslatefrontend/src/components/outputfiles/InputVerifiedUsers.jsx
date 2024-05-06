@@ -19,20 +19,21 @@ const InputVerifiedUsers = ({ translatedAudioUrl, loadingAudio }) => {
   return (
     <div>
       <div>
-        {showPlayer && translatedAudioUrl.length > 0 && (
+        {showPlayer && translatedAudioUrl && translatedAudioUrl.length > 0 && (
           <div className="flex flex-col w-[150px] justify-center align-middle items-center mx-auto">
-            <BiXCircle
-              size={20}
+            <button
               onClick={handleClosePlayer}
-              className="cursor-pointer self-end text-red-400"
-            />
+              className="self-end text-red-400 cursor-pointer"
+            >
+              <BiXCircle size={20} />
+            </button>
 
             <div
               className="flex flex-row align-middle justify-center items-center border-outline h-[30px] w-[200px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200 cursor-pointer py-[10px] border-[1px]"
               onClick={toggleAudio}
             >
               <BiSolidVolumeFull size={25} />
-              <h1 className=" text-lg">Play</h1>
+              <span className="text-lg">Play</span>
               {openAudio && (
                 <div className="flex justify-center items-center mt-[200px]">
                   <audio

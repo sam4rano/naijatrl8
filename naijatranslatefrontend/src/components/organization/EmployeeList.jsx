@@ -45,7 +45,7 @@ const EmployeeList = () => {
     try {
       const headers = await getCommonHeaders(); // Await here
 
-      const response = await axios.get(`${baseURL}/organization/users`, {
+      const response = await axios.get(`${baseURL}/organization/history`, {
         headers: headers,
       });
       return response.data.data;

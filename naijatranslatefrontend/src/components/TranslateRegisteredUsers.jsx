@@ -1,19 +1,15 @@
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import Cookies from "js-cookie";
 import { useState, useRef, useCallback } from "react";
-import Inspeaker from "../assets/speakerout.svg";
 import { Link } from "react-router-dom";
 import NavVerified from "../navbar/NavVerified";
 import { baseURL } from "../api/SpeechApi";
 import { IoTimeOutline } from "react-icons/io5";
 import copy from "copy-to-clipboard";
 import OutputInputVerLanguage from "./outputfiles/OutputInputVerLanguage";
-import VerOutputProperties from "./outputfiles/VerOutputProperties";
-import { IoIosVolumeHigh } from "react-icons/io";
 import OutputAreaVerified from "./outputfiles/OutPutAreaVerified";
-import { HiOutlineClipboard } from "react-icons/hi";
-import InputVerifiedUsers from "./outputfiles/InputVerifiedUsers";
+import { useHandleAccessToken } from "../utils/useAuth";
+import InputAreaVerified from "./inputfiles/InputAreaVerified";
 
 const TranslateRegisteredUsers = () => {
   const [source_language, setSourceLanguage] = useState("en");
@@ -22,25 +18,12 @@ const TranslateRegisteredUsers = () => {
   const [target_text, setTarget_text] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [translatedAudioUrl, setTranslatedAudioUrl] = useState("");
+  const [outputTranslateUrl, setOutputTranslateUrl] = useState("");
   const [feedbackData, setFeedbackData] = useState("");
   const [loadingAudio, setLoadingAudio] = useState(false);
+  const [loadingAudInput, setLoadingAudInput] = useState(false);
 
-  const handleAccessToken = useCallback(async () => {
-    let accessToken = "";
-    try {
-      accessToken = await getAccessTokenFromCookie();
-      if (!accessToken || accessToken === "unauthenticated user") {
-        toast.error("No access token found. Please log in.");
-        return null;
-      }
-      return accessToken;
-    } catch (error) {
-      console.error("Error fetching access token:", error);
-      toast.error("Error fetching access token: " + error.message);
-      return null;
-    }
-  }, []);
-
+  const handleAccessToken = useHandleAccessToken();
   const handleTextToTextTranslation = useCallback(
     async (e) => {
       e.preventDefault();
@@ -51,6 +34,7 @@ const TranslateRegisteredUsers = () => {
         source_text: source_text,
         target_text: target_text,
       };
+      setTarget_text("");
 
       const accessToken = await handleAccessToken();
       if (!accessToken) {
@@ -103,6 +87,7 @@ const TranslateRegisteredUsers = () => {
 
   const handleTextToSpeechTranslation = useCallback(
     async (e) => {
+      e.stopPropagation();
       const formDataSpeech = {
         text: source_text,
       };
@@ -115,7 +100,7 @@ const TranslateRegisteredUsers = () => {
       }
 
       const commonHeaders = {
-        "Content-Type": "application/json",
+        "Content-type": "application/json",
         Authorization: `JWT ${accessToken}`,
       };
 
@@ -158,16 +143,65 @@ const TranslateRegisteredUsers = () => {
     [handleAccessToken, source_text]
   );
 
-  const getAccessTokenFromCookie = async () => {
-    try {
-      const accessToken = await Cookies.get("access_token");
-      return accessToken || "unauthenticated user";
-    } catch (error) {
-      console.error("Error while fetching access token:", error);
-      toast.error("Error fetching access token: " + error.message);
-      return "unauthenticated user";
-    }
-  };
+  const handleTextToSpeechOutput = useCallback(
+    async (e) => {
+      e.stopPropagation();
+      const formDataSpeech = {
+        text: target_text,
+      };
+      console.log("Sending for speech synthesis:", formDataSpeech.text),
+        e.preventDefault();
+      setLoadingAudInput(true);
+      const accessToken = await handleAccessToken();
+      if (!accessToken) {
+        setLoadingAudInput(false);
+        return;
+      }
+
+      const commonHeaders = {
+        "Content-type": "application/json",
+        Authorization: `JWT ${accessToken}`,
+      };
+
+      const apiUrl = `${baseURL}/translate-serverless/text-speech`;
+      try {
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: commonHeaders,
+          body: JSON.stringify(formDataSpeech),
+        });
+
+        if (response.ok) {
+          const responseData = await response.json();
+          if (responseData && !responseData.error) {
+            const { message, data } = responseData;
+            if (data && data.url) {
+              const { url } = data;
+              toast.success(
+                "Text to speech conversion successful, Click on listen button"
+              );
+              setOutputTranslateUrl(url);
+            } else {
+              toast.error(
+                "Error occurred while translating text to speech: " + message
+              );
+            }
+          } else {
+            const errorMessage = `Error: ${response.status} - ${response.statusText}`;
+            console.error(errorMessage);
+            toast.error(errorMessage);
+          }
+        }
+      } catch (error) {
+        console.error("Speech conversion error:", error);
+        toast.error("Speech conversion error: " + error.message);
+      } finally {
+        setLoadingAudInput(false);
+      }
+    },
+
+    [handleAccessToken, target_text]
+  );
 
   const textRef = useRef();
 
@@ -178,6 +212,9 @@ const TranslateRegisteredUsers = () => {
       toast.success("Copied to Clipboard");
     }
   };
+
+  console.log("source", source_text);
+  console.log("target", target_text);
 
   return (
     <div className="bg-graylight">
@@ -202,70 +239,27 @@ const TranslateRegisteredUsers = () => {
           setTargetLanguage={setTargetLanguage}
         />
         <div className="flex flex-row justify-between w-full h-[410px] bg-white pb-[10px] rounded-bl-[16px] rounded-br-[16px]outline-none ">
-          <div className="flex flex-col w-1/2 h-[400px] outline-none">
-            <div className="absolute pl-[185px] sm:pl-[40px] pt-[50px] flex flex-col sm:align-middle sm:items-center">
-              <HiOutlineClipboard className="w-[100px] h-[100px] sm:w-[40px] sm:h-[40px]" />
-              <p className="text-center text-[12px] sm:text-[10px] sm:leading-[16px] font-medium">
-                Paste your text here
-              </p>
-            </div>
-            <img
-              src={Inspeaker}
-              alt="speak_img"
-              className="absolute pl-[190px] pt-[50px]"
-            />
+          <InputAreaVerified
+            isLoading={isLoading}
+            translatedAudioUrl={translatedAudioUrl}
+            loadingAudio={loadingAudio}
+            setSource_text={setSource_text}
+            handleTextToTextTranslation={handleTextToTextTranslation}
+            handleTextToSpeechTranslation={handleTextToSpeechTranslation}
+            source_text={source_text}
+          />
 
-            <textarea
-              className="h-[300px] active:border-0 p-[4px] focus-within:bg-none outline-none"
-              placeholder="Enter text to translate..."
-              id="source_text"
-              name="source_text"
-              value={source_text}
-              onChange={(e) => setSource_text(e.target.value)}
-            />
-
-            <div className="flex flex-row sm:flex-col justify-center gap-[10px]">
-              <button
-                type="button"
-                className="px-[8px] border-[1px] h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200"
-                disabled={isLoading}
-                onClick={handleTextToTextTranslation}
-              >
-                {isLoading ? "Please wait" : "Translate"}
-              </button>
-              <div className="flex flex-row align-middle justify-center items-center px-[8px] border-[1px] h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200 cursor-pointer">
-                <IoIosVolumeHigh size={20} />
-                <button
-                  type="button"
-                  onClick={handleTextToSpeechTranslation}
-                  disabled={loadingAudio}
-                >
-                  {loadingAudio ? "Please wait" : "listen"}
-                </button>
-              </div>
-            </div>
-            {(isLoading || translatedAudioUrl || loadingAudio) && (
-              <InputVerifiedUsers
-                translatedAudioUrl={translatedAudioUrl}
-                loadingAudio={loadingAudio}
-              />
-            )}
-          </div>
-
-          <div className="flex flex-col w-1/2 h-[400px] border-l-2 border-gray pb-[10px] ">
-            <OutputAreaVerified
-              isLoading={isLoading}
-              target_text={target_text}
-              textRef={textRef}
-              loadingAudio={loadingAudio}
-              handleTextToSpeechSubmit={handleTextToSpeechTranslation}
-            />
-            <VerOutputProperties
-              translatedAudioUrl={translatedAudioUrl}
-              copyToClipboard={copyToClipboard}
-              feedbackId={feedbackData}
-            />
-          </div>
+          <OutputAreaVerified
+            target_text={target_text}
+            textRef={textRef}
+            isLoading={isLoading}
+            loadingAudInput={loadingAudInput}
+            handleTextToSpeechOutput={handleTextToSpeechOutput}
+            handleTextToTextTranslation={handleTextToTextTranslation}
+            outputTranslateUrl={outputTranslateUrl}
+            feedbackId={feedbackData}
+            copyToClipboard={copyToClipboard}
+          />
         </div>
       </form>
       <ToastContainer />

@@ -5,7 +5,7 @@ import VerifiedRating from "../VerifiedRating";
 import { IoClipboardOutline, IoShareSocialOutline } from "react-icons/io5";
 
 const VerOutputProperties = ({
-  translatedAudioUrl,
+  outputTranslateUrl,
   outputType,
   feedbackId,
   copyToClipboard,
@@ -49,7 +49,7 @@ const VerOutputProperties = ({
             <img src={Close} alt="close image" />
           </div>
           <audio
-            src={translatedAudioUrl}
+            src={outputTranslateUrl}
             autoPlay
             controls
             className="h-[40px] w-[200px]"
