@@ -2,76 +2,62 @@ import { useState } from "react";
 import { IoClipboardOutline, IoShareSocialOutline } from "react-icons/io5";
 import { BiSolidVolumeFull, BiXCircle } from "react-icons/bi";
 
-import UnverifiedRating from "../UnverifiedRating";
-import { useAudioDataStore } from "../../Stores/AudStoreUnregistered";
-// eslint-disable-next-line react/prop-types
-
 const OutputProperties = ({
   translatedAudioUrl,
-  feedbackData,
-  copyToClipboard,
+
+  handleTextToSpeechSubmit,
+  loadingAudio,
 }) => {
-  const [openAudio, setOpenAudio] = useState(false);
-  const [showPlayer, setShowPlayer] = useState(true);
+  const [isAudioOpen, setIsAudioOpen] = useState(false);
+  const [isPlayerVisible, setIsPlayerVisible] = useState(true);
 
-  const { audioData } = useAudioDataStore();
+  const toggleAudio = () => setIsAudioOpen(!isAudioOpen);
+  const handleAudioEnd = () => setIsAudioOpen(false);
+  const handleClosePlayer = () => setIsPlayerVisible(false);
 
-  const toggleAudio = () => {
-    setOpenAudio(!openAudio);
-  };
-
-  const handleAudioEnd = () => {
-    setOpenAudio(false);
-  };
-  const handleClosePlayer = () => {
-    setShowPlayer(false);
-  };
+  const isPlayDisabled = loadingAudio || translatedAudioUrl.length === 0;
+  const audioButtonClass = `flex flex-row align-middle justify-center items-center px-[8px] border-[1px] h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200 ${
+    isPlayDisabled ? "cursor-not-allowed" : "cursor-pointer"
+  }`;
 
   return (
-    <div className="flex flex-col justify-between  px-[10px]">
-      <div className="">
-        {showPlayer && translatedAudioUrl.length > 0 && (
-          <div className="flex flex-col w-[150px] justify-center align-middle items-center mx-auto">
-            <BiXCircle
-              size={20}
-              onClick={handleClosePlayer}
-              className="cursor-pointer self-end text-red-400"
-            />
+    <div className="flex flex-col justify-between px-[10px] absolute top-[490px]">
+      <button
+        type="button"
+        onClick={handleTextToSpeechSubmit}
+        disabled={isPlayDisabled}
+        className={audioButtonClass}
+      >
+        Play
+      </button>
 
-            <div
-              className="flex flex-row align-middle justify-center items-center border-outline h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200 cursor-pointer py-[10px] border-[1px]"
-              onClick={toggleAudio}
-            >
-              <BiSolidVolumeFull size={25} />
-              <h1 className=" text-lg">Play</h1>
-            </div>
-          </div>
-        )}
-      </div>
+      {isPlayerVisible && translatedAudioUrl && (
+        <div className="flex flex-col justify-center align-middle items-center mx-auto">
+          <BiXCircle
+            size={20}
+            onClick={handleClosePlayer}
+            className="cursor-pointer self-end text-red-400"
+          />
 
-      <div className="flex flex-row items-center gap-1.25">
-        <IoClipboardOutline
-          size={20}
-          onClick={copyToClipboard}
-          className="cursor-pointer"
+          <button
+            className="flex flex-row align-middle justify-center items-center border-outline h-[30px] w-[120px] bg-blue-100 rounded-full text-primary text-center hover:bg-blue-200 cursor-pointer py-[10px] border-[1px]"
+            onClick={toggleAudio}
+          >
+            <BiSolidVolumeFull size={25} />
+            <span className="text-lg">Play</span>{" "}
+            {/* Changed from h1 to span for semantic correctness */}
+          </button>
+        </div>
+      )}
+      {isAudioOpen && (
+        <audio
+          src={translatedAudioUrl}
+          autoPlay
+          onEnded={handleAudioEnd}
+          controls
+          className="h-[200px] w-52"
         />
-
-        <UnverifiedRating feedbackData={feedbackData} />
-        <IoShareSocialOutline size={20} />
-      </div>
-      <div>
-        {openAudio && (
-          <div className="flex justify-center items-center mt-[200px]">
-            <audio
-              src={translatedAudioUrl}
-              autoPlay
-              onEnded={handleAudioEnd}
-              controls
-              className="h-[200px] w-52"
-            />
-          </div>
-        )}
-      </div>
+      )}
     </div>
   );
 };
