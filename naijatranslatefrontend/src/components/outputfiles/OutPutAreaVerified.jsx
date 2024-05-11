@@ -1,6 +1,12 @@
 import { BiSolidVolumeFull } from "react-icons/bi";
 import OutputVerUser from "./OutputVerUser";
 import Skeleton from "@mui/material/Skeleton";
+import VerifiedRating from "../VerifiedRating";
+
+import { useState } from "react";
+import { BiXCircle } from "react-icons/bi";
+
+import { IoClipboardOutline, IoShareSocialOutline } from "react-icons/io5";
 
 const OutputAreaVerified = ({
   isLoading,
@@ -10,11 +16,11 @@ const OutputAreaVerified = ({
   outputTranslateUrl,
   feedbackId,
   copyToClipboard,
+  handleTargetTextChange,
   outputLoadingAudio,
-  setTarget_text,
 }) => {
   return (
-    <div className="flex flex-col sm:align-middle sm:items-center sm:gap-[10px] w-1/2 h-[450px] sm:h-[450px] outline-none border-l-2 border-gray">
+    <div className="flex flex-col sm:align-middle sm:items-center sm:gap-[10px] w-1/2 h-[400px] outline-none border-l-2 border-gray">
       {!isLoading && target_text && (
         <div className="sm:flex sm:flex-col sm:justify-center sm:align-middle">
           <textarea
@@ -23,19 +29,28 @@ const OutputAreaVerified = ({
             name="target_text"
             ref={textRef}
             value={target_text}
-            onChange={(e) => setTarget_text(e.target.value)}
+            onChange={handleTargetTextChange}
+            placeholder="Translation will appear here..."
           />
-          <div className="flex flex-row sm:flex-col justify-center gap-[10px]">
-            <div className="flex flex-row align-middle justify-center items-center px-[8px] border-[1px] h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200 cursor-pointer">
+          <div className="flex flex-row  justify-between items-center align-middle mx-auto gap-[40px] sm:flex-col sm:justify-center sm:items-center sm:gap-[10px]">
+            <div className="flex flex-row align-middle justify-center items-center px-[8px] border-[1px] h-[30px] w-[120px] sm:w-[100px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200 cursor-pointer sm:text-[12px] sm:h-[25px]">
               <BiSolidVolumeFull size={20} />
               <button
                 type="button"
                 onClick={handleTextToSpeechOutput}
                 disabled={outputLoadingAudio}
-                // aria-disabled={isLoading}
               >
                 {outputLoadingAudio ? "Please wait" : "listen"}
               </button>
+            </div>
+            <div className="flex flex-row justify-center items-center gap-[10px]">
+              <IoClipboardOutline
+                size={20}
+                onClick={copyToClipboard}
+                className="cursor-pointer"
+              />
+              <VerifiedRating feedbackId={feedbackId} />
+              <IoShareSocialOutline size={20} />
             </div>
           </div>
         </div>
@@ -57,13 +72,9 @@ const OutputAreaVerified = ({
           />
         </div>
       )}
-      {(target_text.length > 0 || outputTranslateUrl || outputLoadingAudio) && (
-        <OutputVerUser
-          loadingAudInput={outputLoadingAudio}
-          outputTranslateUrl={outputTranslateUrl}
-          feedbackId={feedbackId}
-          copyToClipboard={copyToClipboard}
-        />
+
+      {outputTranslateUrl && (
+        <OutputVerUser outputTranslateUrl={outputTranslateUrl} />
       )}
     </div>
   );

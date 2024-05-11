@@ -213,6 +213,10 @@ const TranslateRegisteredUsers = () => {
     }
   };
 
+  const handleTargetTextChange = (e) => {
+    setTarget_text(e.target.value);
+  };
+
   return (
     <div className="bg-graylight h-screen">
       <NavVerified />
@@ -256,6 +260,7 @@ const TranslateRegisteredUsers = () => {
             outputTranslateUrl={outputTranslateUrl}
             feedbackId={feedbackData}
             copyToClipboard={copyToClipboard}
+            handleTargetTextChange={handleTargetTextChange}
           />
         </div>
       </form>

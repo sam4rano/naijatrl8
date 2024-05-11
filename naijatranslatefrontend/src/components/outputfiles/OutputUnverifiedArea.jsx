@@ -28,8 +28,8 @@ const OutputUnverifiedArea = ({
             onChange={handleTargetTextChange}
             placeholder="Translation will appear here..."
           />
-          <div className="flex flex-row  justify-between items-center align-middle mx-auto gap-[40px]">
-            <div className="flex flex-row align-middle justify-center items-center px-[8px] border-[1px] h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200 cursor-pointer">
+          <div className="flex flex-row  justify-between items-center align-middle mx-auto gap-[40px] sm:flex-col sm:justify-center sm:gap-[10px]">
+            <div className="flex flex-row align-middle justify-center items-center px-[8px] border-[1px] h-[30px] w-[150px] sm:w-[100px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200 cursor-pointer sm:text-[12px] sm:h-[25px]">
               <BiSolidVolumeFull size={20} />
               <button
                 type="button"
@@ -39,7 +39,7 @@ const OutputUnverifiedArea = ({
                 {loadingOutputAudio ? "Please wait" : "listen"}
               </button>
             </div>
-            <div className="flex flex-row justify-center items-center gap-1.25">
+            <div className="flex flex-row justify-center items-center gap-[10px]">
               <IoClipboardOutline
                 size={20}
                 onClick={copyToClipboard}

@@ -29,7 +29,7 @@ const InputAreaVerified = ({
   }, [source_text]);
 
   return (
-    <div className="flex flex-col w-1/2 h-[450px] sm:h-[450px] outline-none">
+    <div className="flex flex-col w-1/2 h-[400px]  outline-none">
       <textarea
         className="min-h-[300px] active:border-0 p-[4px] focus-within:bg-none outline-none "
         style={{ fontSize: `${fontSize}px` }}
@@ -43,18 +43,25 @@ const InputAreaVerified = ({
       <div className="flex flex-row sm:flex-col justify-center gap-[10px]">
         <button
           type="button"
-          className="px-[8px] border-[1px] h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200"
-          disabled={isLoading}
+          className={`px-[8px] border-[1px] h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200 ${
+            isLoading || !source_text ? "cursor-not-allowed" : "cursor-pointer"
+          }`}
+          disabled={isLoading || !source_text}
           onClick={handleTextToTextTranslation}
         >
           {isLoading ? "Please wait" : "Translate"}
         </button>
-        <div className="flex flex-row align-middle justify-center items-center px-[8px] border-[1px] h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200 cursor-pointer">
+        <div className="flex flex-row align-middle justify-center items-center px-[8px] border-[1px] h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200 cursor-pointer" disabled={inputLoadingAudio || !inputAudioUrl}>
           <IoIosVolumeHigh size={20} />
           <button
+            className={`    ${
+              isLoading || !source_text
+                ? "cursor-not-allowed"
+                : "cursor-pointer"
+            }`}
             type="button"
             onClick={handleTexttoSpeechInput}
-            disabled={inputLoadingAudio}
+            
             aria-disabled={isLoading}
           >
             {inputLoadingAudio ? "Please wait" : "listen"}
@@ -68,8 +75,3 @@ const InputAreaVerified = ({
 };
 
 export default InputAreaVerified;
-
-
-
-
-

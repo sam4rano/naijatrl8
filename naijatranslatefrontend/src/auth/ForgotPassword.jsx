@@ -140,7 +140,7 @@ const ForgotPassword = () => {
             onSubmit={handleSubmitUser}
             className="rounded-[10px] flex flex-col align-middle items-center w-full max-w-[360px] mx-auto"
           >
-            <div className="pb-sm">
+            <div className="pb-sm w-full">
               <input
                 className="shadow placeholder:p-md appearance-none flex border rounded-[15px] w-full sm:w-[350px] mdx:w-[350px] mx-auto text-gray-700 py-[10px]  px-[1px] leading-tight focus:outline-none focus:shadow-outline "
                 id="email"
@@ -171,7 +171,7 @@ const ForgotPassword = () => {
             onSubmit={handleSubmitAdmin}
             className="rounded-md flex flex-col align-middle items-center w-full max-w-[360px] mx-auto"
           >
-            <div className="pb-sm">
+            <div className="pb-sm w-full">
               <input
                 className="shadow placeholder:p-md appearance-none flex border rounded-[15px] w-full sm:w-[35
                   0px] mdx:w-[350px] mx-auto text-gray-700 py-[10px]  px-[1px] leading-tight focus:outline-none focus:shadow-outline "

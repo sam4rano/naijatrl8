@@ -61,11 +61,10 @@ const TranslateUnregistered = () => {
     [source_language, source_text, target_language]
   );
 
-  // API endpoint for text-to-speech translation
   const handleTextToSpeechInput = useCallback(
     async (e) => {
       e.preventDefault();
-      
+
       setLoadingInputAudio(true);
       const apiUrl = `${baseURL}/translate-serverless/text-speech/unregistered-trial`;
       try {
@@ -152,13 +151,12 @@ const TranslateUnregistered = () => {
   );
 
   const textRef = useRef();
-  //Function to add text to clipboard
+
   const copyToClipboard = () => {
     let copyText = textRef.current.value;
 
     let isCopy = copy(copyText);
 
-    //Dispalying notification
     if (isCopy) {
       toast.success("Copied to Clipboard");
     }
@@ -169,7 +167,7 @@ const TranslateUnregistered = () => {
   };
 
   return (
-    <form className="flex flex-col max-w-[1000px] sm:w-[360px] mx-auto px-[20px] pt-[10px] pb-[20px] sm:items-center sm:align-middle h-screen">
+    <form className="flex flex-col max-w-[1000px] sm:w-[360px] mx-auto px-[20px] pt-[10px] sm:items-center sm:align-middle min-h-screen">
       <OutputInputLanguage
         source_language={source_language}
         setSourceLanguage={setSourceLanguage}
