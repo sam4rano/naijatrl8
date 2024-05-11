@@ -1,19 +1,38 @@
-import InputVerifiedUsers from "../outputfiles/InputVerifiedUsers";
 import { IoIosVolumeHigh } from "react-icons/io";
+import InputVerifiedProps from "./InputVerifiedProps";
+import { useState, useEffect } from "react";
 
 const InputAreaVerified = ({
   isLoading,
-  translatedAudioUrl,
-  loadingAudio,
+  inputAudioUrl,
+  inputLoadingAudio,
   setSource_text,
   handleTextToTextTranslation,
-  handleTextToSpeechTranslation,
+  handleTexttoSpeechInput,
   source_text,
 }) => {
+  const [fontSize, setFontSize] = useState(16);
+
+  useEffect(() => {
+    const adjustFontSize = () => {
+      if (source_text.length < 80) {
+        setFontSize(16);
+      } else if (source_text.length < 120) {
+        setFontSize(14);
+      } else if (source_text.length < 250) {
+        setFontSize(12);
+      } else {
+        setFontSize(10);
+      }
+    };
+    adjustFontSize();
+  }, [source_text]);
+
   return (
-    <div className="flex flex-col w-1/2 h-[400px] outline-none">
+    <div className="flex flex-col w-1/2 h-[450px] sm:h-[450px] outline-none">
       <textarea
-        className="h-[300px] active:border-0 p-[4px] focus-within:bg-none outline-none"
+        className="min-h-[300px] active:border-0 p-[4px] focus-within:bg-none outline-none "
+        style={{ fontSize: `${fontSize}px` }}
         placeholder="Enter text to translate..."
         id="source_text"
         name="source_text"
@@ -34,22 +53,23 @@ const InputAreaVerified = ({
           <IoIosVolumeHigh size={20} />
           <button
             type="button"
-            onClick={handleTextToSpeechTranslation}
-            disabled={loadingAudio}
+            onClick={handleTexttoSpeechInput}
+            disabled={inputLoadingAudio}
             aria-disabled={isLoading}
           >
-            {loadingAudio ? "Please wait" : "listen"}
+            {inputLoadingAudio ? "Please wait" : "listen"}
           </button>
         </div>
       </div>
-      {(isLoading || translatedAudioUrl || loadingAudio) && (
-        <InputVerifiedUsers
-          translatedAudioUrl={translatedAudioUrl}
-          loadingAudio={loadingAudio}
-        />
-      )}
+
+      {inputAudioUrl && <InputVerifiedProps inputAudioUrl={inputAudioUrl} />}
     </div>
   );
 };
 
 export default InputAreaVerified;
+
+
+
+
+

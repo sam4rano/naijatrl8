@@ -2,7 +2,7 @@ import { useState } from "react";
 import { BiSolidVolumeFull, BiXCircle } from "react-icons/bi";
 
 
-const InputProps = ({ inputAudioUrl }) => {
+const InputVerifiedProps = ({ inputAudioUrl }) => {
   const [openAudio, setOpenAudio] = useState(false);
   const [showPlayer, setShowPlayer] = useState(true);
 
@@ -56,4 +56,4 @@ const InputProps = ({ inputAudioUrl }) => {
   );
 };
 
-export default InputProps;
+export default InputVerifiedProps;

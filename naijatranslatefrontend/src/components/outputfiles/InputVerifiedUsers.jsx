@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { BiSolidVolumeFull, BiXCircle } from "react-icons/bi";
 
-const InputVerifiedUsers = ({ translatedAudioUrl, loadingAudio }) => {
+const InputVerifiedUsers = ({ translatedAudioUrl }) => {
   const [openAudio, setOpenAudio] = useState(false);
   const [showPlayer, setShowPlayer] = useState(true);
 

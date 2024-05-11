@@ -14,14 +14,14 @@ const TranslateUnregistered = () => {
   const [source_text, setSourceText] = useState("");
   const [target_text, setTargetText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [loadingAudio, setLoadingAudio] = useState(false);
-  const [translatedAudioUrl, setTranslatedAudioUrl] = useState("");
-  const [feedbackData, setFeedbackData] = useState("");
-  const [inputLoading, setInputLoading] = useState(false);
+  const [loadingInputAudio, setLoadingInputAudio] = useState(false);
   const [inputAudioUrl, setInputAudioUrl] = useState("");
+  const [feedbackData, setFeedbackData] = useState("");
+  const [loadingOutputAudio, setOutputAudioLoading] = useState(false);
+  const [outputAudioUrl, setOutputAudioUrl] = useState("");
   const { setAudioData } = useAudioDataStore();
 
-  const handleTextToTextSubmit = useCallback(
+  const handleTextToTextInput = useCallback(
     async (e) => {
       e.preventDefault();
       setIsLoading(true);
@@ -62,54 +62,11 @@ const TranslateUnregistered = () => {
   );
 
   // API endpoint for text-to-speech translation
-  const handleTextToSpeechSubmit = useCallback(
-    async (e) => {
-      e.preventDefault();
-      setLoadingAudio(true);
-      const apiUrl = `${baseURL}/translate-serverless/text-speech/unregistered-trial`;
-      try {
-        const response = await axios.post(
-          apiUrl,
-          {
-            text: source_text,
-          },
-          {
-            headers: {
-              Accept: "application/json",
-            },
-          }
-        );
-        if (response.data && !response.data.error) {
-          const { message, data } = response.data;
-          if (data && data.url) {
-            const { url } = data;
-            toast.success(
-              "Text to speech conversion successful, Click on listen button"
-            );
-            setTranslatedAudioUrl(url);
-            setAudioData(url);
-          } else {
-            toast.error(
-              "Error occurred while translating text to speech: " + message
-            );
-          }
-        } else {
-          const responseError = await response.json();
-          toast.error("error:", responseError.data.message);
-        }
-      } catch (error) {
-        toast.error("An error occurred: " + error.message);
-      } finally {
-        setLoadingAudio(false);
-      }
-    },
-    [setAudioData, source_text]
-  );
-
   const handleTextToSpeechInput = useCallback(
     async (e) => {
       e.preventDefault();
-      setInputLoading(true);
+      
+      setLoadingInputAudio(true);
       const apiUrl = `${baseURL}/translate-serverless/text-speech/unregistered-trial`;
       try {
         const response = await axios.post(
@@ -131,7 +88,7 @@ const TranslateUnregistered = () => {
               "Text to speech conversion successful, Click on listen button"
             );
             setInputAudioUrl(url);
-            // setAudioData(url);
+            setAudioData(url);
           } else {
             toast.error(
               "Error occurred while translating text to speech: " + message
@@ -144,10 +101,54 @@ const TranslateUnregistered = () => {
       } catch (error) {
         toast.error("An error occurred: " + error.message);
       } finally {
-        setInputLoading(false);
+        setLoadingInputAudio(false);
       }
     },
-    [source_text]
+    [setAudioData, source_text]
+  );
+
+  const handleTextToSpeechOutput = useCallback(
+    async (e) => {
+      e.preventDefault();
+      setOutputAudioLoading(true);
+      const apiUrl = `${baseURL}/translate-serverless/text-speech/unregistered-trial`;
+      try {
+        const response = await axios.post(
+          apiUrl,
+          {
+            text: target_text,
+          },
+          {
+            headers: {
+              "Content-type": "application/json",
+            },
+          }
+        );
+        if (response.data && !response.data.error) {
+          const { message, data } = response.data;
+          if (data && data.url) {
+            const { url } = data;
+            toast.success(
+              "Text to speech conversion successful, Click on listen button"
+            );
+            setOutputAudioUrl(url);
+            setAudioData(url);
+          } else {
+            toast.error(
+              "Error occurred while translating text to speech: " + message
+            );
+          }
+        } else {
+          const responseError = await response.json();
+          toast.error("error:", responseError.data.message);
+        }
+      } catch (error) {
+        toast.error("An error occurred: " + error.message);
+      } finally {
+        setOutputAudioLoading(false);
+      }
+    },
+    [setAudioData, target_text]
   );
 
   const textRef = useRef();
@@ -168,33 +169,32 @@ const TranslateUnregistered = () => {
   };
 
   return (
-    <form className="flex flex-col overflow-hidden max-w-[1000px] md:w-[400px] sm:w-[360px] sm:p-[10px] mx-auto px-[10px] py-[30px]">
+    <form className="flex flex-col max-w-[1000px] sm:w-[360px] mx-auto px-[20px] pt-[10px] pb-[20px] sm:items-center sm:align-middle h-screen">
       <OutputInputLanguage
         source_language={source_language}
         setSourceLanguage={setSourceLanguage}
         target_language={target_language}
         setTargetLanguage={setTargetLanguage}
       />
-      <div className="flex flex-row justify-between w-full h-[400px] bg-white pb-[10px] rounded-bl-[16px] rounded-br-[16px]">
+      <div className="flex flex-row justify-between w-full h-[420px] sm:h-[450px] bg-white pb-[10px] rounded-bl-[16px] rounded-br-[16px] outline-none ">
         <InputUnverifiedArea
           source_text={source_text}
-          translatedAudioUrl={translatedAudioUrl}
+          inputAudioUrl={inputAudioUrl}
           setSourceText={setSourceText}
           isLoading={isLoading}
-          inputLoading={inputLoading}
+          loadingInputAudio={loadingInputAudio}
           handleTextToSpeechInput={handleTextToSpeechInput}
-          inputAudioUrl={inputAudioUrl}
-          handleTextToTextSubmit={handleTextToTextSubmit}
+          handleTextToTextInput={handleTextToTextInput}
         />
 
         <OutputUnverifiedArea
           isLoading={isLoading}
           target_text={target_text}
           textRef={textRef}
-          handleTextToSpeechSubmit={handleTextToSpeechSubmit}
-          loadingAudio={loadingAudio}
+          handleTextToSpeechOutput={handleTextToSpeechOutput}
+          loadingOutputAudio={loadingOutputAudio}
           handleTargetTextChange={handleTargetTextChange}
-          translatedAudioUrl={translatedAudioUrl}
+          outputAudioUrl={outputAudioUrl}
           feedbackData={feedbackData}
           copyToClipboard={copyToClipboard}
         />

@@ -8,10 +8,10 @@ const OutputUnverifiedArea = ({
   isLoading,
   target_text,
   textRef,
-  handleTextToSpeechSubmit,
-  loadingAudio,
+  handleTextToSpeechOutput,
+  loadingOutputAudio,
   handleTargetTextChange,
-  translatedAudioUrl,
+  outputAudioUrl,
   feedbackData,
   copyToClipboard,
 }) => {
@@ -20,22 +20,23 @@ const OutputUnverifiedArea = ({
       {!isLoading && target_text && (
         <>
           <textarea
-            className="min-h-[300px] active:border-0 p-[4px] focus-within:bg-none outline-none z-10 w-full"
+            className="min-h-[300px] active:border-0 p-[4px] outline-none z-10"
             id="target_text"
             name="target_text"
             ref={textRef}
             value={target_text}
             onChange={handleTargetTextChange}
+            placeholder="Translation will appear here..."
           />
           <div className="flex flex-row  justify-between items-center align-middle mx-auto gap-[40px]">
             <div className="flex flex-row align-middle justify-center items-center px-[8px] border-[1px] h-[30px] w-[120px] bg-blue-100 mx-auto rounded-full text-primary text-center hover:bg-blue-200 cursor-pointer">
               <BiSolidVolumeFull size={20} />
               <button
                 type="button"
-                onClick={handleTextToSpeechSubmit}
-                disabled={loadingAudio}
+                onClick={handleTextToSpeechOutput}
+                disabled={loadingOutputAudio}
               >
-                {loadingAudio ? "Please wait" : "listen"}
+                {loadingOutputAudio ? "Please wait" : "listen"}
               </button>
             </div>
             <div className="flex flex-row justify-center items-center gap-1.25">
@@ -66,7 +67,7 @@ const OutputUnverifiedArea = ({
           />
         </div>
       )}
-      {translatedAudioUrl && <OutputProperties translatedAudioUrl={translatedAudioUrl}  />}
+      {outputAudioUrl && <OutputProperties outputAudioUrl={outputAudioUrl} />}
     </div>
   );
 };

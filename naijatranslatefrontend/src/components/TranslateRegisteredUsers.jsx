@@ -17,11 +17,11 @@ const TranslateRegisteredUsers = () => {
   const [source_text, setSource_text] = useState("");
   const [target_text, setTarget_text] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [translatedAudioUrl, setTranslatedAudioUrl] = useState("");
+  const [inputAudioUrl, setInputAudioUrl] = useState("");
+  const [inputLoadingAudio, setInputLoadingAudio] = useState(false);
   const [outputTranslateUrl, setOutputTranslateUrl] = useState("");
   const [feedbackData, setFeedbackData] = useState("");
-  const [loadingAudio, setLoadingAudio] = useState(false);
-  const [loadingAudInput, setLoadingAudInput] = useState(false);
+  const [outputLoadingAudio, setOutputLoadingAudio] = useState(false);
 
   const handleAccessToken = useHandleAccessToken();
   const handleTextToTextTranslation = useCallback(
@@ -85,17 +85,17 @@ const TranslateRegisteredUsers = () => {
     ]
   );
 
-  const handleTextToSpeechTranslation = useCallback(
+  const handleTexttoSpeechInput = useCallback(
     async (e) => {
       e.stopPropagation();
       const formDataSpeech = {
         text: source_text,
       };
       e.preventDefault();
-      setLoadingAudio(true);
+      setInputLoadingAudio(true);
       const accessToken = await handleAccessToken();
       if (!accessToken) {
-        setLoadingAudio(false);
+        setInputLoadingAudio(false);
         return;
       }
 
@@ -121,7 +121,7 @@ const TranslateRegisteredUsers = () => {
               toast.success(
                 "Text to speech conversion successful, Click on listen button"
               );
-              setTranslatedAudioUrl(url);
+              setInputAudioUrl(url);
             } else {
               toast.error(
                 "Error occurred while translating text to speech: " + message
@@ -137,7 +137,7 @@ const TranslateRegisteredUsers = () => {
         console.error("Speech conversion error:", error);
         toast.error("Speech conversion error: " + error.message);
       } finally {
-        setLoadingAudio(false);
+        setInputLoadingAudio(false);
       }
     },
     [handleAccessToken, source_text]
@@ -151,10 +151,10 @@ const TranslateRegisteredUsers = () => {
       };
       console.log("Sending for speech synthesis:", formDataSpeech.text),
         e.preventDefault();
-      setLoadingAudInput(true);
+      setOutputLoadingAudio(true);
       const accessToken = await handleAccessToken();
       if (!accessToken) {
-        setLoadingAudInput(false);
+        setOutputLoadingAudio(false);
         return;
       }
 
@@ -196,7 +196,7 @@ const TranslateRegisteredUsers = () => {
         console.error("Speech conversion error:", error);
         toast.error("Speech conversion error: " + error.message);
       } finally {
-        setLoadingAudInput(false);
+        setOutputLoadingAudio(false);
       }
     },
 
@@ -213,39 +213,36 @@ const TranslateRegisteredUsers = () => {
     }
   };
 
-  console.log("source", source_text);
-  console.log("target", target_text);
-
   return (
-    <div className="bg-graylight">
+    <div className="bg-graylight h-screen">
       <NavVerified />
-      <div className="max-w-[360px] w-full mx-auto flex flex-row justify-between align-middle items-center gap-[10px]">
-        <div className="max-w-[360px] w-full flex flex-row justify-end align-middle items-center">
+      <div className="max-w-[400px] sm:w-[360px] mx-auto flex flex-row justify-between align-middle items-center gap-[10px]">
+        <div className="max-w-[400px] sm:w-[360px] w-full flex flex-row justify-end align-middle items-center px-[30px]">
           <Link
             to="/internalhistory"
             className="flex p-[5px] hover:bg-light flex-row align-middle items-center gap-[10px] hover:rounded-[8px]"
           >
-            <IoTimeOutline size={25} />
+            <IoTimeOutline size={23} />
 
             <p className="text-[16px] leading-[25px] font-medium">History</p>
           </Link>
         </div>
       </div>
-      <form className="flex flex-col max-w-[1000px] sm:w-[360px] mx-auto px-[20px] pt-[10px] pb-[20px]">
+      <form className="flex flex-col max-w-[1000px] sm:w-[360px] mx-auto px-[20px] sm:px-[10px] pt-[10px] pb-[20px]">
         <OutputInputVerLanguage
           source_language={source_language}
           setSourceLanguage={setSourceLanguage}
           target_language={target_language}
           setTargetLanguage={setTargetLanguage}
         />
-        <div className="flex flex-row justify-between w-full h-[410px] bg-white pb-[10px] rounded-bl-[16px] rounded-br-[16px]outline-none ">
+        <div className="flex flex-row justify-between w-full h-[420px] sm:h-[450px] bg-white pb-[10px] rounded-bl-[16px] rounded-br-[16px] outline-none ">
           <InputAreaVerified
             isLoading={isLoading}
-            translatedAudioUrl={translatedAudioUrl}
-            loadingAudio={loadingAudio}
+            inputAudioUrl={inputAudioUrl}
+            inputLoadingAudio={inputLoadingAudio}
             setSource_text={setSource_text}
             handleTextToTextTranslation={handleTextToTextTranslation}
-            handleTextToSpeechTranslation={handleTextToSpeechTranslation}
+            handleTexttoSpeechInput={handleTexttoSpeechInput}
             source_text={source_text}
           />
 
@@ -253,7 +250,7 @@ const TranslateRegisteredUsers = () => {
             target_text={target_text}
             textRef={textRef}
             isLoading={isLoading}
-            loadingAudInput={loadingAudInput}
+            outputLoadingAudio={outputLoadingAudio}
             handleTextToSpeechOutput={handleTextToSpeechOutput}
             handleTextToTextTranslation={handleTextToTextTranslation}
             outputTranslateUrl={outputTranslateUrl}
