@@ -1,0 +1,8 @@
+.mobile_container {
+	background-image: url('../src/assets/mobile.svg');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	height: 180px;
+	width: 100vw;
+}

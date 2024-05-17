@@ -69,14 +69,14 @@ const PasswordReset = () => {
     <div>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="rounded-md flex flex-col content-center items-center max-w-[360px] mx-auto p-[10px] mt-[70px] border-[1px] gap-[10px]"
+        className="rounded-md flex flex-col content-center items-center w-[360px] sm:w-[340px] mx-auto p-[10px] mt-[70px] border-[1px] gap-[10px]"
       >
         <h1 className="text-center pb-[10px] font-bold text-[20px] leading-[30px]">
           Change your password
         </h1>
         <div className="relative w-full">
           <input
-            className="shadow appearance-none flex border rounded-[15px] w-full p-[10px] text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="shadow appearance-none flex border rounded-[15px] w-full p-[10px] text-gray-700 leading-tight focus:outline-none focus:shadow-outline sm:w-[340px]"
             type={showPassword ? "text" : "password"}
             placeholder="New password"
             {...register("new_password")}

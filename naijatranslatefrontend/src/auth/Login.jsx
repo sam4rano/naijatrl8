@@ -144,12 +144,12 @@ const LoginContainer = () => {
   );
 
   return (
-    <div className="w-[360px] sm:w-full pt-[20px] mx-auto">
-      <h1 className="font-bold text-[30px] leading-[40px] sm:text-[20px] sm:leading-[30px] text-center py-[20px]">
+    <div className="w-[360px] flex align-middle items-center flex-col sm:w-full pt-[10px] rounded-md mx-auto">
+      <h1 className="font-bold text-[25px] leading-[30px] w-full mx-auto text-center sm:text-[20px] sm:leading-[30px] md:text-[16px] py-[10px]">
         Login to your account
       </h1>
       <div className="tab-ul flex flex-col">
-        <ul className="flex flex-row list-none text-center cursor-pointer align-middle items-center font-[400] text-[13px] pb-[20px] leading-4 w-full mx-auto ">
+        <ul className="flex flex-row list-none text-center cursor-pointer justify-around font-normal text-[14px] pb-[10px] leading-4 w-[360px] mx-auto sm:w-[340px]">
           <li
             onClick={handleTabOne}
             className={`cursor-pointer rounded-full font-[600] w-full ${
@@ -215,7 +215,7 @@ const LoginContainer = () => {
               >
                 {isLoading ? "Please wait" : "Log in"}
               </button>
-             
+
               <div className="flex flex-col justify-center mx-auto py-[10px]">
                 <p className=" text-sm">
                   Sign up for an account?

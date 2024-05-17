@@ -1,0 +1,9 @@
+.sidebar_img {
+	background-image: url('../src//assets/desktop.svg');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	height: 100vh;
+	padding: 20px;
+	width: 30vw;
+}

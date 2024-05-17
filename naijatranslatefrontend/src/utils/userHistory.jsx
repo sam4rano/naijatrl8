@@ -44,7 +44,6 @@ const InternalHistory = () => {
         );
         return response.data;
       } catch (error) {
-        console.error("Error while fetching users:", error);
         toast.error(error.response.data.detail);
         throw error;
       }
@@ -54,7 +53,7 @@ const InternalHistory = () => {
 
   return (
     <>
-    <NavVerified />
+      <NavVerified />
       <div className="flex justify-center flex-col px-[20px] py-[10px] bg-[#f0f0f0]">
         <div className="bg-white p-[10px]  rounded-[12px]">
           <div className="flex flex-row justify-start px-[10px] py-[10px]">
