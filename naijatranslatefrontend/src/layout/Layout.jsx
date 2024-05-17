@@ -11,7 +11,7 @@ const Layout = () => {
   };
 
   return (
-    <div className="bg-graylight px-[10px] h-auto">
+    <div className="bg-graylight min-h-full">
       <Navbar />
       {isDivVisible && <Ads toggleDivVisibility={toggleDivVisibility} />}
       <Outlet />

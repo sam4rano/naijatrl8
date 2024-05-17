@@ -24,9 +24,14 @@ export default {
         transparent: "transparent",
       },
 
+      // fontFamily: {
+      //   iconsolata: ["Iconsolata", "sans-serif"],
+      //   serif: ["Merriweather", "serif"],
+      // },
+
       fontFamily: {
-        iconsolata: ["Iconsolata", "sans-serif"],
-        serif: ["Merriweather", "serif"],
+        'sans':['"Josefin Sans","Inconsolata","Poppins"']
+  
       },
 
       screens: {

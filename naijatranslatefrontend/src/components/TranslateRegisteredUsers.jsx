@@ -218,7 +218,7 @@ const TranslateRegisteredUsers = () => {
   };
 
   return (
-    <div className="bg-graylight h-screen">
+    <div className="bg-graylight min-h-full">
       <NavVerified />
       <div className="max-w-[400px] sm:w-[360px] mx-auto flex flex-row justify-between align-middle items-center gap-[10px]">
         <div className="max-w-[400px] sm:w-[360px] w-full flex flex-row justify-end align-middle items-center px-[30px]">
@@ -232,7 +232,7 @@ const TranslateRegisteredUsers = () => {
           </Link>
         </div>
       </div>
-      <form className="flex flex-col max-w-[1000px] sm:w-[360px] mx-auto px-[20px] sm:px-[10px] pt-[10px] pb-[20px]">
+      <form className="flex flex-col max-w-[1000px] mx-auto px-[10px] sm:px-[10px] py-[20px]">
         <OutputInputVerLanguage
           source_language={source_language}
           setSourceLanguage={setSourceLanguage}

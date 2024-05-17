@@ -167,7 +167,7 @@ const TranslateUnregistered = () => {
   };
 
   return (
-    <form className="flex flex-col max-w-[1000px] sm:w-[360px] mx-auto px-[20px] pt-[10px] sm:items-center sm:align-middle min-h-screen">
+    <form className="flex flex-col max-w-[1000px] w-full mx-auto px-[10px] py-[20px] sm:items-center sm:align-middle min-h-full font-sans">
       <OutputInputLanguage
         source_language={source_language}
         setSourceLanguage={setSourceLanguage}
